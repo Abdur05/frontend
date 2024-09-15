@@ -1,0 +1,136 @@
+.container {
+  display: flex;
+}
+
+.left-panel {
+  width: 15%;
+  /* border-right: 1px solid #000; */
+  padding: 10px;
+}
+
+.right-panel {
+  width: 70%;
+  padding: 10px;
+}
+
+.text-name-add, .text-name {
+  height: 35px;
+  display: inline-flex;
+  background: #f3f3f3;
+  padding: 0px 10px 0px 10px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  color: black;
+  cursor: pointer;
+  width: 100%;
+}
+
+.module {
+  box-sizing: border-box;
+  /* border: 1px solid gray; */
+  background-color: #00acff !important;
+  display: flex;
+  justify-content: center;
+  height: 30px;
+  align-items: center;
+  color: white;
+}
+
+.selectSlider{
+  border: 2px solid #00acff;
+  margin-top: 7px;
+}
+
+.slide {
+  padding: 20px;
+  position: relative;
+  height: 130px;
+  /* width: 145px; */
+  /* background-color: #f0f0f0; */
+  box-sizing: border-box;
+  /* border: 1px solid gray; */
+  display: flex;
+  align-items: center;
+}
+
+/* .module:hover,
+.slide:hover {
+  background-color: #f0f0f0;
+} */
+
+.buttons {
+  display: none;
+  position: absolute;
+  top: 10px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* right: 10px; */
+  /* top: 5%; */
+  /* transform: translateY(50%); */
+}
+
+.slide:hover .buttons {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide:hover .text-name, .slide:hover .button-move{
+  filter: blur(5px);
+}
+.sup-icon:hover{
+  filter: blur(0px);
+}
+button {
+  display: inline-block;
+  padding: 5px 10px;
+  /* background-color: #007bff; */
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+/* button:hover {
+  background-color: #0056b3;
+} */
+
+
+
+.button-move {
+  position: absolute;
+  bottom: 0;
+  background: orange;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: 100%;
+  left: 0;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.type-text:hover {
+  width: 100%;
+  background: #f3f3f3;
+  color: black;
+  cursor: pointer;
+  display: flex;
+  padding: 5px 10px 5px 10px;
+}
+
+.select {
+  width: 100%;
+  background: #f3f3f3;
+  color: black;
+  cursor: pointer;
+  display: flex;
+  padding: 3px 10px 3px 10px;
+}
+
+

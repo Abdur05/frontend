@@ -1,0 +1,168 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <div class="row">
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+            <div class="row mt-3 ">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 d-flex d-grid gap-2 py-2">
+                    <div>
+                        <mat-icon title="List View" (click)="isShow = true">format_list_bulleted</mat-icon>
+                    </div>
+                    <div>
+                        <mat-icon title="Calendar View" (click)="isShow = false">calendar_month</mat-icon>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 py-2" *ngIf="rolesView?.add === true">
+                    <button class="btn btn-primary float-end" (click)="openDialog()">
+                        Add Event
+                    </button>
+                    <!-- <button class="btn btn-primary">Upload Event</button> -->
+                </div>
+                <div class="col-12" *ngIf="!isShow">
+                    <!-- <ejs-schedule [eventSettings]="eventData" [selectedDate]="currentDate" [currentView]="newViewMode"></ejs-schedule> -->
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <div class="btn-group">
+                                <div class="btn btn-primary" mwlCalendarPreviousView [view]="view"
+                                    [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+                                    Previous
+                                </div>
+                                <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+                                    Today
+                                </div>
+                                <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+                                    (viewDateChange)="closeOpenMonthViewDay()">
+                                    Next
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="btn-group">
+                                <div class="btn btn-primary" (click)="setView(CalendarView.Month)"
+                                    [class.active]="view === CalendarView.Month">
+                                    Month
+                                </div>
+                                <div class="btn btn-primary" (click)="setView(CalendarView.Week)"
+                                    [class.active]="view === CalendarView.Week">
+                                    Week
+                                </div>
+                                <div class="btn btn-primary" (click)="setView(CalendarView.Day)"
+                                    [class.active]="view === CalendarView.Day">
+                                    Day
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div *ngIf="events.length !==0" [ngSwitch]="view">
+                        <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" 
+                                                 [viewDate]="viewDate"
+                                                 [events]="events" 
+                                                 [refresh]="refresh" 
+                                                 [activeDayIsOpen]="activeDayIsOpen"
+                                                 (dayClicked)="dayClicked($event.day)" 
+                                                 (eventClicked)="handleEvent('Clicked', $event.event)"
+                                                 (eventTimesChanged)="eventTimesChanged($event)">
+                        </mwl-calendar-month-view>
+                        
+                        <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" 
+                                                [viewDate]="viewDate"
+                                                [events]="events" 
+                                                [refresh]="refresh" 
+                                                (eventClicked)="handleEvent('Clicked', $event.event)"
+                                                (eventTimesChanged)="eventTimesChanged($event)">
+                        </mwl-calendar-week-view>
+                        
+                        <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" 
+                                               [viewDate]="viewDate" 
+                                               [events]="events"
+                                               [refresh]="refresh" 
+                                               (eventClicked)="handleEvent('Clicked', $event.event)"
+                                               (eventTimesChanged)="eventTimesChanged($event)">
+                        </mwl-calendar-day-view>
+                    </div>
+                    
+                    <div *ngIf="events.length ===0" [ngSwitch]="view">
+                        <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" 
+                                                 [viewDate]="viewDate"
+                                                 [events]="events" 
+                                                 [refresh]="refresh" 
+                                                 [activeDayIsOpen]="activeDayIsOpen"
+                                                 (dayClicked)="dayClicked($event.day)" 
+                                                 (eventClicked)="handleEvent('Clicked', $event.event)"
+                                                 (eventTimesChanged)="eventTimesChanged($event)">
+                        </mwl-calendar-month-view>
+                        
+                        <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" 
+                                                [viewDate]="viewDate"
+                                                [events]="events" 
+                                                [refresh]="refresh" 
+                                                (eventClicked)="handleEvent('Clicked', $event.event)"
+                                                (eventTimesChanged)="eventTimesChanged($event)">
+                        </mwl-calendar-week-view>
+                        
+                        <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" 
+                                               [viewDate]="viewDate" 
+                                               [events]="events"
+                                               [refresh]="refresh" 
+                                               (eventClicked)="handleEvent('Clicked', $event.event)"
+                                               (eventTimesChanged)="eventTimesChanged($event)">
+                        </mwl-calendar-day-view>
+                    </div>
+                </div>
+                <div class="col-12" *ngIf="isShow">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>SN</th>
+                                    <th>Event Name</th>
+                                    <th>Event Description</th>
+                                    <th>Event Type</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th scope="col" *ngIf="rolesView?.modify === true || rolesView?.delete === true">
+                                        Action</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="eventdetails.length === 0">
+                                <tr>
+                                    <td colspan="8" class="text-center">No Records</td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <ng-container *ngFor="let list of eventdetails; let i=index">
+                                    <tr *ngFor="let events of list.eventList;let j=index">
+                                        <td>{{j+1}}</td>
+                                        <td>{{events.eventTitle}}</td>
+                                        <td>{{events.eventDescription}}</td>
+                                        <td>{{events.eventTitle}}</td>
+                                        <td>{{events.startDate}}</td>
+                                        <td>{{events.endDate}}</td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <div>
+                                                    <mat-icon *ngIf="rolesView?.modify === true"
+                                                        (click)="openDialogEdit(list._id,events._id)">edit</mat-icon>
+                                                </div>
+                                                <div>
+                                                    <mat-icon *ngIf="rolesView?.delete === true"
+                                                        (click)="deleteRecords(events)">delete</mat-icon>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

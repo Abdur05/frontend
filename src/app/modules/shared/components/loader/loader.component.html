@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div id="loader">
+                <img style="width: 100px;object-fit: contain;" src="/assets/loader_remove_bg.png">
+                <span class="text" (emitter)="showText($event)" *ngIf="isShowText">Validating Record...</span>
+                <!-- <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div> -->
+                <div class="loading">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <span class="text">Loading...</span> -->
+</div>

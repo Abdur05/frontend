@@ -1,0 +1,14 @@
+
+.back{
+    background-color: red;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;position: relative;
+    right: 6px;
+top:5px;
+}
+.zzzz{
+    text-align: center;
+    vertical-align: middle;
+
+}

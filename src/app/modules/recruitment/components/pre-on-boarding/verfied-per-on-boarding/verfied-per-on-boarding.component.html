@@ -1,0 +1,306 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 py-2 d-flex justify-content-end">
+            <mat-icon (click)="close()">close</mat-icon>
+        </div>
+        <div class="col-12 mb-2"
+            *ngIf="candidatesDetails?.background_verification !=='Rejected' && candidatesDetails?.background_verification !== 'Pending' ">
+            <mat-accordion class="example-headers-align ">
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> Joining Date </mat-panel-title>
+
+                    </mat-expansion-panel-header>
+
+                    <form [formGroup]="candiateFormGroup" (ngSubmit)="handleJoingDate()"  *ngIf="candidatesDetails?.salary_details?.length !== 0 && candidatesDetails.status === 'Selected'">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                                    <label for="" class="">Department <sup>*</sup></label>
+                                    <select class="form-select " aria-label="Default select example"
+                                        formControlName="department" (change)="handleDeperament($event)">
+                                        <option [selected]="candiateFormGroup.value.department === ''" value="">
+                                            Select
+                                            Department</option>
+                                        <option *ngFor="let list of departmentDetail" [value]="list._id">
+                                            {{list.departmentName}}
+                                        </option>
+                                    </select>
+                                    <div
+                                        *ngIf="candiateFormGroup.controls['department'].touched && candiateFormGroup.controls['department'].dirty && candiateFormGroup.controls['department'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Department is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && candiateFormGroup.controls['department'].hasError('required')">
+                                        <p class="error-message">Department is mandatory</p>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                                    <label for="" class="">Designation <sup>*</sup></label>
+                                    <select class="form-select " aria-label="Default select example"
+                                        formControlName="designation" (change)="handleDesignation($event)">
+                                        <option [selected]="candiateFormGroup.value.designation === ''" value="">
+                                            Select
+                                            Designation</option>
+                                        <option *ngFor="let list of filterDesignationList" [value]="list._id">
+                                            {{list.designationName}}</option>
+                                    </select>
+                                    <div
+                                        *ngIf="candiateFormGroup.controls['designation'].touched && candiateFormGroup.controls['designation'].dirty && candiateFormGroup.controls['designation'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Designation is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && candiateFormGroup.controls['designation'].hasError('required')">
+                                        <p class="error-message">Designation is mandatory</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 py-2"
+                                    *ngIf="candidatesDetails?.salary_details?.length !== 0 && candidatesDetails.status === 'Selected'">
+                                    <label>Joining Date</label>
+                                    <input type="date" class="form-control" formControlName="joining_date"
+                                        [min]="todayDate">
+                                    <div
+                                        *ngIf="candiateFormGroup.controls['joining_date'].touched && candiateFormGroup.controls['joining_date'].dirty && candiateFormGroup.controls['joining_date'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">joining_date is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && candiateFormGroup.controls['joining_date'].hasError('required')">
+                                        <p class="error-message">joining_date is mandatory</p>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex justify-content-end py-2"
+                                    *ngIf="candidatesDetails?.salary_details !== 0 && candidatesDetails.status !== 'Offer Released' && candidatesDetails.status !== 'Accepted'">
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="col-12 py-2"
+                        *ngIf="candidatesDetails?.salary_details?.length !==0 && (candidatesDetails.status == 'Offer Released' || candidatesDetails.status === 'Accepted')">
+                        <label>Joining Date</label><br>
+                        <span>{{candidatesDetails?.joining_date}}</span>
+
+                    </div>
+
+
+
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+
+        <div class="col-12 mb-2">
+
+            <mat-accordion class="example-headers-align ">
+
+
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> Candidate Details </mat-panel-title>
+
+                    </mat-expansion-panel-header>
+                    <div class="row">
+                        <div class="col-6 py-2">
+                            <label for="">Candidate Name </label><br>
+                            <span>{{candidatesDetails.firstName}} {{candidatesDetails.lastName}}</span>
+                        </div>
+                        <div class="col-6 py-2">
+                            <label for="">Candidate Name </label><br>
+                            <span>{{candidatesDetails.email}}</span>
+                        </div>
+                    </div>
+
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <div class="col-12 mb-2">
+
+            <mat-accordion class="example-headers-align ">
+
+
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> Eductaion Details </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="col-12">
+                        <div class="row" *ngFor="let list of candidatesDetails?.documents?.education; let i = index">
+                            <div class="col-6 py-2">
+                                <label for="">Education </label><br>
+                                <span>{{list.education}}</span>
+                            </div>
+
+                            <div class="col-6 py-2">
+                                <label for="">Univercity </label><br>
+                                <span>{{list.univercity}}</span>
+                            </div>
+
+                            <div class="col-6 py-2">
+                                <label for="">Start Date </label><br>
+                                <span>{{list.education_start_date}}</span>
+                            </div>
+
+                            <div class="col-6 py-2">
+                                <label for="">End Date </label><br>
+                                <span>{{list.education_end_date}}</span>
+                            </div>
+
+                            <div class="col-6 py-2">
+                                <label for="">Student Id </label><br>
+                                <span>{{list.education_student_id}}</span>
+                            </div>
+                            <div class="col-6 py-2">
+                                <label for="">Program Type </label><br>
+                                <span>{{list.education_program_type}}</span>
+                            </div>
+                            <div class="col-6 py-2">
+                                <label for="">% marks/ CGPA </label><br>
+                                <span>{{list.education_marks_cgpa}}</span>
+                            </div>
+
+                            <div class="col-6 py-2">
+                                <label for="">Attach Certificate </label><br>
+                                <span style="text-decoration: underline; color:blue"
+                                    (click)="handleUpdate(list.attachCertificate)">Attach Certificate</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <div class="col-12 mb-2">
+
+            <mat-accordion class="example-headers-align ">
+
+
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> Company Details </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="row" *ngFor="let list of candidatesDetails?.documents?.company; let i = index">
+                        <div class="col-6 py-2">
+                            <label for="">Company Name </label><br>
+                            <span>{{list.companyName}}</span>
+                        </div>
+
+                        <div class="col-6 py-2">
+                            <label for="">Total No Of Experience </label><br>
+                            <span>{{list.totalExperience}}</span>
+                        </div>
+
+                        <div class="col-6 py-2">
+                            <label for="">Start Date </label><br>
+                            <span>{{list.company_start_date}}</span>
+                        </div>
+                        <div class="col-6 py-2">
+                            <label for="">End Date </label><br>
+                            <span>{{list.company_end_date}}</span>
+                        </div>
+                        <div class="col-6 py-2">
+                            <label for="">Reporting Manager </label><br>
+                            <span>{{list.company_reporting_manager}}</span>
+                        </div>
+                        <div class="col-6 py-2">
+                            <label for="">Reporting Manager Designation</label><br>
+                            <span>{{list.company_reporting_manager_designation}}</span>
+                        </div>
+                        <div class="col-6 py-2">
+                            <label for="">Employee Id </label><br>
+                            <span>{{list.company_employee_id}}</span>
+                        </div>
+                        <div class="col-6 py-2">
+                            <label for="">Reason for Leaving</label><br>
+                            <span>{{list.company_reason_for_leaving}}</span>
+                        </div>
+                        <div class="col-6 py-2">
+                            <label for="">Experience/Releiving Certificate </label><br>
+                            <span style="text-decoration: underline; color:blue"
+                                (click)="handleUpdate(list.experienceLetterFilePath)">Certificate</span>
+                        </div>
+
+                        <div class="col-6 py-2">
+                            <label for="">Hike Letter </label><br>
+                            <span style="text-decoration: underline; color:blue"
+                                (click)="handleUpdate(list.hikeLetterFilePath)">Hike Letter</span>
+                        </div>
+
+                        <div class="col-6 py-2">
+                            <label for="">Pay Slip</label><br>
+                            <span style="text-decoration: underline; color:blue"
+                                (click)="handleUpdate(list.paySlipFilePath)">Pay Slip</span>
+                        </div>
+                    </div>
+
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <div class="col-12 mb-2"
+            *ngIf="candidatesDetails?.background_verification !=='Rejected' && candidatesDetails?.background_verification !== 'Pending'">
+
+            <mat-accordion class="example-headers-align ">
+
+
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> Salary Details </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="col-12">
+                        <div class="row">
+
+                            <div class="col-12">
+                                <div class="row">
+                                    <!-- <div *ngFor="let salary of candidatesDetails?.salaryDetails">
+                                        <div *ngFor="let item of salary | keyvalue">
+                                            <label for="">{{item.key}} </label><br>
+                                            <span>{{item.value}}</span>
+                                        </div>
+                                      </div> -->
+                                    <div class="col-6 py-2"
+                                        *ngFor="let key of (candidatesDetails?.salary_details[0] | keyvalue)">
+                                        <label for="">{{key.key}} </label><br>
+                                        <span>{{key.value}}</span>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <div class="col-12 py-2" *ngIf="candidatesDetails.background_verification === 'Pending'">
+            <div class="d-flex justify-content-end d-grid gap-2">
+                <div>
+                    <button type="button" class="btn btn-danger"
+                        (click)="handleUpdateStatus('Rejected')">Rejected</button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary"
+                        (click)="handleUpdateStatus('Verified')">Approved</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 py-2" *ngIf="candidatesDetails.status === 'Offer Released'">
+            <div class="d-flex justify-content-end d-grid gap-2">
+                <div>
+                    <button type="button" class="btn btn-danger"
+                        (click)="handleOfferUpdateStatus('Rejected')">Rejected</button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary"
+                        (click)="handleOfferUpdateStatus('Accepted')">Accepted</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- </mat-accordion> -->
+    </div>
+</div>

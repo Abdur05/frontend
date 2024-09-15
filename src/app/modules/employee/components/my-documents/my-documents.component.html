@@ -1,0 +1,98 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <div class="row">
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+            <div class="col-12 mb-3">
+                <fieldset class="border p-2">
+                    <legend class="float-none w-auto"><b>Document List </b></legend>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <select class="form-select" [(ngModel)]="selectedYear" (change)="handleYear($event)">
+                                    <option selected value="">Select Year</option>
+                                    <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <mat-tab-group>
+                <mat-tab label="Payslip">
+                  <ng-template mat-tab-label>
+                    <mat-icon>receipt_long</mat-icon>
+                    <span>Payslip</span>
+                  </ng-template>
+                  <div>
+                    <div class="row py-4">
+                        <ng-container *ngIf="Payslips && Payslips.length > 0; else noPayslips">
+                            <ng-container *ngFor="let Payslip of Payslips">
+                                <div class="col-2 text-center p-1" (click)="handleUpdate(Payslip.payslip_path)">
+                                    <img src="assets/Document.png" alt="Payslip" class="mb-2">
+                                    <h5>{{ Payslip.month }}</h5>
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                        
+                        <ng-template #noPayslips>
+                            <div class="col-12 text-center p-3">
+                                <h5>No payslips available.</h5>
+                            </div>
+                        </ng-template>                        
+                    </div>
+                  </div>
+                </mat-tab>
+                
+                <mat-tab label="Compensation">
+                  <ng-template mat-tab-label>
+                    <mat-icon>monetization_on</mat-icon>
+                    <span>Compensation</span>
+                  </ng-template>
+                  <div class="row py-3">
+                    <div class="col-12 text-center p-3">
+                        <h5>No Compensation available.</h5>
+                    </div>
+                  </div>
+                </mat-tab>
+                
+                <mat-tab label="Tax">
+                  <ng-template mat-tab-label>
+                    <mat-icon>account_balance_wallet</mat-icon>
+                    <span>Tax</span>
+                  </ng-template>
+                  <div class="row py-3">
+                    <div class="col-12 text-center p-3">
+                        <h5>No Tax available.</h5>
+                    </div>
+                  </div>
+                </mat-tab>
+                
+                <mat-tab label="Provident Fund">
+                  <ng-template mat-tab-label>
+                    <mat-icon>account_balance</mat-icon>
+                    <span>Provident Fund</span>
+                  </ng-template>
+                  <div class="row py-3">
+                    <div class="col-12 text-center p-3">
+                        <h5>No PF available.</h5>
+                    </div>
+                  </div>
+                </mat-tab>
+                
+                <mat-tab label="Official Letter">
+                  <ng-template mat-tab-label>
+                    <mat-icon>mail</mat-icon>
+                    <span>Official Letter</span>
+                  </ng-template>
+                  <div class="row py-3">
+                    <div class="col-12 text-center p-3">
+                        <h5>No Offical Letter available.</h5>
+                    </div>
+                  </div>
+                </mat-tab>
+              </mat-tab-group>                          
+        </div>
+    </div>
+</div>

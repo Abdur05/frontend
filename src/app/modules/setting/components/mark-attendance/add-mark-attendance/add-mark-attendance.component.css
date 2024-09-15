@@ -1,0 +1,34 @@
+.zzz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.aaa {
+  display: flex;
+  align-items: center;
+}
+
+.iconn {
+  margin-right: 5px;
+}
+
+.red-button {
+  color: red !important;
+}
+
+
+.disable {
+  background-color: #f6f6f6;
+  color: black;
+}
+
+.back {
+  background-color: red;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  position: relative;
+  right: 6px;
+  top: 5px;
+}

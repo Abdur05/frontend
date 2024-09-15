@@ -1,0 +1,242 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/recruitment/job-list">arrow_back</mat-icon>Job</h2>
+    <form [formGroup]="jobFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <div class="row">
+                            <div class="col-12 py-2">
+                                <label for="">Job Title<sup>*</sup></label>
+                                <input type="text" formControlName="jobName" class="form-control"
+                                    placeholder="Enter Job Title">
+                                <div
+                                    *ngIf="jobFormGroup.controls['jobName'].touched && jobFormGroup.controls['jobName'].dirty && jobFormGroup.controls['jobName'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Job is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && jobFormGroup.controls['jobName'].hasError('required')">
+                                    <p class="error-message">Job is mandatory</p>
+                                </div>
+                            </div>
+                            <div class="col-12 py-2">
+                                <label for="">Job Type<sup>*</sup> </label>
+                                <select class="form-select" aria-label="Default select example"
+                                    formControlName="jobTypeId">
+                                    <option [selected]="jobFormGroup.value.jobTypeId === ''" value="" hidden>
+                                        Select
+                                        Job Type</option>
+                                    <option *ngFor="let list of JobTypeDetail" [value]="list._id">{{list.jobType}}
+                                    </option>
+                                </select>
+                                <div
+                                    *ngIf="jobFormGroup.controls['jobTypeId'].touched && jobFormGroup.controls['jobTypeId'].dirty && jobFormGroup.controls['jobTypeId'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Job Type is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && jobFormGroup.controls['jobTypeId'].hasError('required')">
+                                    <p class="error-message">Job Type is mandatory</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Description<sup>*</sup> </label>
+                        <textarea type="text" formControlName="description" class="form-control"
+                            placeholder="Enter Description" rows="5"></textarea>
+                        <div
+                            *ngIf="jobFormGroup.controls['description'].touched && jobFormGroup.controls['description'].dirty && jobFormGroup.controls['description'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Description is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && jobFormGroup.controls['description'].hasError('required')">
+                            <p class="error-message">Description is mandatory</p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Experience <sup>*</sup></label>
+                        <input type="text" formControlName="experience" class="form-control"
+                            placeholder="Enter Experience" />
+                        <div
+                            *ngIf="jobFormGroup.controls['description'].touched && jobFormGroup.controls['description'].dirty && jobFormGroup.controls['description'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Description is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && jobFormGroup.controls['description'].hasError('required')">
+                            <p class="error-message">Description is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Minimum Qualification<sup>*</sup> </label>
+                        <input type="text" formControlName="miniQualification" class="form-control"
+                            placeholder="Enter Minimum Qualification" />
+                        <div
+                            *ngIf="jobFormGroup.controls['miniQualification'].touched && jobFormGroup.controls['miniQualification'].dirty && jobFormGroup.controls['miniQualification'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Minimum Qualification is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && jobFormGroup.controls['miniQualification'].hasError('required')">
+                            <p class="error-message">Minimum Qualification is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Location<sup>*</sup> </label>
+                        <select class="form-select" aria-label="Default select example"
+                            formControlName="location">Select
+                            Location
+                            <option [selected]="jobFormGroup.value.location === ''" value="" hidden>
+                                Select
+                                Location</option>
+                            <option *ngFor="let list of locationDetail" [value]="list.locationName">
+                                {{list.locationName}}
+                            </option>
+                        </select>
+                        <div
+                            *ngIf="jobFormGroup.controls['location'].touched && jobFormGroup.controls['location'].dirty && jobFormGroup.controls['location'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Location is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && jobFormGroup.controls['location'].hasError('required')">
+                            <p class="error-message">Location is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Expiry Date </label>
+                        <input type="date" formControlName="expirayDate" class="form-control"
+                            min="{{ today | date:'yyyy-MM-dd' }}" />
+                        <div
+                            *ngIf="jobFormGroup.controls['expirayDate'].touched && jobFormGroup.controls['expirayDate'].dirty && jobFormGroup.controls['expirayDate'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Expiry Date is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && jobFormGroup.controls['expirayDate'].hasError('required')">
+                            <p class="error-message">Expiry Date is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">No of Open Position<sup>*</sup></label>
+                        <input type="number" min="0" formControlName="no_of_open_positions" class="form-control"
+                            placeholder="Enter No Of Open Position"
+                            onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57" />
+                        <div
+                            *ngIf="jobFormGroup.controls['no_of_open_positions'].touched && jobFormGroup.controls['no_of_open_positions'].dirty && jobFormGroup.controls['no_of_open_positions'].hasError('required') && !isSubmitted">
+                            <p class="error-message">No of Open Position is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && jobFormGroup.controls['no_of_open_positions'].hasError('required')">
+                            <p class="error-message">No of Open Position is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Salary Range<sup>*</sup></label>
+                        <input type="text" formControlName="salaryRange" class="form-control"
+                            placeholder="Enter Salary Range" />
+                        <div
+                            *ngIf="jobFormGroup.controls['salaryRange'].touched && jobFormGroup.controls['salaryRange'].dirty && jobFormGroup.controls['salaryRange'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Salary Range is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && jobFormGroup.controls['salaryRange'].hasError('required')">
+                            <p class="error-message">Salary Range is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Job Status</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="jobStatus" value="open">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Open
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="jobStatus" value="close">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Close
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="jobStatus" value="hold">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Hold
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Visibility Type</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="visibilityType"
+                                    value="public">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Public
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="visibilityType"
+                                    value="private">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    private
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row py-2">
+                        <div class="col-12 d-flex justify-content-end py-2">
+                            <button type="button" class="btn btn-primary" (click)="addSkills()"
+                                style="color: white;background-color: #00acff;">Add Skills</button>
+                        </div>
+                        <div class="col-12">
+                            <table class="table table-hover" *ngIf="requiredSkillsController.length>0">
+                                <thead>
+                                    <tr>
+                                        <th *ngIf="requiredSkillsController.controls.length > 1">Actions</th>
+                                        <th>Skills<sup>*</sup></th>
+                                        <th>TH - Skill Level/Proficiency Level <sup>*</sup></th>
+                                    </tr>
+                                </thead>
+                                <tbody formArrayName="requiredSkills">
+                                    <tr *ngFor="let list of jobFormGroup.get('requiredSkills')['controls']; let i = index;"
+                                        [formGroupName]="i">
+                                        <td *ngIf="requiredSkillsController.controls.length > 1">
+                                            <mat-icon style="cursor:pointer" (click)="removeSkills(i, list.value.skill)">delete</mat-icon>
+                                        </td>
+                                        <td>
+                                            <select class="form-select" aria-label="Default select example"
+                                                formControlName="skill" (change)="handleSkill($event, i)">
+                                                <option [selected]="list.value.skill === ''" value="" hidden>
+                                                    Select
+                                                    Skill</option>
+                                                <option *ngFor="let list of skillDetails" [value]="list._id" [disabled]="list.disable">
+                                                    {{list.skillName}} - {{list.description}}
+                                                </option>
+                                            </select>
+                                            <!-- <input type="text" placeholder="skills" formControlName="skill"
+                                                class="form-control"> -->
+                                            <div
+                                                *ngIf="list.controls['skill'].touched && list.controls['skill'].dirty && list.controls['skill'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">Skill is mandatory</p>
+                                            </div>
+                                            <div *ngIf="isSubmitted && list.controls['skill'].hasError('required')">
+                                                <p class="error-message">Skill is mandatory</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="text" placeholder="TH - Skill Level/Proficiency Level"
+                                                formControlName="ProficiencyLevel" class="form-control">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

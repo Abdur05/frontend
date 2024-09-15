@@ -1,0 +1,78 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/tax-setting-list">arrow_back</mat-icon>Tax Setting</h2>
+    <form [formGroup]="taxSettingFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Fiscal Year <sup>*</sup></label>
+                        <input type="text" formControlName="fiscal_year" class="form-control" readonly>
+                    </div>
+
+                    <div class="row" formGroupName="decleration">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                          <label for="">Tax Declaration Start Date <sup>*</sup></label>
+                          <input type="date" formControlName="start_date" class="form-control" 
+                                 (input)="validateDates('decleration')" (focusout)="validateDates('decleration')">
+                          <div *ngIf="taxSettingFormGroup.get('decleration.start_date')?.errors?.['dateOutOfRange']" class="text-danger">
+                            {{ taxSettingFormGroup.get('decleration.start_date')?.errors?.['dateOutOfRange'] }}
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                          <label for="">Tax Declaration End Date <sup>*</sup></label>
+                          <input type="date" formControlName="end_date" class="form-control" 
+                                 [min]="getMinDate('decleration')" (input)="validateDates('decleration')" (focusout)="validateDates('decleration')">
+                          <div *ngIf="taxSettingFormGroup.get('decleration.end_date')?.errors?.['dateOutOfRange']" class="text-danger">
+                            {{ taxSettingFormGroup.get('decleration.end_date')?.errors?.['dateOutOfRange'] }}
+                          </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row" formGroupName="submission">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                          <label for="">Tax Submission Start Date <sup>*</sup></label>
+                          <input type="date" formControlName="start_date" class="form-control" 
+                                 (input)="validateDates('submission')" (focusout)="validateDates('submission')">
+                          <div *ngIf="taxSettingFormGroup.get('submission.start_date')?.errors?.['dateOutOfRange']" class="text-danger">
+                            {{ taxSettingFormGroup.get('submission.start_date')?.errors?.['dateOutOfRange'] }}
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                          <label for="">Tax Submission End Date <sup>*</sup></label>
+                          <input type="date" formControlName="end_date" class="form-control" 
+                                 [min]="getMinDate('submission')" (input)="validateDates('submission')" (focusout)="validateDates('submission')">
+                          <div *ngIf="taxSettingFormGroup.get('submission.end_date')?.errors?.['dateOutOfRange']" class="text-danger">
+                            {{ taxSettingFormGroup.get('submission.end_date')?.errors?.['dateOutOfRange'] }}
+                          </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row" formGroupName="actual_proof_consideration">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                          <label for="">Proof Submission Amount Consideration Start Date <sup>*</sup></label>
+                          <input type="date" formControlName="start_date" class="form-control" 
+                                 (input)="validateDates('actual_proof_consideration')" (focusout)="validateDates('actual_proof_consideration')">
+                          <div *ngIf="taxSettingFormGroup.get('actual_proof_consideration.start_date')?.errors?.['dateOutOfRange']" class="text-danger">
+                            {{ taxSettingFormGroup.get('actual_proof_consideration.start_date')?.errors?.['dateOutOfRange'] }}
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                          <label for="">Proof Submission Amount Consideration End Date <sup>*</sup></label>
+                          <input type="date" formControlName="end_date" class="form-control" 
+                                 [min]="getMinDate('actual_proof_consideration')" (input)="validateDates('actual_proof_consideration')" (focusout)="validateDates('actual_proof_consideration')">
+                          <div *ngIf="taxSettingFormGroup.get('actual_proof_consideration.end_date')?.errors?.['dateOutOfRange']" class="text-danger">
+                            {{ taxSettingFormGroup.get('actual_proof_consideration.end_date')?.errors?.['dateOutOfRange'] }}
+                          </div>
+                        </div>
+                    </div> 
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

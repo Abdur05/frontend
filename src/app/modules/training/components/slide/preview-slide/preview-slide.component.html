@@ -1,0 +1,50 @@
+<div class="container-fluid">
+    <div class="row" style="position: relative;">
+        <div class="col-12 py-2 d-flex justify-content-end">
+            <mat-icon (click)="close()">close</mat-icon>
+        </div>
+        <div class="col-12 py-2">
+            <div class="row" *ngIf="previewSlide.content[0].type === 'Text'">
+                <div class="col-12 py-2 d-flex justify-content-center">
+                    <strong class="text-center">{{previewSlide.title}}</strong>
+                </div>
+                <div class="col-12 py-2">
+                    <p [innerHTML]="previewSlide.content[0].value"></p>
+                </div>
+            </div>
+            <div class="row" *ngIf="previewSlide.content[0].type === 'PDF / Image'">
+                <div class="col-12 py-2 d-flex justify-content-center">
+                    <strong class="text-center">{{previewSlide.title}}</strong>
+                </div>
+                <div class="col-12 py-2">
+                    <iframe style="width: 850px; height: 500px;" [src]="safeUrl"></iframe>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="previewSlide.content[0].type === 'YouTube Url'">
+                <div class="col-12 py-2 d-flex justify-content-center">
+                    <strong class="text-center">{{previewSlide.title}}</strong>
+                </div>
+                <div class="col-12 py-2 d-flex justify-content-center">
+                    <iframe style="width: 850px; height: 500px;" [src]="safeUrl"></iframe>
+
+                    <!-- <a [href]="previewSlide.content[0].value" target="_blank">YouTube URL</a> -->
+                </div>
+            </div>
+
+            <div class="row" *ngIf="previewSlide.content[0].type === 'External Url'">
+                <div class="col-12 py-2 d-flex justify-content-center">
+                    <strong class="text-center">{{previewSlide.title}}</strong>
+                </div>
+                <div class="col-12 py-2 d-flex justify-content-center">
+                    <iframe style="width: 850px; height: 500px;" [src]="safeUrl"></iframe>
+                    <!-- <a  [href]="previewSlide.content[0].value" target="_blank">External URL</a> -->
+                </div>
+            </div>
+        </div>
+        <div class="col-12 py-2 d-flex justify-content-end" >
+            <button type="button" class="btn btn-danger" (click)="close()">Close</button>
+        </div>
+
+    </div>
+</div>

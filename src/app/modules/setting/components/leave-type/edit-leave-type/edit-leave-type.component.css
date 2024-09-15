@@ -1,0 +1,20 @@
+.back {
+    background-color: red;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    position: relative;
+    right: 6px;
+    top: 5px;
+}
+
+.encha {
+    margin-left: 27px;
+}
+
+.carry {
+    margin-left: 13px;
+}
+.tick{
+    margin-left: 50px;
+}

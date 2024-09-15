@@ -1,0 +1,17 @@
+.back {
+    background-color: red;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    position: relative;
+    right: 6px;
+    top: 5px;
+}
+
+.upload_text {
+    cursor: pointer;
+    background: #00acff;
+    padding: 5px;
+    color: white;
+    border-radius: 7px;
+}

@@ -1,0 +1,764 @@
+<div class="container-fluid py-3">
+    <form [formGroup]="skillFormGroup">
+        <div class="row">
+            <div class="col-10 py-2 ">
+                <h2>My Profile
+                </h2>
+            </div>
+            <div class="col-2 d-flex justify-content-end">
+                <mat-icon mat-dialog-close (click)="close()">close</mat-icon>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="row ">
+                    <div class="col-12 py-2">
+                        <label for="" class="">Employee Id </label><br>
+                        <span>{{skillFormGroup.value.employeeId ? skillFormGroup.value.employeeId : '-'}}</span>
+                    </div>
+
+                    <div class="col-12 py-2">
+                        <label for="">First Name</label><br>
+                        <span>{{skillFormGroup.value.firstName ? skillFormGroup.value.firstName : '-'}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-12 py-2">
+                        <section class="file-border">
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-center py-1" style="position: relative;">
+                                    <img *ngIf="!isImageShow" class="img-ava"
+                                        [src]="imageSrc?imageSrc:'/assets/logs/profile.png'">
+                                    <img *ngIf="isImageShow" class="img-ava" [src]="filePath">
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="" class="">Middle Name </label><br>
+                <span>{{skillFormGroup.value.middleName ? skillFormGroup.value.middleName :
+                    '-'}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="example">Last Name </label><br>
+                <span>{{skillFormGroup.value.lastName ? skillFormGroup.value.lastName : '-'}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Gender</label><br>
+                <span>{{skillFormGroup.value.gender ? skillFormGroup.value.gender : '-'}}</span>
+
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="" class="">DOB</label><br>
+                <span>{{skillFormGroup.value.dob ? skillFormGroup.value.dob : '-'}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for=""> Date of Joining </label><br>
+                <span>{{skillFormGroup.value.dateOfJoining ? skillFormGroup.value.dateOfJoining : '-'}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for=""> Marital Status</label><br>
+                <span>{{skillFormGroup.value.martialStatus ? skillFormGroup.value.martialStatus : '-'}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Blood Group</label><br>
+                <span>{{skillFormGroup.value.bloodGroup ? skillFormGroup.value.bloodGroup : '-'}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for=""> Mobile</label><br>
+                <span>{{skillFormGroup.value.mobile ? skillFormGroup.value.mobile : '-'}}</span>
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Mail Id</label><br>
+                <span>{{skillFormGroup.value.mailId ? skillFormGroup.value.mailId : '-'}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+
+                <label for="">Alternate Mail Id</label><br>
+                <span>{{skillFormGroup.value.alternatemailId ? skillFormGroup.value.alternatemailId : '-'}}</span>
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Designation</label><br>
+                <span>{{skillFormGroup.value.designation ?
+                    skillFormGroup.value.designation : '-'}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Department</label><br>
+                <span>{{skillFormGroup.value.department ? skillFormGroup.value.department
+                    : '-'}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Reporting Manager</label><br>
+                <span>{{skillFormGroup.value.reportingManager ? skillFormGroup.value.reportingManager : '-'}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Role</label><br>
+                <span>{{skillFormGroup.value.role ? skillFormGroup.value.role : '-'}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Location</label><br>
+                <span>{{skillFormGroup.value.locationId.locationName ? skillFormGroup.value.locationId.locationName :
+                    '-'}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Default Shift</label><br>
+                <span>{{skillFormGroup.value.defaultShift ? skillFormGroup.value.defaultShift : '-'}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Employee Type</label><br>
+                <span>{{skillFormGroup.value.employeeTypeId ? skillFormGroup.value.employeeTypeId : '-'}}</span>
+            </div>
+        </div>
+        <div class="row  mt-2">
+            <div class="col-12 ">
+                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+                    <div class="row">
+                        <div class="col-12">
+                            <mat-tab label="Address">
+                                <div class="row" formGroupName="address">
+                                    <div class="col-6">
+                                        <fieldset class="border p-2">
+                                            <legend class="float-none w-auto fs-5">Present Address</legend>
+                                            <div class="row" formGroupName="presentAddress">
+                                                <div class="col-12">
+                                                    <label for="presentAddress">Address</label><br>
+                                                    <span>{{skillFormGroup.value.address.presentAddress.address?
+                                                        skillFormGroup.value.address.presentAddress.address :
+                                                        '-'}}</span>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label for="">Country</label><br>
+                                                    <span>{{skillFormGroup.value.address.presentAddress.country?
+                                                        skillFormGroup.value.address.presentAddress.country :
+                                                        '-'}}</span>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label for="">State</label><br>
+                                                    <span>{{skillFormGroup.value.address.presentAddress.state?
+                                                        skillFormGroup.value.address.presentAddress.state : '-'}}</span>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label for="">City</label><br>
+                                                    <span>{{skillFormGroup.value.address.presentAddress.city?
+                                                        skillFormGroup.value.address.presentAddress.city : '-'}}</span>
+                                                </div>
+                                                <div class="col-12 ">
+                                                    <label for="">PIN Code </label><br>
+                                                    <span>{{skillFormGroup.value.address.presentAddress.pinCode?
+                                                        skillFormGroup.value.address.presentAddress.pinCode :
+                                                        '-'}}</span>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-6">
+                                        <fieldset class="border p-2">
+                                            <legend class="float-none w-auto fs-5">Permanent Address</legend>
+                                            <div class="row">
+                                            </div>
+                                            <div class="row" formGroupName="permanentAddress">
+                                                <div class="col-12">
+                                                    <label for="">Address</label><br>
+                                                    <span>{{skillFormGroup.value.address.permanentAddress.address?
+                                                        skillFormGroup.value.address.permanentAddress.address :
+                                                        '-'}}</span>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label for="">Country</label><br>
+                                                    <span>{{skillFormGroup.value.address.permanentAddress.country?
+                                                        skillFormGroup.value.address.permanentAddress.country :
+                                                        '-'}}</span>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label for="">State</label><br>
+                                                    <span>{{skillFormGroup.value.address.permanentAddress.state?
+                                                        skillFormGroup.value.address.permanentAddress.state :
+                                                        '-'}}</span>
+
+                                                </div>
+                                                <div class="col-12">
+                                                    <label for="">City</label><br>
+                                                    <span>{{skillFormGroup.value.address.permanentAddress.city?
+                                                        skillFormGroup.value.address.permanentAddress.city :
+                                                        '-'}}</span>
+                                                </div>
+                                                <div class="col-12 ">
+                                                    <label for="">PIN Code </label><br>
+                                                    <span>{{skillFormGroup.value.address.permanentAddress.pinCode?
+                                                        skillFormGroup.value.address.permanentAddress.pinCode :
+                                                        '-'}}</span>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </mat-tab>
+                            <mat-tab label="Documents">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Document Type</th>
+                                            <th>Document Number</th>
+                                            <th>Upload</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody formArrayName="kycList">
+                                        <tr *ngFor="let medical of skillFormGroup.get('kycList')['controls']; let i = index;"
+                                            [formGroupName]="i">
+
+                                            <td>
+                                                <span>{{medical.value.documentType ?
+                                                    medical.value.documentType : '-'}}</span>
+
+                                            </td>
+                                            <td>
+                                                <span>{{medical.value.documentNumber ?
+                                                    medical.value.documentNumber : '-'}}</span>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    {{medical.value.uploadFile ?
+                                                    medical.value.uploadFile :'-'
+                                                    }}</span>
+                                                <mat-icon *ngIf="medical.value.uploadFile"
+                                                    (click)="openDialog(medical.value.uploadFile,i, 'img')">visibility</mat-icon>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </mat-tab>
+                            <mat-tab label="Education">
+
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Institute Name</th>
+                                            <th>University</th>
+                                            <th>Start Date </th>
+                                            <th>End Date </th>
+                                            <th>Student Id/Reg. No</th>
+                                            <th>Program Type</th>
+                                            <th>% marks/ CGPA</th>
+                                            <th>Attach Certificate</th>
+
+                                        </tr>
+                                    </thead>
+                                    <ng-container formGroupName="documents">
+                                        <tbody formArrayName="education">
+                                            <tr *ngFor="let list of qualificationDetail.controls; let i = index;"
+                                                [formGroupName]="i">
+
+                                                <td>
+                                                    <span>{{list.value.instituteName ?
+                                                        list.value.instituteName : '-'}}</span>
+                                                </td>
+                                                <td>
+                                                    <span>{{list.value.univercity ?
+                                                        list.value.univercity : '-'}}</span>
+                                                </td>
+                                                <td>
+                                                    <span>{{list.value.education_start_date ?
+                                                        list.value.education_start_date : '-'}}</span>
+                                                </td>
+                                                <td>
+                                                    <span>{{list.value.education_end_date ?
+                                                        list.value.education_end_date : '-'}}</span>
+                                                </td>
+                                                <td>
+                                                    <span>{{list.value.education_student_id ?
+                                                        list.value.education_student_id : '-'}}</span>
+                                                </td>
+                                                <td>
+                                                    <span>{{list.value.education_program_type ?
+                                                        list.value.education_program_type : '-'}}</span>
+                                                </td>
+                                                <td>
+                                                    <span>{{list.value.education_marks_cgpa ?
+                                                        list.value.education_marks_cgpa : '-'}}</span>
+                                                </td>
+                                                <td>
+                                                    <span *ngIf="!list.value.attachCertificate">-</span>
+                                                    <mat-icon *ngIf="list.value.attachCertificate"
+                                                        (click)="openDialog(list.value.attachCertificate,i, 'education')">visibility</mat-icon>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </ng-container>
+                                </table>
+                            </mat-tab>
+                            <mat-tab label="Medical">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Health Question</th>
+                                            <th>Yes</th>
+                                            <th>No</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody formArrayName="medicalList">
+                                        <tr *ngFor="let medical of skillFormGroup.get('medicalList')['controls']; let i = index;"
+                                            [formGroupName]="i">
+
+                                            <td>
+                                                <span>{{medical.value.healthQuestion ?
+                                                    medical.value.healthQuestion : '-'}}</span>
+
+
+                                            </td>
+                                            <td>
+                                                <span>{{medical.value.yesCheck ?
+                                                    medical.value.yesCheck : '-'}}</span>
+
+                                            </td>
+                                            <td>
+                                                <span>{{medical.value.yesCheck ?
+                                                    medical.value.yesCheck : '-'}}</span>
+
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </mat-tab>
+                            <mat-tab label="Work Experience">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Company Name</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Reprting Manager</th>
+                                            <th>Reprting Manager Designation</th>
+                                            <th>Employee Id</th>
+                                            <th>Reason For Leaving</th>
+                                            <th>Experience/Releiving Certificate </th>
+                                            <th>Hike Letter</th>
+                                            <th>Pay Slip File </th>
+                                        </tr>
+                                    </thead>
+                                    <ng-container formGroupName="documents">
+                                        <tbody formArrayName="company">
+                                            <tr *ngFor="let list of workExperienceDetailArray.controls; let i = index;"
+                                                [formGroupName]="i">
+                                                <td>
+                                                    <span>{{list.value.companyName ?
+                                                        list.value.companyName : '-'}}</span>
+                                                </td>
+                                                <td>
+                                                    <span>{{list.value.company_start_date ?
+                                                        list.value.company_start_date : '-'}}</span>
+                                                </td>
+                                                <td>
+                                                    <span>{{list.value.company_end_date ?
+                                                        list.value.company_end_date : '-'}}</span>
+                                                </td>
+                                                <td>
+                                                    <span>{{list.value.company_reporting_manager ?
+                                                        list.value.company_reporting_manager : '-'}}</span>
+                                                </td>
+                                                <td>
+                                                    <span>{{list.value.company_reporting_manager_designation ?
+                                                        list.value.company_reporting_manager_designation : '-'}}</span>
+                                                </td>
+                                                <td>
+                                                    <span>{{list.value.company_employee_id ?
+                                                        list.value.company_employee_id : '-'}}</span>
+                                                </td>
+                                                <td>
+                                                    <span>{{list.value.company_reason_for_leaving ?
+                                                        list.value.company_reason_for_leaving : '-'}}</span>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex d-grid gap-2">
+                                                        <span *ngIf="!list.value.attachCertificate">-</span>
+
+                                                        <mat-icon *ngIf="list.value.experienceLetterFilePath"
+                                                            (click)="openDialog(list.value.experienceLetterFilePath,i, 'education')">visibility</mat-icon>
+                                                    </div>
+
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex d-grid gap-2">
+                                                        <span *ngIf="!list.value.hikeLetterFilePath">-</span>
+
+                                                        <mat-icon *ngIf="list.value.hikeLetterFilePath"
+                                                            (click)="openDialog(list.value.hikeLetterFilePath,i, 'education')">visibility</mat-icon>
+                                                    </div>
+
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex d-grid gap-2">
+                                                        <span *ngIf="!list.value.paySlipFilePath">-</span>
+
+                                                        <mat-icon *ngIf="list.value.paySlipFilePath"
+                                                            (click)="openDialog(list.value.paySlipFilePath,i, 'education')">visibility</mat-icon>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </ng-container>
+                                </table>
+                            </mat-tab>
+                            <mat-tab label="Dependent Detail">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Full Name</th>
+                                            <th>Address</th>
+                                            <th>Email</th>
+                                            <th>Mobile</th>
+                                            <th>Relationship</th>
+                                            <th>Occupation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody formArrayName="dependentList">
+                                        <tr *ngFor="let list of skillFormGroup.get('dependentList')['controls']; let i = index;"
+                                            [formGroupName]="i">
+                                            <td>
+                                                <span>{{list.value.fullName ?
+                                                    list.value.fullName : '-'}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{list.value.newAddress ?
+                                                    list.value.newAddress : '-'}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{list.value.emailIdNew ?
+                                                    list.value.emailIdNew : '-'}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{list.value.mobilePhone ?
+                                                    list.value.mobilePhone : '-'}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{list.value.relationShip ?
+                                                    list.value.relationShip : '-'}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{list.value.occupation ?
+                                                    list.value.occupation : '-'}}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </mat-tab>
+                            <mat-tab label="Salary">
+                                <!-- <div class="col-12 d-flex justify-content-end py-2">
+                            <button type="button" class="btn btn-primary" (click)="addworkExperience()"
+                                style="color: white;background-color: #00acff;">Add Salary</button>
+                        </div> -->
+
+
+                                <div class="row">
+                                    <div class="col-12 mx-0">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="4">Hatchlong Technologies Private Limited</th>
+                                                </tr>
+                                            </thead>
+
+                                            <thead>
+                                                <tr>
+                                                    <th style="background: white !important;" colspan="4"
+                                                        class="text-center">Salary Template</th>
+                                                </tr>
+                                            </thead>
+                                            <thead>
+                                                <tr>
+                                                    <th>Employee No.</th>
+                                                    <th>
+                                                        <input type="text" class="form-control" readonly
+                                                            placeholder="Enter Employee No"
+                                                            formControlName="employeeId">
+                                                    </th>
+
+                                                    <th>Name</th>
+                                                    <th>
+                                                        <input type="text" class="form-control" readonly
+                                                            placeholder="Enter Name" formControlName="firstName">
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Bank {{skillFormGroup.value.bankDetail.bankName}}</th>
+                                                    <th formGroupName="bankDetail">
+                                                        <input type="text" class="form-control" readonly
+                                                            placeholder="Enter Bank"
+                                                            [value]="skillFormGroup.value.bankDetail.bankName">
+                                                    </th>
+
+                                                    <th>Bank A/c No</th>
+                                                    <th formGroupName="bankDetail">
+                                                        <input type="text" class="form-control" readonly
+                                                            placeholder="Enter Bank A/c No"
+                                                            [value]="skillFormGroup.value.bankDetail.accountNo">
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th>DOJ</th>
+                                                    <th>
+                                                        <input type="text" class="form-control"
+                                                            formControlName="dateOfJoining" readonly
+                                                            placeholder="Enter DOJ">
+                                                    </th>
+
+                                                    <th>LOP Days</th>
+                                                    <th>
+                                                        <input type="text" class="form-control" readonly
+                                                            placeholder="Enter LOP Days ">
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th>STD Days</th>
+                                                    <th>
+                                                        <input type="text" class="form-control" readonly
+                                                            placeholder="Enter STD Days ">
+                                                    </th>
+
+                                                    <th>Worked Days</th>
+                                                    <th>
+                                                        <input type="text" class="form-control" readonly
+                                                            placeholder="Enter Worked Days ">
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Location</th>
+                                                    <th>
+                                                        <input type="text" class="form-control"
+                                                            formControlName="locationId" readonly
+                                                            placeholder="Enter Location">
+                                                    </th>
+
+                                                    <th>Department</th>
+                                                    <th>
+                                                        <input type="text" class="form-control"
+                                                            formControlName="department" readonly
+                                                            placeholder="Enter Department">
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Designation</th>
+                                                    <th colspan="3">
+                                                        <input type="text" class="form-control"
+                                                            formControlName="designation" readonly
+                                                            placeholder="Designation">
+                                                    </th>
+
+
+                                                </tr>
+
+
+                                            </thead>
+                                        </table>
+
+                                        <table class="table table-bordered">
+
+                                            <thead>
+
+                                                <tr>
+                                                    <th>Earnings</th>
+                                                    <th class="text-end">
+                                                        Amount
+                                                    </th>
+                                                    <!-- <th>Dedications</th>
+                                            <th class="text-end">
+                                                Amount
+                                            </th> -->
+                                                </tr>
+
+                                                <tr>
+                                                    <th colspan="2" formArrayName="salary_details">
+                                                        <ng-container
+                                                            *ngFor="let list of skillFormGroup.get('salary_details')['controls'];let i=index">
+                                                            <div class="d-flex justify-content-between py-2"
+                                                                [formGroupName]="i">
+                                                                <div class="col-12">
+                                                                    <div class="row">
+
+                                                                        <ng-container
+                                                                            *ngFor="let key of (list.value | keyvalue)">
+                                                                            <div class="col-6"
+                                                                                style="position: relative;">
+                                                                                <span>{{key.key}}</span>
+                                                                            </div>
+                                                                            <div
+                                                                                class="col-6 d-flex justify-content-end">
+                                                                                <span>{{key.value }}</span>
+
+                                                                            </div>
+                                                                        </ng-container>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </div>
+                                                        </ng-container>
+                                                    </th>
+
+
+                                                    <!-- <th colspan="2" formArrayName="deductionList">
+                                                <ng-container
+                                                    *ngFor="let deduction of departmentFormGroup.get('deductionList')['controls'];let j=index">
+                                                    <div class="d-flex justify-content-between py-2"
+                                                        [formGroupName]="j">
+                                                        <div class="" style="position: relative;">
+                                                            <input type="text" class="form-control"
+                                                                formControlName="salaryComponent1" readonly>
+                                                        </div>
+                                                        <div>
+                                                            <input
+                                                                onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                                                class="form-control" formControlName="annualAmount1"
+                                                                (focusout)="handleComponentDAmount($event)">
+
+
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+
+
+                                            </th> -->
+
+
+                                                </tr>
+
+                                                <tr>
+                                                    <th>
+                                                        Gross Earning
+                                                    </th>
+                                                    <th>
+                                                        <span style="width: 100%; display: block; text-align: end;">{{skillFormGroup.value.totalEarning | currency: 'INR':'symbol'}}</span>
+                                                    </th>
+
+                                                    <!-- <th>
+                                                Gross Deduction
+                                            </th>
+                                            <th>
+                                                <span>{{departmentFormGroup.value.deductionTotalAmount}}</span>
+                                            </th> -->
+
+                                                </tr>
+
+                                                <!-- <tr>
+                                            <th colspan="1" class="text-end">
+                                                Net Pay
+                                            </th>
+                                            <th colspan="2">
+                                                {{departmentFormGroup.value.totalSalaryAmount}}
+                                            </th>
+                                        </tr> -->
+
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                            </mat-tab>
+                            <mat-tab label="Bank Details">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Bank Name</th>
+                                            <th>Bank Branch</th>
+                                            <th>Bank Account Number</th>
+                                            <th>Account Holder Name</th>
+                                            <th>IFSC Code</th>
+                                            <th>Bank Address</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody formGroupName="bankDetail">
+                                        <tr>
+                                            <td>
+                                                <span>{{skillFormGroup.value.bankDetail.bankName ?
+                                                    skillFormGroup.value.bankDetail.bankName : '-'}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{skillFormGroup.value.bankDetail.branchName ?
+                                                    skillFormGroup.value.bankDetail.branchName : '-'}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{skillFormGroup.value.bankDetail.accountNo ?
+                                                    skillFormGroup.value.bankDetail.accountNo : '-'}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{skillFormGroup.value.bankDetail.accountHolderName ?
+                                                    skillFormGroup.value.bankDetail.accountHolderName : '-'}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{skillFormGroup.value.bankDetail.ifceCode ?
+                                                    skillFormGroup.value.bankDetail.ifceCode : '-'}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{skillFormGroup.value.bankDetail.bankAddress ?
+                                                    skillFormGroup.value.bankDetail.bankAddress : '-'}}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </mat-tab>
+                            <mat-tab label="Asset">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>SN</th>
+                                            <th>Asset Id</th>
+                                            <th>Asset Name</th>
+                                            <th>Asset Type</th>
+                                            <th>Assign Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="assetDetail.length === 0">
+                                        <tr>
+                                            <td colspan="5" style="text-align: center;">No Record Found</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="assetDetail.length !== 0">
+                                        <tr *ngFor="let list of assetDetail; let i = index">
+                                            <td>{{i+1}}</td>
+                                            <td>{{list.assetId}}</td>
+                                            <td>{{list.assetName}}</td>
+                                            <td>{{list.assetType}}</td>
+                                            <td>{{list.allocate_date}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </mat-tab>
+                            <mat-tab label="Leave">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>SN</th>
+                                            <th>Leave Type</th>
+                                            <th>Balance Leave </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="leaveBalanceDetail.length === 0">
+                                        <tr>
+                                            <td colspan="5" style="text-align: center;">No Record Found</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="leaveBalanceDetail.length !== 0">
+                                        <tr *ngFor="let list of leaveBalanceDetail; let i = index">
+                                            <td>{{i+1}}</td>
+                                            <td>{{list.description}}</td>
+                                            <td>{{list.leaveBalance}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </mat-tab>
+                        </div>
+                    </div>
+                </mat-tab-group>
+            </div>
+        </div>
+    </form>
+</div>

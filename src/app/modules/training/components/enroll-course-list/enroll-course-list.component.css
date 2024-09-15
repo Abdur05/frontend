@@ -1,0 +1,9 @@
+
+  
+  .example-card-footer {
+    padding: 16px;
+  }
+
+  ::ng-deep .mdc-evolution-chip__action--presentational {
+    cursor: pointer !important;
+  }

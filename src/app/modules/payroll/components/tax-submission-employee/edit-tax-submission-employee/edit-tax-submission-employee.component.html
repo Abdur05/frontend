@@ -1,0 +1,77 @@
+<!-- <app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav> -->
+<div class="container-fluid ">
+    <!-- <h2><mat-icon class="back" routerLink="/payroll/tax-submission-employee-list">arrow_back</mat-icon> Tax Submission
+    </h2> -->
+
+    <form [formGroup]="taxSubmisiionEmployeeFormGroup">
+        <!-- <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}"> -->
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th *ngIf="taxDeclarationDetail.controls.length>1">Action</th>
+                    <th>Fiscal Year</th>
+                    <th>Component Code</th>
+                    <th>Comments</th>
+                    <th>Declared Amount</th>
+                    <th>Proof Amount</th>
+                    <th>Upload Document</th>
+                </tr>
+            </thead>
+            <tbody formArrayName="components">
+                <tr *ngFor="let detail of taxSubmisiionEmployeeFormGroup.get('components')['controls'];let i=index"
+                    [formGroupName]="i">
+                    <td *ngIf="taxDeclarationDetail.controls.length>1">
+                        <mat-icon (click)="deleteRow(i)">delete</mat-icon>
+                    </td>
+                    <td>
+                        <span>{{detail.value.fiscal_year}}</span>
+                    </td>
+                    <td>
+                        <span>{{detail.value.component_name}}</span>
+                    </td>
+                    <td>
+                        <span>{{detail.value?.review_comments ? detail.value?.review_comments: '-' }}</span>
+                    </td>
+                    <td>
+                        <span>{{detail.value.declared_amount}}</span>
+                    </td>
+                    <td>
+                        <input type="number" formControlName="proof_amount" class="form-control"
+                            placeholder="Enter Proof Amount">
+                        <div
+                            *ngIf="detail.controls['proof_amount'].touched && detail.controls['proof_amount'].dirty && detail.controls['proof_amount'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Proof Amount is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && detail.controls['proof_amount'].hasError('required')">
+                            <p class="error-message">Proof Amount is mandatory</p>
+                        </div>
+                    </td>
+                  
+                    <td>
+                        <div class="d-flex d-grid gap-2">
+                            <mat-icon *ngIf="detail.value.TaxDocuments"
+                                (click)="viewProofDetails(detail.value.TaxDocuments)">visibility</mat-icon>
+                            <!-- <input type="file" formControlName="TaxDocuments" class="form-control"> -->
+                            <span class="upload_text" (click)="uploadFile(inputFile, 'resume')" *ngIf="detail.value.status !== 'Accepted'">
+                                {{detail.value.TaxDocuments?.name ?
+                                detail.value.TaxDocuments?.name :
+                                'Upload'}}</span>
+                            <input type="file" #inputFile class="d-none" (change)="handleUploadFile($event,i)">
+                        </div>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="col-12 d-flex justify-content-end py-2">
+            <button type="button" class="btn btn-primary" [disabled]="isHideSave" (click)="fileUpload()">Save</button>
+        </div>
+        <!-- </div>
+        </div> -->
+
+    </form>
+</div>

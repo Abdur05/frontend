@@ -1,0 +1,113 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/location-list">arrow_back</mat-icon>Location</h2>
+    <div class="row">
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+            <form [formGroup]="locationFormGroup" (ngSubmit)="submitData()">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Location Id <sup>*</sup></label>
+                        <input type="text" formControlName="locationId" class="form-control"
+                            placeholder="Enter Location Id" maxlength="4" readonly>
+                        <div
+                            *ngIf="locationFormGroup.controls['locationId'].touched && locationFormGroup.controls['locationId'].dirty && locationFormGroup.controls['locationId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Location Id is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && locationFormGroup.controls['locationId'].hasError('required')">
+                            <p class="error-message">Location Id is mandatory</p>
+                        </div>
+                        
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Location Name <sup>*</sup></label>
+                        <input type="text" formControlName="locationName" class="form-control"
+                            placeholder="Enter locationName" />
+                        <div
+                            *ngIf="locationFormGroup.controls['locationName'].touched && locationFormGroup.controls['locationName'].dirty && locationFormGroup.controls['locationName'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Location Name is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && locationFormGroup.controls['locationName'].hasError('required')">
+                            <p class="error-message">Location Name is mandatory</p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Country <sup>*</sup></label>
+                        <select class="form-select " aria-label="Default select example" formControlName="countryId"
+                            (change)="selectCountryName($event)">
+                            <option [selected]="locationFormGroup.value.countryId === ''" value="" hidden>Select Country
+                            </option>
+                            <option *ngFor="let list of countryDetials " [value]="list._id">
+                                {{list.countryName}}</option>
+                        </select>
+                        <div
+                            *ngIf="locationFormGroup.controls['countryId'].touched && locationFormGroup.controls['countryId'].dirty && locationFormGroup.controls['countryId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Country Name is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && locationFormGroup.controls['countryId'].hasError('required')">
+                            <p class="error-message">Country Name is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">State/Province <sup>*</sup></label>
+                        <select class="form-select " aria-label="Default select example" formControlName="stateId"
+                            (change)="handleState($event)"
+                            [ngStyle]="{'pointer-events': !locationFormGroup.value.countryId ? 'none' :  'all','background-color': !locationFormGroup.value.countryId ? '#f6f6f6' :  'white'} ">
+                            <option [selected]="locationFormGroup.value.state === ''" value="" hidden>Select
+                                State/Province
+                            </option>
+                            <option *ngFor="let list of stateDetails?.states " [value]="list._id">
+                                {{list.states}}</option>
+
+                        </select>
+                        <div
+                            *ngIf="locationFormGroup.controls['stateId'].touched && locationFormGroup.controls['stateId'].dirty && locationFormGroup.controls['stateId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">State/Province is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && locationFormGroup.controls['stateId'].hasError('required')">
+                            <p class="error-message">State/Province is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">City <sup>*</sup></label>
+                        <input formControlName="city" [readOnly]="!locationFormGroup.value.stateId "
+                            placeholder="Enter City" (input)="isLookValue = false" (focusout)="handleEvent($event);"
+                            (typeaheadOnSelect)="typeaheadOnSelect($event)"
+                            [typeahead]="(citiesDetails?.cities)?.sort()" class="form-control">
+
+                        <!-- <select class="form-select " aria-label="Default select example" formControlName="city"
+                    [ngStyle]="{'pointer-events': !locationFormGroup.value.countryId ? 'none' :  'all'}">
+                    <option [selected]="locationFormGroup.value.city===''" value="" hidden>Select City</option>
+                    <option *ngFor="let list of (citiesDetails?.cities)?.sort()" [value]="list">{{list}}</option>
+                </select> -->
+                        <div
+                            *ngIf="locationFormGroup.controls['city'].touched && locationFormGroup.controls['city'].dirty && locationFormGroup.controls['city'].hasError('required') && !isSubmitted">
+                            <p class="error-message"> City is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && locationFormGroup.controls['city'].hasError('required')">
+                            <p class="error-message"> City is mandatory</p>
+                        </div>
+                        <div *ngIf="locationFormGroup.controls['city'].hasError('customError')">
+                            <p class="error-message"> City is Not in a List</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Pin Code</label>
+                        <input type="number" min="0" maxlength="6" formControlName="pinCode" class="form-control"
+                            placeholder="Enter Pin Code" />
+
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+
+            </form>
+        </div>
+
+
+
+    </div>
+</div>

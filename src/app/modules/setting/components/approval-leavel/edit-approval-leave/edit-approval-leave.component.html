@@ -1,0 +1,113 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/approval-leave">arrow_back</mat-icon>Approve Leave</h2>
+
+    <form [formGroup]="applyLeaveFormData">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Employee Id <sup>*</sup></label>
+
+                        <input class="form-control" formControlName="employeeId" placeholder="Enter Employee Id"
+                            readonly>
+
+                        <div
+                            *ngIf="applyLeaveFormData.controls['employeeId'].touched && applyLeaveFormData.controls['employeeId'].dirty && applyLeaveFormData.controls['employeeId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Employee Id is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && applyLeaveFormData.controls['employeeId'].hasError('required')">
+                            <p class="error-message">Employee Id is mandatory</p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+
+                        <label for="" class="">Leave Type </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="leaveTypeId"
+                            (change)="handleLeaveType($event)" style="pointer-events: none; background-color: #f6f6f6;">
+                            <option [selected]="applyLeaveFormData.value.leaveType === ''" value="" hidden>
+                                Select
+                                Leave Type</option>
+                            <option *ngFor="let list of leaveTypeDetail" [value]="list._id">{{list.leaveType}}</option>
+                        </select>
+                    </div>
+
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Team Email Id </label>
+                        <input type="email" formControlName="emailId" class="form-control" placeholder="Enter Email"
+                            readonly />
+                        <div
+                            *ngIf="applyLeaveFormData.controls['emailId'].touched && applyLeaveFormData.controls['emailId'].dirty && applyLeaveFormData.controls['emailId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Team Mail Id is mandatory</p>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Reason For Leave </label>
+                        <input type="text" formControlName="reasonForLeave" class="form-control"
+                            placeholder="Enter Reason" readonly />
+
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">From Date </label>
+                        <input type="date" formControlName="datefrom" class="form-control" readonly />
+
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">To Date </label>
+                        <input type="date" formControlName="dateTo" class="form-control" readonly />
+
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-12">
+                            <table class="table table-hover" *ngIf="tableRows.length>0">
+                                <thead>
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody formGroupName="tableRows">
+                                    <tr *ngFor="let list of applyLeaveFormData.get('tableRows')['controls']; let i = index;"
+                                        [formGroupName]="i">
+                                        <td><input type="text" class="form-control" formControlName="dayName" readonly>
+                                        </td>
+                                        <td><input type="text" class="form-control" formControlName="date" readonly>
+                                        </td>
+                                        <td>
+                                            <select class="form-select " aria-label="Default select example"
+                                                formControlName="leaveType"
+                                                style="pointer-events: none; background-color: #f6f6f6;">
+                                                <option value="Full Day">Full Day</option>
+                                                <option value="Half Day">Half Day</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-flex d-grid gap-2 justify-content-end py-2">
+                    <div>
+                        <button type="button" class="btn btn-primary" (click)="submitData('A')">Approve</button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-danger" (click)="submitData('R')">Reject</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+
+
+</div>

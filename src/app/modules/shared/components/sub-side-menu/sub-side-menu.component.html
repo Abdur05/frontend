@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-12 py-2">
+        <mat-card style="height: 90vh; overflow-y: scroll; overflow-x: hidden;">
+            <div class="row" *ngFor="let list of isShowScreenMenu">
+                <ng-container *ngFor="let subMenu of list.subMenu">
+                    <ng-container *ngIf="subMenu.subMenuName === screenList">
+                        <!-- [ngClass]="{'d-none' : !subMenuList.visible, 'd-block' : subMenuList.visible }" -->
+                        <div 
+                            (click)="nextScreen(subMenuList.routerLink, subMenuList.screenName)"
+                            class="col-10 offset-1 mt-2 menu"  [ngClass]="{'select-menu' : menuName === subMenuList.screenName, 'd-none' : !subMenuList.visible, 'd-block' : subMenuList.visible  }"
+                            style="background-color: whitesmoke; border-radius: 10px; color:black; cursor: pointer;"
+                            *ngFor="let subMenuList of subMenu.subMenuList">
+                            <p class="mb-0" style="padding: 10px 10px 10px 10px;" [title]="subMenuList.screenId">
+                                {{subMenuList.screenName}}</p>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,1235 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/employee/my-profile-list">arrow_back</mat-icon>My Profile</h2>
+    <div class="row">
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+            <form [formGroup]="departmentFormGroup">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <div class="row">
+                            <div class="col-12 py-2">
+                                <label for="">Employee Id <sup>*</sup></label>
+                                <input type="text" formControlName="employeeId" class="form-control"
+                                    placeholder="Enter Employee Id" maxlength="6" readonly>
+                            </div>
+                            <div class="col-12 py-2">
+                                <label for="">First Name <sup>*</sup></label>
+                                <input type="text" formControlName="firstName" class="form-control"
+                                    placeholder="Enter First Name">
+                                <div
+                                    *ngIf="departmentFormGroup.controls['firstName'].touched && departmentFormGroup.controls['firstName'].dirty && departmentFormGroup.controls['firstName'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">First Name is mandatory</p>
+                                </div>
+                                <div
+                                    *ngIf="isSubmitted && departmentFormGroup.controls['firstName'].hasError('required')">
+                                    <p class="error-message">First Name is mandatory</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <div class="row">
+                            <div class="col-12 py-2">
+                                <section class="file-border">
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-center py-1"
+                                            style="position: relative;">
+                                            <img *ngIf="!isImageShow" class="img-ava"
+                                                [src]="imageSrc?imageSrc:'/assets/logs/profile.png'"><sup
+                                                class="delete_img" (click)="deletePerview()"
+                                                *ngIf="imageSrc && !filePath"><mat-icon>delete</mat-icon></sup>
+                                            <img *ngIf="isImageShow" class="img-ava" [src]="filePath"><sup
+                                                class="delete_img" (click)="deleteImage()"
+                                                *ngIf="!imageSrc && filePath"><mat-icon
+                                                    style="font-size: 20px;display: flex;align-items: center;justify-content: center;">delete</mat-icon></sup>
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-center py-1">
+                                            <span (click)="uploadFile(inputFile, 'log')" class="upload_text">
+                                                Choose Employee Image</span>
+                                            <input type="file" #inputFile class="d-none"
+                                                (change)="handleUploadFile($event)">
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Middle Name </label>
+                        <input type="text" formControlName="middleName" class="form-control"
+                            placeholder="Enter Middle Name">
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Last Name <sup>*</sup></label>
+                        <input type="text" formControlName="lastName" class="form-control"
+                            placeholder="Enter Last Name">
+                        <div
+                            *ngIf="departmentFormGroup.controls['lastName'].touched && departmentFormGroup.controls['lastName'].dirty && departmentFormGroup.controls['lastName'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Last Name is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && departmentFormGroup.controls['lastName'].hasError('required')">
+                            <p class="error-message">Last Name is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Gender <sup>*</sup></label>
+                        <select class="form-select " aria-label="Default select example" formControlName="gender">
+                            <option [selected]="departmentFormGroup.value.gender === ''" value="">
+                                Select
+                                Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <div
+                            *ngIf="departmentFormGroup.controls['gender'].touched && departmentFormGroup.controls['gender'].dirty && departmentFormGroup.controls['gender'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Gender is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && departmentFormGroup.controls['gender'].hasError('required')">
+                            <p class="error-message">Gender is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">DOB <sup>*</sup></label>
+                        <input type="date" formControlName="dob" class="form-control" (blur)="validateDOB()"
+                            max="{{ today | date:'yyyy-MM-dd' }}" />
+                        <div
+                            *ngIf="departmentFormGroup.controls['dob'].touched && departmentFormGroup.controls['dob'].dirty && departmentFormGroup.controls['dob'].hasError('required') && !isSubmitted">
+                            <p class="error-message">DOB is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && departmentFormGroup.controls['dob'].hasError('required')">
+                            <p class="error-message">DOB is mandatory</p>
+                        </div>
+                        <div *ngIf="departmentFormGroup.get('dob').hasError('underAge')">
+                            <p class="error-message"> Age must be minimum of 18 years</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Date Of Joining </label>
+                        <input type="date" formControlName="dateOfJoining" class="form-control"
+                            max="{{ today | date:'yyyy-MM-dd' }}" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Marital Status </label>
+                        <select class="form-select " aria-label="Default select example"
+                            formControlName="martialStatus">
+                            <option [selected]="departmentFormGroup.value.martialStatus === ''" value="">
+                                Select
+                                Marital Status</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Divorce">Divorce</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Blood Group </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="bloodGroup">
+                            <option [selected]="departmentFormGroup.value.bloodGroup === ''" value="" hidden>
+                                Select
+                                Blood Group</option>
+                            <option value="A+">A+</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Mobile <sup>*</sup></label>
+                        <input maxlength="10" min="0" class="form-control " placeholder="Enter Mobile Number"
+                            formControlName="mobile"
+                            onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57">
+                        <div
+                            *ngIf="departmentFormGroup.controls['mobile'].touched && departmentFormGroup.controls['mobile'].dirty && departmentFormGroup.controls['mobile'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Mobile Number is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && departmentFormGroup.controls['mobile'].hasError('required')">
+                            <p class="error-message">Mobile Number is mandatory</p>
+                        </div>
+                        <div *ngIf="departmentFormGroup.controls['mobile'].hasError('minlength')">
+                            <p class="error-message">Mobile Number is not Valid</p>
+                        </div>
+                        <div *ngIf="departmentFormGroup.controls['mobile'].hasError('maxlength')">
+                            <p class="error-message">Mobile Number is not Valid</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Mail Id <sup>*</sup></label>
+                        <input type="email" class="form-control " placeholder="Enter Mail Id" formControlName="mailId">
+                        <div
+                            *ngIf="departmentFormGroup.controls['mailId'].touched && departmentFormGroup.controls['mailId'].dirty && departmentFormGroup.controls['mailId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Mail Id is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && departmentFormGroup.controls['mailId'].hasError('required')">
+                            <p class="error-message">Mail Id is mandatory</p>
+                        </div>
+                        <div *ngIf="departmentFormGroup.get('mailId').hasError('pattern')">
+                            <p class="error-message">Please enter a valid email address.</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Alternate Mail Id </label>
+                        <input type="email" class="form-control " placeholder="Enter Alternate Mail Id"
+                            formControlName="alternatemailId">
+                        <div *ngIf="departmentFormGroup.get('alternatemailId').hasError('pattern')">
+                            <p class="error-message">Please enter a valid email address.</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Department <sup>*</sup></label>
+                        <select class="form-select " aria-label="Default select example" formControlName="department"
+                            (change)="handleDeperament($event)">
+                            <option [selected]="departmentFormGroup.value.department === ''" value="">
+                                Select
+                                Department</option>
+                            <option *ngFor="let list of departmentDetail" [value]="list._id">{{list.departmentName}}
+                            </option>
+                        </select>
+                        <div
+                            *ngIf="departmentFormGroup.controls['department'].touched && departmentFormGroup.controls['department'].dirty && departmentFormGroup.controls['department'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Department is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && departmentFormGroup.controls['department'].hasError('required')">
+                            <p class="error-message">Department is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Designation <sup>*</sup></label>
+                        <select class="form-select " aria-label="Default select example" formControlName="designation"
+                            (change)="handleDesignation($event)">
+                            <option [selected]="departmentFormGroup.value.designation === ''" value="">
+                                Select
+                                Designation</option>
+                            <option *ngFor="let list of filterDesignationList" [value]="list._id">
+                                {{list.designationName}}</option>
+                        </select>
+                        <div
+                            *ngIf="departmentFormGroup.controls['designation'].touched && departmentFormGroup.controls['designation'].dirty && departmentFormGroup.controls['designation'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Designation is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && departmentFormGroup.controls['designation'].hasError('required')">
+                            <p class="error-message">Designation is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Reporting Manager </label>
+                        <select class="form-select " aria-label="Default select example"
+                            formControlName="reportingManager">
+                            <option [selected]="departmentFormGroup.value.reportingManager === ''" value="">
+                                Select
+                                Reporting Manager</option>
+                            <option *ngFor="let list of profileDetails" [value]="list.employeeId">
+                                {{list.employeeId}}-{{list.firstName}}&nbsp;{{list.lastName}}</option>
+                        </select>
+                        <div
+                            *ngIf="departmentFormGroup.controls['reportingManager'].touched && departmentFormGroup.controls['reportingManager'].dirty && departmentFormGroup.controls['reportingManager'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Reporting Manager is mandatory</p>
+                        </div>
+                        <div
+                            *ngIf="isSubmitted && departmentFormGroup.controls['reportingManager'].hasError('required')">
+                            <p class="error-message">Reporting Manager is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Role </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="roleId"
+                            (change)="handleRole($event)">
+                            <option [selected]="departmentFormGroup.value.roleId === ''" value="">
+                                Select
+                                Role</option>
+                            <option *ngFor="let list of filterRoleList" [value]="list._id">{{list.roleName}}</option>
+                        </select>
+                        <div
+                            *ngIf="departmentFormGroup.controls['roleId'].touched && departmentFormGroup.controls['roleId'].dirty && departmentFormGroup.controls['roleId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Role is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && departmentFormGroup.controls['roleId'].hasError('required')">
+                            <p class="error-message">Role is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Location </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="locationId">
+                            <option [selected]="departmentFormGroup.value.locationId === ''" value="">
+                                Select
+                                Location</option>
+                            <option *ngFor="let list of locationDetail" [value]="list._id">{{list.locationId}} -
+                                {{list.locationName}}</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Default Shift </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="defaultShift">
+                            <option [selected]="departmentFormGroup.value.defaultShift === ''" value="">
+                                Select
+                                Default Shift</option>
+                            <option *ngFor="let list of shiftDetail" [value]="list._id">{{list.description}}</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Employee Type </label>
+                        <select class="form-select " aria-label="Default select example"
+                            formControlName="employeeTypeId">
+                            <option [selected]="departmentFormGroup.value.employeeTypeId === ''" value="">
+                                Select
+                                Employee Type</option>
+                            <option *ngFor="let list of employeeTypeDetail" [value]="list._id">{{list.employeeType}}
+                            </option>
+                        </select>
+                        <div
+                            *ngIf="departmentFormGroup.controls['employeeTypeId'].touched && departmentFormGroup.controls['employeeTypeId'].dirty && departmentFormGroup.controls['employeeTypeId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Employee Type is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && departmentFormGroup.controls['employeeTypeId'].hasError('required')">
+                            <p class="error-message">Employee Type is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">User Status <sup>*</sup></label>
+                        <select class="form-select " aria-label="Default select example" formControlName="userStatus">
+                            <option [selected]="departmentFormGroup.value.userStatus === 'O'" value="O">Enable
+                            </option>
+                            <option [selected]="departmentFormGroup.value.userStatus === 'C'" value="C">Disable</option>
+                            <option [selected]="departmentFormGroup.value.userStatus === 'L'" value="L">Locked</option>
+                        </select>
+                        <div
+                            *ngIf="departmentFormGroup.controls['userStatus'].touched && departmentFormGroup.controls['userStatus'].dirty && departmentFormGroup.controls['userStatus'].hasError('required') && !isSubmitted">
+                            <p class="error-message">User Status is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && departmentFormGroup.controls['userStatus'].hasError('required')">
+                            <p class="error-message">User Status is mandatory</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid py-2">
+                    <div class="row border">
+                        <div class="col-12">
+                            <mat-tab-group animationDuration="0ms">
+                                <mat-tab label="Address" formGroupName="address">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <fieldset class="border p-2">
+                                                <legend class="float-none w-auto fs-5">Present Address</legend>
+                                                <div class="row" formGroupName="presentAddress">
+                                                    <div class="col-12">
+                                                        <label for="presentAddress">Address</label>
+                                                        <input type="text" id="presentAddress" class="form-control"
+                                                            placeholder="Enter Address" formControlName="address">
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="presentAddress">Country</label>
+                                                        <select class="form-select " aria-label="Default select example"
+                                                            formControlName="countryId"
+                                                            (change)="selectCountryName($event)">
+                                                            <option
+                                                                [selected]="departmentFormGroup.value.address.countryId === ''"
+                                                                value="" hidden>Select Country</option>
+                                                            <option *ngFor="let list of countryDetials "
+                                                                [value]="list._id">
+                                                                {{list.countryName}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="presentAddress">State</label>
+                                                        <select class="form-select " aria-label="Default select example"
+                                                            formControlName="stateId" (change)="handleState($event)">
+                                                            <option
+                                                                [selected]="departmentFormGroup.value.address.state === ''"
+                                                                value="" hidden>Select State/Province</option>
+                                                            <option *ngFor="let list of stateDetails?.states "
+                                                                [value]="list._id">
+                                                                {{list.states}}</option>
+
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="presentAddress">City</label>
+                                                        <input formControlName="city"
+                                                            [readOnly]="!departmentFormGroup.value.address.presentAddress.stateId "
+                                                            placeholder="Enter City" (input)="isLookValue = false"
+                                                            (focusout)="handleEvent($event);"
+                                                            [typeahead]="(citiesDetails?.cities)?.sort()"
+                                                            (typeaheadOnSelect)="typeaheadOnSelect($event)"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div class="col-12 ">
+                                                        <label for="presentAddress">PIN Code </label>
+                                                        <input type="number" class="form-control"
+                                                            placeholder="Enter Pin Code" min="0"
+                                                            formControlName="pinCode" />
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-6">
+                                            <fieldset class="border p-2">
+
+                                                <legend class="float-none w-auto fs-5">Permanent Address</legend>
+                                                <div class="row">
+                                                    <div class="col-12 mb-2">
+                                                        <label>
+                                                            <input type="checkbox"
+                                                                formControlName="sameAsPresentAddress"
+                                                                (change)="updatePermanentAddress()" />
+                                                            Same as Present Address
+                                                        </label>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row" formGroupName="permanentAddress">
+
+                                                    <div class="col-12">
+                                                        <label for="permanentAddress">Address</label>
+                                                        <input type="text" id="permanentAddress" class="form-control"
+                                                            placeholder="Enter Address" formControlName="address">
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="permanentAddress">Country</label>
+                                                        <select class="form-select " aria-label="Default select example"
+                                                            formControlName="countryId"
+                                                            (change)="selectCountryName($event)">
+                                                            <option
+                                                                [selected]="departmentFormGroup.value.address.countryId === ''"
+                                                                value="" hidden>Select Country</option>
+                                                            <option *ngFor="let list of countryDetials "
+                                                                [value]="list._id">
+                                                                {{list.countryName}}</option>
+                                                        </select>
+
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="permanentAddress">State</label>
+                                                        <select class="form-select " aria-label="Default select example"
+                                                            formControlName="stateId" (change)="handleState($event)">
+                                                            <option
+                                                                [selected]="departmentFormGroup.value.address.state === ''"
+                                                                value="" hidden>Select State/Province</option>
+                                                            <option *ngFor="let list of stateDetails?.states "
+                                                                [value]="list._id">
+                                                                {{list.states}}</option>
+
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="permanentAddress">City</label>
+                                                        <input formControlName="city"
+                                                            [readOnly]="!departmentFormGroup.value.address.presentAddress.stateId "
+                                                            placeholder="Enter City" (input)="isLookValue = false"
+                                                            (focusout)="handleEvent($event);"
+                                                            [typeahead]="(citiesDetails?.cities)?.sort()"
+                                                            (typeaheadOnSelect)="typeaheadOnSelect($event)"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div class="col-12 ">
+                                                        <label for="presentAddress">PIN Code </label>
+                                                        <input type="number" formControlName="dob" class="form-control"
+                                                            placeholder="Enter Pin Code" min="0"
+                                                            formControlName="pinCode" />
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Documents">
+                                    <div class="col-12 d-flex justify-content-end py-2">
+                                        <button type="button" class="btn btn-primary" (click)="addDocumentType()"
+                                            style="color: white;background-color: #00acff;">Add Document</button>
+                                    </div>
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th *ngIf="KYCControllers.controls.length > 1">Action</th>
+                                                <th>Document Type</th>
+                                                <th>Document Number</th>
+                                                <th>Upload</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody formArrayName="kycList">
+                                            <tr *ngFor="let medical of departmentFormGroup.get('kycList')['controls']; let i = index;"
+                                                [formGroupName]="i">
+                                                <td *ngIf="KYCControllers.controls.length > 1">
+                                                    <mat-icon style="cursor:pointer"
+                                                        (click)="removeDocumentType(i,medical.value.documentType)">delete</mat-icon>
+                                                </td>
+                                                <td>
+                                                    <select class="form-select " aria-label="Default select example"
+                                                        formControlName="documentType"
+                                                        (change)="handleDocumentType($event)">
+                                                        <option [selected]="medical.value.documentType === ''" value=""
+                                                            hidden>
+                                                            Select Document Type</option>
+                                                        <option *ngFor="let list of documentTypeList"
+                                                            [disabled]="list.disable" [value]="list.description">
+                                                            {{list.description}}</option>
+
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" placeholder="document Number"
+                                                        class="form-control" formControlName="documentNumber">
+                                                </td>
+                                                <td>
+                                                    <span class="upload_text" (click)="uploadFile(inputFile, 'type')">
+                                                        {{medical.value.uploadFile ?
+                                                        medical.value.uploadFile :
+                                                        'Upload&nbsp;' + medical.value.documentType}}</span>
+                                                    <input type="file" #inputFile class="d-none"
+                                                        (change)="handleUploadFile($event, i)">
+                                                    <mat-icon *ngIf="medical.value.uploadFile"
+                                                        (click)="openDialog(medical.value.uploadFile,i, 'kycList')">visibility</mat-icon>
+                                                    <input type="file" #inputFile class="d-none"
+                                                        (change)="handleUploadFile($event)">
+                                                </td>
+                                                <!-- <td>
+                                            <span (click)="uploadFile(inputFile, 'vat_no')" class="upload_text">
+                                                {{medical.value.documentType ?
+                                                medical.value.documentType :
+                                                'Upload &nbsp;'+ medical.value.documentType}}</span><mat-icon
+                                                (click)="openDialog(medical.value.documentType)">visibility</mat-icon>
+                                            <input type="file" #inputFile class="d-none"
+                                                (change)="handleUploadFile($event)">
+                                            <input type="file" #inputFile class="d-none"
+                                                (change)="handleUploadFile($event)">
+                                        </td> -->
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </mat-tab>
+                                <mat-tab label="Education">
+                                    <div class="col-12 d-flex justify-content-end py-2">
+                                        <button type="button" class="btn btn-primary" (click)="addQualification()"
+                                            style="color: white;background-color: #00acff;">Add Education</button>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover" style="width: 1500px;">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th *ngIf="qualificationDetail.controls.length > 1">Actions</th>
+                                                        <!-- <th>Qualification</th> -->
+                                                        <th>Institute Name</th>
+                                                        <th>University</th>
+                                                        <th>Start Date </th>
+                                                        <th>End Date </th>
+                                                        <th>Student Id/Reg. No</th>
+                                                        <th>Program Type</th>
+                                                        <th>% marks/ CGPA</th>
+                                                        <th>Attach Certificate</th>
+                                                    </tr>
+                                                </thead>
+                                                <ng-container formGroupName="documents">
+                                                    <tbody formArrayName="education">
+                                                        <tr *ngFor="let list of qualificationDetail.controls; let i = index;"
+                                                            [formGroupName]="i">
+                                                            <td *ngIf="qualificationDetail.controls.length > 1">
+                                                                <mat-icon style="cursor:pointer"
+                                                                    (click)="deleterow(i)">delete</mat-icon>
+                                                            </td>
+                                                            <!-- <td>
+                                            <select class="form-select " aria-label="Default select example"
+                                                formControlName="qualification">
+                                                <option [selected]="departmentFormGroup.value.qualification === ''"
+                                                    value="" hidden>
+                                                    Select
+                                                    Qualification</option>
+                                                <option value="12">12</option>
+                                                <option value="Diploma">Diploma</option>
+                                                <option value="Graduate">Graduate</option>
+                                            </select>
+                                        </td> -->
+                                                            <td>
+                                                                <input type="text" class="form-control "
+                                                                    placeholder="Enter Institute Name"
+                                                                    formControlName="education">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control "
+                                                                    placeholder="Enter University"
+                                                                    formControlName="univercity">
+                                                            </td>
+                                                            <td>
+                                                                <input type="date" class="form-control "
+                                                                    formControlName="education_start_date">
+                                                            </td>
+                                                            <td>
+                                                                <input type="date" class="form-control "
+                                                                    formControlName="education_end_date"
+                                                                    (blur)="validateDates(departmentFormGroup)">
+                                                                <div
+                                                                    *ngIf="list.value.education_end_date.errors?.invalidEndDate">
+                                                                    <p class="error-message"> End date must be greater
+                                                                        start
+                                                                        date</p>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control "
+                                                                    placeholder="Enter Student ID/Reg. No"
+                                                                    formControlName="education_student_id">
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-select "
+                                                                    aria-label="Default select example"
+                                                                    formControlName="education_program_type">
+                                                                    <option
+                                                                        [selected]="list.value.education_program_type === ''"
+                                                                        value="" hidden>
+                                                                        Select
+                                                                        Program Type</option>
+                                                                    <option value="Part Time">Part Time</option>
+                                                                    <option value="Full Time">Full Time</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control "
+                                                                    placeholder="Enter % marks/CGPA"
+                                                                    formControlName="education_marks_cgpa">
+
+                                                            </td>
+                                                            <td>
+
+                                                                <div class="d-flex d-grid gap-2">
+                                                                    <input type="file" class="form-control" #inputFile
+                                                                        (change)="handleUploadFileDocument($event, i, inputFile,'education', 'attachCertificate')">
+                                                                    <mat-icon *ngIf="list.value.attachCertificate"
+                                                                        (click)="openDialog(list.value.attachCertificate,i, 'education')">visibility</mat-icon>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </ng-container>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Medical">
+                                    <div class="col-12 d-flex justify-content-end py-2">
+                                        <button type="button" class="btn btn-primary" (click)="addMedical()"
+                                            style="color: white;background-color: #00acff;">Add Medical</button>
+                                    </div>
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th *ngIf="medicalDetailArray.controls.length > 1">Actions</th>
+                                                <th>Health Question</th>
+                                                <th>Yes</th>
+                                                <th>No</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody formArrayName="medicalList">
+                                            <tr *ngFor="let medical of departmentFormGroup.get('medicalList')['controls']; let i = index;"
+                                                [formGroupName]="i">
+                                                <td *ngIf="medicalDetailArray.controls.length > 1">
+                                                    <mat-icon style="cursor:pointer"
+                                                        (click)="deleterow1(i)">delete</mat-icon>
+                                                </td>
+                                                <td>
+                                                    <select class="form-select " aria-label="Default select example"
+                                                        formControlName="healthQuestion">
+                                                        <option
+                                                            [selected]="departmentFormGroup.value.healthQuestion === ''"
+                                                            value="" hidden>
+                                                            Select
+                                                            Health Question</option>
+                                                        <option *ngFor="let list of questionDetail"
+                                                            [value]="list.description">
+                                                            {{list.description}}</option>
+                                                    </select>
+
+                                                </td>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="yes"
+                                                            id="flexRadioDefault1" formControlName="yesCheck">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="no"
+                                                            id="flexRadioDefault2" formControlName="yesCheck">
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </mat-tab>
+                                <mat-tab label="Work Experience">
+                                    <div class="col-12 d-flex justify-content-end py-2">
+                                        <button type="button" class="btn btn-primary" (click)="addworkExperience()"
+                                            style="color: white;background-color: #00acff;">Add Work Experience</button>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover" style="width: 2000px;">
+                                                <thead>
+                                                    <tr>
+                                                        <th *ngIf="workExperienceDetailArray.controls.length > 1">
+                                                            Actions</th>
+                                                        <th>Company Name</th>
+                                                        <th>Start Date</th>
+                                                        <th>End Date</th>
+                                                        <th>Reprting Manager</th>
+                                                        <th>Reprting Manager Designation</th>
+                                                        <th>Employee Id</th>
+                                                        <th>Reason For Leaving</th>
+                                                        <th>Experience/Releiving Certificate </th>
+                                                        <th>Hike Letter</th>
+                                                        <th>Pay Slip File </th>
+                                                    </tr>
+                                                </thead>
+                                                <ng-container formGroupName="documents">
+                                                    <tbody formArrayName="company">
+                                                        <tr *ngFor="let exp of workExperienceDetailArray.controls; let i = index;"
+                                                            [formGroupName]="i">
+                                                            <td *ngIf="workExperienceDetailArray.controls.length > 1">
+                                                                <mat-icon style="cursor:pointer"
+                                                                    (click)="deleterow2(i)">delete</mat-icon>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" formControlName="companyName"
+                                                                    class="form-control "
+                                                                    placeholder="Enter Company Name">
+                                                            </td>
+                                                            <td>
+                                                                <input type="date" formControlName="company_start_date"
+                                                                    class="form-control ">
+                                                            </td>
+                                                            <td>
+                                                                <input type="date" class="form-control "
+                                                                    formControlName="company_end_date"
+                                                                    (blur)="validateDates2(departmentFormGroup)">
+                                                                <div
+                                                                    *ngIf="exp.value.company_end_date.errors?.invalidEndDate">
+                                                                    <p class="error-message"> End date must be greater
+                                                                        start
+                                                                        date</p>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text"
+                                                                    formControlName="company_reporting_manager"
+                                                                    class="form-control "
+                                                                    placeholder="Enter Reporting Manager Name">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control"
+                                                                    placeholder="Enter Reporting Manager Designation"
+                                                                    formControlName="company_reporting_manager_designation">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" formControlName="company_employee_id"
+                                                                    class="form-control "
+                                                                    placeholder="Enter Employee Id">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text"
+                                                                    formControlName="company_reason_for_leaving"
+                                                                    class="form-control "
+                                                                    placeholder="Enter Reason For Leaving">
+                                                            </td>
+                                                            <td>
+                                                                <div class="d-flex d-grid gap-2">
+                                                                    <input type="file" class="form-control" #inputExp
+                                                                        (change)="handleUploadFileDocument($event, i, inputExp,'company', 'experienceLetterFilePath')">
+                                                                    <mat-icon *ngIf="exp.value.experienceLetterFilePath"
+                                                                        (click)="openDialog(exp.value.experienceLetterFilePath,i, 'education')">visibility</mat-icon>
+                                                                </div>
+
+                                                            </td>
+                                                            <td>
+                                                                <div class="d-flex d-grid gap-2">
+                                                                    <input type="file" class="form-control" #inputHike
+                                                                        (change)="handleUploadFileDocument($event, i, inputHike,'company', 'hikeLetterFilePath')">
+                                                                    <mat-icon *ngIf="exp.value.hikeLetterFilePath"
+                                                                        (click)="openDialog(exp.value.hikeLetterFilePath,i, 'education')">visibility</mat-icon>
+                                                                </div>
+
+                                                            </td>
+                                                            <td>
+                                                                <div class="d-flex d-grid gap-2">
+                                                                    <input type="file" class="form-control" #inputPay
+                                                                        (change)="handleUploadFileDocument($event, i, inputPay,'company','paySlipFilePath')">
+                                                                    <mat-icon *ngIf="exp.value.paySlipFilePath"
+                                                                        (click)="openDialog(exp.value.paySlipFilePath,i, 'education')">visibility</mat-icon>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </ng-container>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Dependent Detail">
+                                    <div class="col-12 d-flex justify-content-end py-2">
+                                        <button type="button" class="btn btn-primary" (click)="addDependent()"
+                                            style="color: white;background-color: #00acff;">Add Dependent
+                                            Detail</button>
+                                    </div>
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th *ngIf="dependentDetail.controls.length > 1">Actions</th>
+                                                <th>Full Name</th>
+                                                <th>Address</th>
+                                                <th>Email</th>
+                                                <th>Mobile</th>
+                                                <th>Relationship</th>
+                                                <th>Occupation</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody formArrayName="dependentList">
+                                            <tr *ngFor="let list of departmentFormGroup.get('dependentList')['controls']; let i = index;"
+                                                [formGroupName]="i">
+                                                <td *ngIf="dependentDetail.controls.length > 1">
+                                                    <mat-icon style="cursor:pointer"
+                                                        (click)="deleteRow3(i)">delete</mat-icon>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control " formControlName="fullName"
+                                                        placeholder="Enter Full Name">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control "
+                                                        formControlName="newAddress" placeholder="Enter Address">
+                                                </td>
+                                                <td>
+                                                    <input type="email" class="form-control "
+                                                        formControlName="emailIdNew" placeholder="Enter Email">
+                                                </td>
+                                                <td>
+                                                    <input type="number" min="0" formControlName="mobilePhone"
+                                                        class="form-control " placeholder="Enter Mobile" maxlength="10"
+                                                        onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57">
+                                                </td>
+                                                <td>
+                                                    <select class="form-select " aria-label="Default select example"
+                                                        formControlName="relationShip">
+                                                        <option
+                                                            [selected]="departmentFormGroup.value.relationShip === ''"
+                                                            value="" hidden>
+                                                            Select
+                                                            Relationship</option>
+                                                        <option value="Spouse">Spouse</option>
+                                                        <option value="Mother">Mother</option>
+                                                        <option value="Father">Father</option>
+                                                        <option value="Brother">Brother</option>
+                                                        <option value="Sister">Sister</option>
+                                                        <option value="Son">Son</option>
+                                                        <option value="Daughter">Daughter</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select class="form-select " aria-label="Default select example"
+                                                        formControlName="occupation">
+                                                        <option [selected]="departmentFormGroup.value.occupation === ''"
+                                                            value="" hidden>
+                                                            Select
+                                                            Occupation</option>
+                                                        <option value="Service">Service</option>
+                                                        <option value="Business">Business</option>
+                                                        <option value="House wife">House wife</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </mat-tab>
+                                <mat-tab label="Salary">
+                                    <!-- <div class="col-12 d-flex justify-content-end py-2">
+                                <button type="button" class="btn btn-primary" (click)="addworkExperience()"
+                                    style="color: white;background-color: #00acff;">Add Salary</button>
+                            </div> -->
+                                    <!-- <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                                        <label for="">
+                                            Salary Template Id
+                                        </label>
+                                        <select class="form-select " aria-label="Default select example"
+                                            formControlName="templateId" (change)="handleTemplate($event)">
+                                            <option>
+                                                Select
+                                                Salary Template Id</option>
+                                            <option *ngFor="let list of salaryTempDetail" [value]="list._id">
+                                                {{list.templateID}}
+                                            </option>
+                                        </select>
+                                    </div> -->
+
+                                    <div class="row">
+                                        <div class="col-12 mx-0">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="4">Hatchlong Technologies Private Limited </th>
+                                                    </tr>
+                                                </thead>
+
+                                                <thead>
+                                                    <tr>
+                                                        <th style="background: white !important;" colspan="4"
+                                                            class="text-center">Salary Template</th>
+                                                    </tr>
+                                                </thead>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Employee No.</th>
+                                                        <th>
+                                                            <input type="text" class="form-control" readonly
+                                                                placeholder="Enter Employee No"
+                                                                formControlName="employeeId">
+                                                        </th>
+
+                                                        <th>Name</th>
+                                                        <th>
+                                                            <input type="text" class="form-control" readonly
+                                                                placeholder="Enter Name" formControlName="firstName">
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Bank {{departmentFormGroup.value.bankDetail.bankName}}</th>
+                                                        <th formGroupName="bankDetail">
+                                                            <input type="text" class="form-control" readonly
+                                                                placeholder="Enter Bank"
+                                                                [value]="departmentFormGroup.value.bankDetail.bankName">
+                                                        </th>
+
+                                                        <th>Bank A/c No</th>
+                                                        <th formGroupName="bankDetail">
+                                                            <input type="text" class="form-control" readonly
+                                                                placeholder="Enter Bank A/c No"
+                                                                [value]="departmentFormGroup.value.bankDetail.accountNo">
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>DOJ</th>
+                                                        <th>
+                                                            <input type="text" class="form-control"
+                                                                formControlName="dateOfJoining" readonly
+                                                                placeholder="Enter DOJ">
+                                                        </th>
+
+                                                        <th>LOP Days</th>
+                                                        <th>
+                                                            <input type="text" class="form-control" readonly
+                                                                placeholder="Enter LOP Days ">
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>STD Days</th>
+                                                        <th>
+                                                            <input type="text" class="form-control" readonly
+                                                                placeholder="Enter STD Days ">
+                                                        </th>
+
+                                                        <th>Worked Days</th>
+                                                        <th>
+                                                            <input type="text" class="form-control" readonly
+                                                                placeholder="Enter Worked Days ">
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Location</th>
+                                                        <th>
+                                                            <input type="text" class="form-control" readonly
+                                                                placeholder="Enter Location"
+                                                                formControlName="locationName">
+                                                        </th>
+
+                                                        <th>Department</th>
+                                                        <th>
+                                                            <input type="text" class="form-control"
+                                                                formControlName="departmentName" readonly
+                                                                placeholder="Enter Department">
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Designation</th>
+                                                        <th colspan="3">
+                                                            <input type="text" class="form-control"
+                                                                formControlName="designationName" readonly
+                                                                placeholder="Designation">
+                                                        </th>
+
+
+                                                    </tr>
+
+
+                                                </thead>
+                                            </table>
+
+                                            <ng-container *ngIf="resultData?.salary_details?.length === 0">?
+                                                <div class="col-12 d-flex justify-content-end py-2">
+                                                    <button type="button" class="btn btn-primary"
+                                                        (click)="addSalaryDetails()"
+                                                        style="color: white;background-color: #00acff;">Add Salary
+                                                        Component</button>
+                                                </div>
+
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th *ngIf="salary_detailsControllers.controls.length > 1">
+                                                                Actions</th>
+                                                            <th>Salary Component</th>
+                                                            <th>Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody formGroupName="salary_details">
+                                                        <tr *ngFor="let list of departmentFormGroup.get('salary_details')['controls'];let i=index"
+                                                            [formGroupName]="i">
+
+                                                            <td *ngIf="salary_detailsControllers.controls.length > 1">
+                                                                <mat-icon style="cursor:pointer"
+                                                                    (click)="removeSalaryDetails(i, list.value.type)">delete</mat-icon>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-select" formControlName="type"
+                                                                    (change)="handleSalaryType($event)">
+                                                                    <option [selected]="list.value.type === ''" value=""
+                                                                        hidden>
+                                                                        Select
+                                                                        Salary Component</option>
+                                                                    <ng-container *ngFor="let list of salaryDetail">
+                                                                        <option *ngIf="list.componentType === 'Earning'"
+                                                                            [disabled]="list.disable"
+                                                                            [value]="list.componentName">
+                                                                            {{list.componentName}}</option>
+                                                                    </ng-container>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control"
+                                                                    placeholder="Enter Amount" formControlName="value">
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </ng-container>
+                                            <ng-container *ngIf="resultData?.salary_details?.length !== 0">
+                                                <table class="table table-bordered">
+
+                                                    <thead>
+
+                                                        <tr>
+                                                            <th>Earnings</th>
+                                                            <th class="text-end">
+                                                                Amount
+                                                            </th>
+                                                            <!-- <th>Dedications</th>
+                                                    <th class="text-end">
+                                                        Amount
+                                                    </th> -->
+                                                        </tr>
+
+                                                        <tr>
+                                                            <th colspan="2" formArrayName="salary_details">
+                                                                <ng-container
+                                                                    *ngFor="let list of departmentFormGroup.get('salary_details')['controls'];let i=index">
+                                                                    <div class="d-flex justify-content-between py-2"
+                                                                        [formGroupName]="i">
+                                                                        <div class="col-12">
+                                                                            <div class="row">
+
+                                                                                <ng-container
+                                                                                    *ngFor="let key of (list.value | keyvalue)">
+                                                                                    <div class="col-6"
+                                                                                        style="position: relative;">
+                                                                                        <span>{{key.key}}</span>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="col-6 d-flex justify-content-end">
+                                                                                        <span>{{key.value }}</span>
+
+                                                                                    </div>
+                                                                                </ng-container>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                    </div>
+                                                                </ng-container>
+                                                            </th>
+
+
+                                                            <!-- <th colspan="2" formArrayName="deductionList">
+                                                        <ng-container
+                                                            *ngFor="let deduction of departmentFormGroup.get('deductionList')['controls'];let j=index">
+                                                            <div class="d-flex justify-content-between py-2"
+                                                                [formGroupName]="j">
+                                                                <div class="" style="position: relative;">
+                                                                    <input type="text" class="form-control"
+                                                                        formControlName="salaryComponent1" readonly>
+                                                                </div>
+                                                                <div>
+                                                                    <input
+                                                                        onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                                                        class="form-control" formControlName="annualAmount1"
+                                                                        (focusout)="handleComponentDAmount($event)">
+    
+    
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+    
+    
+                                                    </th> -->
+
+
+                                                        </tr>
+
+                                                        <tr>
+                                                            <th>
+                                                                Gross Earning
+                                                            </th>
+                                                            <th>
+                                                                <span
+                                                                    style="width: 100%; display: block; text-align: end;">{{departmentFormGroup.value.totalEarning
+                                                                    | currency: 'INR':'symbol'}}</span>
+                                                            </th>
+
+                                                            <!-- <th>
+                                                        Gross Deduction
+                                                    </th>
+                                                    <th>
+                                                        <span>{{departmentFormGroup.value.deductionTotalAmount}}</span>
+                                                    </th> -->
+
+                                                        </tr>
+
+                                                        <!-- <tr>
+                                                    <th colspan="1" class="text-end">
+                                                        Net Pay
+                                                    </th>
+                                                    <th colspan="2">
+                                                        {{departmentFormGroup.value.totalSalaryAmount}}
+                                                    </th>
+                                                </tr> -->
+
+                                                    </thead>
+                                                </table>
+                                            </ng-container>
+
+                                        </div>
+                                    </div>
+
+
+                                </mat-tab>
+                                <mat-tab label="Bank Details">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Bank Name</th>
+                                                <th>Bank Branch</th>
+                                                <th>Bank Account Number</th>
+                                                <th>Account Holder Name</th>
+                                                <th>IFSC Code</th>
+                                                <th>Bank Address</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody formGroupName="bankDetail">
+                                            <tr>
+                                                <td>
+                                                    <input type="text" formControlName="bankName" class="form-control"
+                                                        placeholder="Enter Bank Name">
+                                                </td>
+                                                <td>
+                                                    <input type="text" formControlName="branchName" class="form-control"
+                                                        placeholder="Enter Bank Branch">
+                                                </td>
+                                                <td>
+                                                    <input type="number" min="0" formControlName="accountNo"
+                                                        class="form-control" placeholder="Enter Bank Account Number">
+                                                </td>
+                                                <td>
+                                                    <input type="text" formControlName="accountHolderName"
+                                                        class="form-control" placeholder="Enter Account Holder Name">
+                                                </td>
+                                                <td>
+                                                    <input type="text" formControlName="ifceCode" class="form-control"
+                                                        placeholder="Enter IFSC Code">
+                                                </td>
+                                                <td>
+                                                    <input type="text" formControlName="bankAddress"
+                                                        class="form-control" placeholder="Enter Bank Address">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+
+                                </mat-tab>
+                                <mat-tab label="Asset">
+
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>SN</th>
+                                                <th>Asset Id</th>
+                                                <th>Asset Name</th>
+                                                <th>Asset Type</th>
+                                                <th>Assign Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf="assetDetail.length === 0">
+                                            <tr>
+                                                <td colspan="5" style="text-align: center;">No Record Found</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody *ngIf="assetDetail.length !== 0">
+                                            <tr *ngFor="let list of assetDetail; let i = index">
+                                                <td>{{i+1}}</td>
+                                                <td>{{list.assetId}}</td>
+                                                <td>{{list.assetName}}</td>
+                                                <td>{{list.assetType}}</td>
+                                                <td>{{list.allocate_date}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </mat-tab>
+                                <mat-tab label="Leave">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>SN</th>
+                                                <th>Leave Type</th>
+                                                <th>Balance Leave </th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf="leaveBalanceDetail.length === 0">
+                                            <tr>
+                                                <td colspan="5" style="text-align: center;">No Record Found</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody *ngIf="leaveBalanceDetail.length !== 0">
+                                            <tr *ngFor="let list of leaveBalanceDetail; let i = index">
+                                                <td>{{i+1}}</td>
+                                                <td>{{list.description?list.description:'-'}}</td>
+                                                <td>{{list.leaveBalance}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </mat-tab>
+                            </mat-tab-group>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="button" class="btn btn-primary" (click)="fileUpload()">Save</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

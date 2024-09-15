@@ -1,0 +1,55 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mt-4">
+            <form [formGroup]="salaryFormGroup" (ngSubmit)="handleSubmit()">
+                <div class="row" formArrayName="salary_details">
+                    <div class="col-12 d-flex justify-content-end py-2">
+                        <button type="button" class="btn btn-primary" (click)="addSalaryDetails()">Add</button>
+                    </div>
+                    <ng-container *ngFor="let list of salaryFormGroup.get('salary_details')['controls'];let i=index"
+                        [formGroupName]="i">
+                        <div class="col-6">
+                            <label>Salary Component <sup>*</sup></label>
+                            <select class="form-select" formControlName="type" (change)="handleSalaryType($event)">
+                                <option [selected]="list.value.type === ''" value="" hidden>Select
+                                    Salary Component</option>
+                                <ng-container *ngFor="let list of salaryDetail">
+                                    <option *ngIf="list.componentType === 'Earning'" [disabled]="list.disable"
+                                        [value]="list.componentName">
+                                        {{list.componentName}}</option>
+                                </ng-container>
+                            </select>
+                            <div
+                                *ngIf="list.controls['type'].touched && list.controls['type'].dirty && list.controls['type'].hasError('required') && !isSubmitted">
+                                <p class="error-message">Salary Component is mandatory</p>
+                            </div>
+                            <div *ngIf="isSubmitted && list.controls['type'].hasError('required')">
+                                <p class="error-message">Salary Component is mandatory</p>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <label>Amount <sup>*</sup></label>
+                            <input type="text" class="form-control" placeholder="Enter Amount" formControlName="value">
+                            <div
+                                *ngIf="list.controls['value'].touched && list.controls['value'].dirty && list.controls['value'].hasError('required') && !isSubmitted">
+                                <p class="error-message">Amount is mandatory</p>
+                            </div>
+                            <div *ngIf="isSubmitted && list.controls['value'].hasError('required')">
+                                <p class="error-message">Amount is mandatory</p>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-end py-1"
+                            *ngIf="salary_detailsControllers.controls.length>1">
+                            <mat-icon style="cursor: pointer;" title="delete"
+                                (click)="removeSalaryDetails(i, list.value.type)">delete</mat-icon>
+                        </div>
+                    </ng-container>
+                    <div class="col-12 py-2 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

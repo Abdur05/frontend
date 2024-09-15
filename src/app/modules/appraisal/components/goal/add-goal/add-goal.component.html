@@ -1,0 +1,91 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/appraisal/goal-list">arrow_back</mat-icon>Goal</h2>
+
+    <form [formGroup]="goalFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Goal Name <sup>*</sup></label>
+                        <input type="text" formControlName="goalName" class="form-control" maxlength="6"
+                            placeholder="Enter Goal Name" />
+                        <div
+                            *ngIf="goalFormGroup.controls['goalName'].touched && goalFormGroup.controls['goalName'].dirty && goalFormGroup.controls['goalName'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Goal Name is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && goalFormGroup.controls['goalName'].hasError('required')">
+                            <p class="error-message">Goal Name is mandatory</p>
+                        </div>
+                        <div *ngIf="goalFormGroup.controls['goalName'].hasError('minlength')">
+                            <p class="error-message">Must have 6 character</p>
+                        </div>
+                        <div *ngIf="goalFormGroup.controls['goalName'].hasError('maxlength')">
+                            <p class="error-message">Must have 6 character</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Description </label>
+                        <input type="text" formControlName="description" class="form-control"
+                            placeholder="Description" />
+
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Start Date <sup>*</sup></label>
+                        <input type="date" formControlName="startDate" class="form-control" placeholder="Description" />
+                        <div
+                            *ngIf="goalFormGroup.controls['startDate'].touched && goalFormGroup.controls['startDate'].dirty && goalFormGroup.controls['startDate'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Start Date is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && goalFormGroup.controls['startDate'].hasError('required')">
+                            <p class="error-message">Start Date is mandatory</p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">End Date <sup>*</sup></label>
+                        <input type="date" formControlName="dueDate" class="form-control" placeholder="Description" />
+                        <div
+                            *ngIf="goalFormGroup.controls['dueDate'].touched && goalFormGroup.controls['dueDate'].dirty && goalFormGroup.controls['dueDate'].hasError('required') && !isSubmitted">
+                            <p class="error-message">End Date is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && goalFormGroup.controls['dueDate'].hasError('required')">
+                            <p class="error-message">End Date is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Priority </label>
+                        <select class="form-select" aria-label="Default select example" formControlName="priority">
+                            <option [selected]="goalFormGroup.value.priority === ''" value="" hidden>
+                                Select
+                                Priority </option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+
+
+                        </select>
+
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Progress </label>
+                        <input type="text" formControlName="progress" class="form-control"
+                            placeholder="Enter Progress" />
+
+                    </div>
+
+
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+
+
+</div>

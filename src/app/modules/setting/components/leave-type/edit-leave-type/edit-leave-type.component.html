@@ -1,0 +1,161 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/leave-type-list">arrow_back</mat-icon>Leave Type</h2>
+
+    <form [formGroup]="locationFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Leave Type <sup>*</sup></label>
+                        <input type="text" formControlName="leaveType" class="form-control"
+                            placeholder="Enter Leave Type" maxlength="10" readonly>
+                        <div
+                            *ngIf="locationFormGroup.controls['leaveType'].touched && locationFormGroup.controls['leaveType'].dirty && locationFormGroup.controls['leaveType'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Leave Type is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && locationFormGroup.controls['leaveType'].hasError('required')">
+                            <p class="error-message">Leave Type is mandatory</p>
+                        </div>
+                        <!-- <div *ngIf="locationFormGroup.controls['leaveType'].hasError('minlength')">
+                    <p class="error-message">Must have 4 character</p>
+                </div>
+                <div *ngIf="locationFormGroup.controls['leaveType'].hasError('maxlength')">
+                    <p class="error-message">Must have 4 character</p>
+                </div> -->
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Description</label>
+                        <input type="text" formControlName="description" class="form-control"
+                            placeholder="Enter description" />
+
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+
+                        <label for="" class="">Type </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="type">
+                            <option [selected]="locationFormGroup.value.type === ''" value="" hidden>
+                                Select
+                                Type</option>
+                            <option value="Paid">Paid</option>
+                            <option value="UnPaid">UnPaid</option>
+                            <option value="Restricted Holiday">Restricted Holiday</option>
+                            <option value="On-Duty">On-Duty</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Accrual </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="accrual">
+                            <option [selected]="locationFormGroup.value.accrual === ''" value="" hidden> Select Accrual
+                            </option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Quaterly">Quaterly</option>
+                            <option value="Half-Yearly">Half-Yearly</option>
+                            <option value="Yearly">Yearly</option>
+                            <option value="One-Time">One-Time</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">No Of Days</label>
+                        <input type="number" formControlName="noOfDays" class="form-control" min="0"
+                            placeholder="Enter No Of Days" maxlength="2" />
+
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Applicable To </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="applicableTo">
+                            <option [selected]="locationFormGroup.value.applicableTo === ''" value="" hidden> Select
+                                Applicable
+                                To
+                            </option>
+                            <option selected value="Both">Both</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2 d-flex align-items-center">
+                            <label for="">Carry Forward Allowed</label>
+                            <input type="checkbox" formControlName="carryForwardAllowed"
+                                (change)="onCheckboxChange($event)" class="carry" />
+
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2"
+                            [hidden]="!locationFormGroup.get('carryForwardAllowed').value">
+                            <label for="">Max Limit</label>
+                            <input type="number" formControlName="maxLimit" class="form-control" min="0"
+                                placeholder="Enter Maximum Carry Forward Days Allowed" maxlength="2"
+                                (focusout)="handleMaxlimit(locationFormGroup.value.maxLimit)" />
+                            <div *ngIf="locationFormGroup.controls['maxLimit'].hasError('minlength')">
+                                <p class="error-message">Must have 2 character</p>
+                            </div>
+                            <div *ngIf="locationFormGroup.controls['maxLimit'].hasError('maxlength')">
+                                <p class="error-message">Must have 2 character</p>
+                            </div>
+                            <div *ngIf="locationFormGroup.controls['maxLimit'].hasError('customError')">
+                                <p class="error-message">Max Limit Must Be Less or Equal to {{maxlimitValue}} </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2 d-flex align-items-center">
+                            <label for="">Encashment Allowed</label>
+                            <input type="checkbox" formControlName="echasmentAllowed" class="encha"
+                                (change)="onCheckboxChange1($event)" />
+
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2"
+                            [hidden]="!locationFormGroup.get('echasmentAllowed').value">
+                            <label for="">Max Limit</label>
+                            <input type="number" formControlName="maxLimit1" class="form-control" min="0"
+                                placeholder="Enter Maximum Encashment Allowed" maxlength="2"
+                                (focusout)="handleMaxlimitEncashment(locationFormGroup.value.maxLimit1)" />
+                            <div *ngIf="locationFormGroup.controls['maxLimit1'].hasError('minlength')">
+                                <p class="error-message">Must have 2 character</p>
+                            </div>
+                            <div *ngIf="locationFormGroup.controls['maxLimit1'].hasError('maxlength')">
+                                <p class="error-message">Must have 2 character</p>
+                            </div>
+                            <div *ngIf="locationFormGroup.controls['maxLimit1'].hasError('customError')">
+                                <p class="error-message">Max Limit Must Be Less or Equal to {{maxlimitValue}} </p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2 d-flex align-items-center">
+                            <label for=""> Document Upload</label>
+                            <input type="checkbox" formControlName="documentUpload" class="tick"
+                                (change)="handleCheck($event)" />
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2"
+                            [hidden]="!locationFormGroup.get('documentUpload').value">
+                            <label for="">Min No of days</label>
+                            <input type="number" formControlName="minNoOfDays" class="form-control" min="0"
+                                placeholder="Enter Min No of days" maxlength="2"
+                                onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57" />
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+
+
+</div>

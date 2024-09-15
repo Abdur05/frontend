@@ -1,0 +1,46 @@
+<div class="container-fluid">
+    <div class="row py-2">
+        <div class="col-12">
+            <strong>Date : </strong><span>&nbsp; {{data?.createdAt | date:"dd/MM/yyyy"}}</span>
+        </div>
+        <div class="col-12">
+            <strong>Date : </strong><span>&nbsp; {{data?.createdAt | date:"hh:mm a"}}</span>
+        </div>
+    </div>
+
+    <div class="row py-2 mt-2">
+        <div class="col-12 d-flex justify-content-center">
+            <strong> Dear {{data?.employeeName}} ({{data?.employeeId}})</strong>
+        </div>
+
+
+
+        <div class="col-12 d-flex justify-content-center py-2" *ngIf="data?.resultStatus === 'Pass'">
+            <strong class="text-success">{{data?.resultStatus}}</strong>
+        </div>
+
+        <div class="col-12 d-flex justify-content-center py-2" *ngIf="data?.resultStatus === 'Fail'">
+            <strong class="text-danger">{{data?.resultStatus}}</strong>
+        </div>
+
+
+        <div class="col-12 d-flex justify-content-center py-2">
+            <strong>Your Score is {{data?.totalMarks}}%</strong>
+        </div>
+
+        <div class="col-12 d-flex justify-content-center mt-3">
+            <span>This is less than the required passing percentage of <strong>{{data?.passPercentage}}</strong></span>
+        </div>
+        <div class="col-12 d-flex justify-content-center mb-3">
+            <span>Request you to attempt the assessment agian. If required you can visit the Admin for better awareness.</span>
+        </div>
+
+        <div class="col-12 d-flex justify-content-center py-2">
+            <strong>{{data?.courseTitle}}</strong>
+        </div>
+
+        <div class="col-12 py-2 d-flex justify-content-center py-2">
+           <button class="btn btn-danger" type="button" (click)="handleExit()">Exit</button>
+        </div>
+    </div>
+</div>

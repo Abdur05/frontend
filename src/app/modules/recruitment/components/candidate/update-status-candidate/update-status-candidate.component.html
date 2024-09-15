@@ -1,0 +1,150 @@
+<div class="container-fluid py-3">
+    <form [formGroup]="candidateFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <div class="col-10 py-2 ">
+                <h2>Candidate
+                </h2>
+            </div>
+            <div class="col-2 d-flex justify-content-end">
+                <mat-icon mat-dialog-close>close</mat-icon>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="" class="">Candidate Id </label><br>
+                <input type="text" class="form-control" formControlName="candidateId" readonly>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="example">Candidate Name </label><br>
+                <input type="text" class="form-control" formControlName="firstName" readonly>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Candidate Email</label><br>
+                <input type="text" class="form-control" formControlName="lastName" readonly>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Status<sup>*</sup></label><br>
+                <select class="form-select" formControlName="status">
+                    <option [selected]="candidateFormGroup.value.status === ''" value="" hidden>Select
+                        Status</option>
+                    <option value="Selected">Selected</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Next Round">Next Round</option>
+                </select>
+                <div
+                    *ngIf="candidateFormGroup.controls['status'].touched && candidateFormGroup.controls['status'].dirty && candidateFormGroup.controls['status'].hasError('required') && !isSubmitted">
+                    <p class="error-message"> Status is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && candidateFormGroup.controls['status'].hasError('required')">
+                    <p class="error-message"> Status is mandatory</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2"
+                *ngIf="candidateFormGroup.get('status').value === 'Next Round'">
+                <label for="">Interviewer Name<sup>*</sup></label><br>
+                <select class="form-select" formControlName="interViewerList">
+                    <!-- <option selected>Select Interviewer</option> -->
+                    <option [selected]="candidateFormGroup.value.interViewerList === ''" value="" hidden>Select
+                        Interviewer</option>
+                    <option *ngFor="let list of interviewerList" [value]="list.employeeId">{{list.employeeId}}-
+                        {{list.firstName}}&nbsp;{{list.lastName}}</option>
+
+                </select>
+                <div
+                    *ngIf="candidateFormGroup.controls['interViewerList'].touched && candidateFormGroup.controls['interViewerList'].dirty && candidateFormGroup.controls['interViewerList'].hasError('required') && !isSubmitted">
+                    <p class="error-message"> Interviewer Name is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && candidateFormGroup.controls['interViewerList'].hasError('required')">
+                    <p class="error-message"> Interviewer Name is mandatory</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 "
+                *ngIf="candidateFormGroup.get('status').value === 'Next Round'">
+                <label for="ReferenceType">Location<sup>*</sup></label>
+                <div class="d-flex mt-2 d-grid gap-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" formControlName="mode" value="online">
+                        <label class="form-check-label"
+                            style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                            Online
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" formControlName="mode" value="offline">
+                        <label class="form-check-label"
+                            style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                            Offline
+                        </label>
+                    </div>
+                </div>
+                <div
+                    *ngIf="candidateFormGroup.controls['mode'].touched && candidateFormGroup.controls['mode'].dirty && candidateFormGroup.controls['mode'].hasError('required') && !isSubmitted">
+                    <p class="error-message">Location is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && candidateFormGroup.controls['mode'].hasError('required')">
+                    <p class="error-message">Location is mandatory</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2"
+                *ngIf="candidateFormGroup.get('status').value === 'Next Round' && candidateFormGroup.get('mode').value === 'online'">
+                <label for="example">Meeting Link <sup>*</sup></label><br>
+                <textarea class="form-control" formControlName="online_meeting_link" placeholder="Meeting Link"
+                    style="height: 30px;"></textarea>
+                <div
+                    *ngIf="candidateFormGroup.controls['online_meeting_link'].touched && candidateFormGroup.controls['online_meeting_link'].dirty && candidateFormGroup.controls['online_meeting_link'].hasError('required') && !isSubmitted">
+                    <p class="error-message">Meeting Link is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && candidateFormGroup.controls['online_meeting_link'].hasError('required')">
+                    <p class="error-message">Meeting Link is mandatory</p>
+                </div>
+                <!-- <input type="url" > -->
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2"
+                *ngIf="candidateFormGroup.get('status').value === 'Next Round' && candidateFormGroup.get('mode').value === 'offline'">
+                <label for="example">Company Address<sup
+                        *ngIf="candidateFormGroup.get('mode').value === 'offline'">*</sup> </label><br>
+                <textarea class="form-control" formControlName="offlineAddress" placeholder="Meeting Link"
+                    style="height: 30px;"></textarea>
+                <div
+                    *ngIf="candidateFormGroup.controls['offlineAddress'].touched && candidateFormGroup.controls['offlineAddress'].dirty && candidateFormGroup.controls['offlineAddress'].hasError('required') && !isSubmitted">
+                    <p class="error-message"> Company Address is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && candidateFormGroup.controls['offlineAddress'].hasError('required')">
+                    <p class="error-message"> Company Address is mandatory</p>
+                </div>
+                <!-- <input type="url" > -->
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2"
+                *ngIf="candidateFormGroup.get('status').value === 'Next Round'">
+                <label for="example">Interview Date<sup>*</sup> </label><br>
+                <input type="datetime-local" class="form-control" formControlName="dateOfMeeting"
+                    placeholder="Date Of Meeting" [attr.min]="today">
+                <div
+                    *ngIf="candidateFormGroup.controls['dateOfMeeting'].touched && candidateFormGroup.controls['dateOfMeeting'].dirty && candidateFormGroup.controls['dateOfMeeting'].hasError('required') && !isSubmitted">
+                    <p class="error-message"> Interview Date is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && candidateFormGroup.controls['dateOfMeeting'].hasError('required')">
+                    <p class="error-message"> Interview Date is mandatory</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="example">Interviewer Feedback <sup>*</sup></label><br>
+                <textarea class="form-control" formControlName="interviewerFeedBack" placeholder="Interviewer Feedback"
+                    style="height: 30px;"></textarea>
+                    <div
+                    *ngIf="candidateFormGroup.controls['interviewerFeedBack'].touched && candidateFormGroup.controls['interviewerFeedBack'].dirty && candidateFormGroup.controls['interviewerFeedBack'].hasError('required') && !isSubmitted">
+                    <p class="error-message"> Interview Feedback is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && candidateFormGroup.controls['interviewerFeedBack'].hasError('required')">
+                    <p class="error-message"> Interview Feedback is mandatory</p>
+                </div>
+                <!-- <input type="text" class="form-control" formControlName="interviewerFeedBack"
+                    placeholder="Interviewer Feedback"> -->
+            </div>
+            <div class="col-12 d-flex justify-content-end py-2">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+
+    </form>
+</div>

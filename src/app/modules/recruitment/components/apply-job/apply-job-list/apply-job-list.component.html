@@ -1,0 +1,87 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid" [ngStyle]="{'padding-left':isShowPadding?'280px':'100px'}">
+    <div class="row">
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+            <div class="row mt-3">
+                <div class="col-12">
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto"><b>Search Filter</b></legend>
+
+                        <div class="row">
+                            <div class="filterText col-sm col-md col-lg col-xl">
+                                <input type="text" #searchDataInput id="search-data" placeholder="Search Job"
+                                    class="form-control" (input)="handleFilter($event)">
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>SN</th>
+                                <th>Job Title</th>
+                                <th>Job Type</th>
+                                <th>Experiene</th>
+                                <th>Minimum Qualification</th>
+                                <th>Location</th>
+                                <th>Expiry Date</th>
+                                <th>Job Status</th>
+                                <th>Apply</th>
+                            </tr>
+                        </thead>
+
+                        <tbody *ngIf="jobDetail.length === 0">
+                            <tr>
+                                <td colspan="7" class="text-center">No Records</td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr *ngFor="let list of jobDetail; let i=index">
+                                <td>{{i+1}}</td>
+                                <td>{{list.jobName}}</td>
+                                <td *ngFor="let item of list.job_type_details">{{item.jobType}}</td>
+                                <td>{{list.experience}}</td>
+                                <td>{{list.miniQualification}}</td>
+                                <td>{{list.location}}</td>
+                                <td>{{list.expirayDate}}</td>
+                                <td>{{list.jobStatus}}</td>
+
+                                <td *ngIf="rolesView.add === true"><a (click)="handleCandite(list._id)"
+                                        style="color: #00acff; text-decoration: underline;cursor: pointer;">
+                                        <mat-icon >arrow_right
+                                        </mat-icon>
+                                        Apply</a></td>
+
+                                <!-- <td>{{list.reasonForLeave}}</td> -->
+                                <!-- <td>{{list.emailId}}</td> -->
+                                <!-- <td>
+                                    <div class="d-flex">
+                                        <div>
+                                            <mat-icon
+                                                [routerLink]="'/setting/edit-apply-leave/'+list._id">arrow_right</mat-icon>
+                                        </div>
+                                        <div>
+                                            <mat-icon>delete</mat-icon>
+                                        </div>
+                                    </div>
+                                </td> -->
+
+                                <!-- <td><input type="checkbox" class="checkbox" [checked]="list.check"
+                                        (change)="particularcheck($event,i)"></td> -->
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

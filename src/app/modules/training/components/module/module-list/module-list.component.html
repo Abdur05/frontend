@@ -1,0 +1,74 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <div class="row">
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+            <div class="row mt-3 ">
+                <div class="col-12">
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto"><b>Search Filter</b></legend>
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 py-1 ">
+                                <select class="form-select" (change)="handleFilterDetails($event)">
+                                    <option selected [value]=" ">Select Course</option>
+                                    <option *ngFor="let list of courseDetail" [value]="list._id">{{list.course_title}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 py-1 ">
+                                <input type="text" #searchDataInput name="" id="search-data" placeholder="Module Name"
+                                    class="form-control" (input)="handleFilter($event)">
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="row py-2">
+                    <div class="col-12">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end ">
+                            <button class="btn btn-primary " *ngIf="rolesView?.add === true" (click)="nextPage('/training/add-module')" type="button"
+                                style="color: white;background: #00acff;">Add Module</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>SN</th>
+                                <th>Module Name</th>
+                                <!-- <th>No Of Slide</th> -->
+                                <th>Course</th>
+                                <th scope="col" *ngIf="rolesView?.modify === true || rolesView?.delete === true">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="assetDetails.length === 0">
+                            <tr>
+                                <td colspan="7" class="text-center">No Records</td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr *ngFor="let list of assetDetails; let i=index">
+                                <td>{{i+1}}</td>
+                                <td>{{list.title}}</td>
+                                <!-- <td>{{list.description}}</td> -->
+                                <td>{{list.courseId?.course_title}}</td>
+                                <td *ngIf="rolesView?.modify === true || rolesView?.delete === true">
+                                    <div class="d-flex">
+                                        <div *ngIf="rolesView?.modify === true">
+                                            <mat-icon
+                                                [routerLink]="'/training/edit-module/'+list.courseId?._id+'/'+list._id">edit</mat-icon>
+                                        </div>
+                                        <div *ngIf="rolesView?.delete === true">
+                                            <mat-icon (click)="deleteRecords(list)">delete</mat-icon>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

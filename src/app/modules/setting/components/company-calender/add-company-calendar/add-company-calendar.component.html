@@ -1,0 +1,71 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/company-calender-list">arrow_back</mat-icon>Company Calender</h2>
+
+    <form [formGroup]="companyCalenderFormGroup" (ngSubmit)="submitData()">
+        <div class="row border mx-0">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Year <sup>*</sup></label>
+                <input type="text" formControlName="year" class="form-control" placeholder="Enter Year" maxlength="4">
+                <div
+                    *ngIf="companyCalenderFormGroup.controls['year'].touched && companyCalenderFormGroup.controls['year'].dirty && companyCalenderFormGroup.controls['year'].hasError('required') && !isSubmitted">
+                    <p class="error-message">Year is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && companyCalenderFormGroup.controls['year'].hasError('required')">
+                    <p class="error-message">Year is mandatory</p>
+                </div>
+
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Date <sup>*</sup></label>
+                <input type="date" formControlName="date" class="form-control" min="{{ today | date:'yyyy-MM-dd' }}">
+                <div
+                    *ngIf="companyCalenderFormGroup.controls['date'].touched && companyCalenderFormGroup.controls['date'].dirty && companyCalenderFormGroup.controls['date'].hasError('required') && !isSubmitted">
+                    <p class="error-message">Date is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && companyCalenderFormGroup.controls['date'].hasError('required')">
+                    <p class="error-message">Date is mandatory</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Event Type <sup>*</sup></label>
+                <select class="form-select" aria-label="Default select example" formControlName="eventTypeId">
+                    <option [selected]="companyCalenderFormGroup.value.eventTypeId === ''" value="" hidden>Select Event
+                        Type
+                    </option>
+                    <option *ngFor="let list of eventTypeDetail" [value]="list._id">{{list.eventType}}</option>
+                </select>
+                <div
+                    *ngIf="companyCalenderFormGroup.controls['eventTypeId'].touched && companyCalenderFormGroup.controls['eventTypeId'].dirty && companyCalenderFormGroup.controls['eventTypeId'].hasError('required') && !isSubmitted">
+                    <p class="error-message">Event Type is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && companyCalenderFormGroup.controls['eventTypeId'].hasError('required')">
+                    <p class="error-message">Event Type is mandatory</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Event Title <sup>*</sup> </label>
+                <input type="text" formControlName="eventTitle" class="form-control" placeholder="Enter Event Title" />
+                <div
+                    *ngIf="companyCalenderFormGroup.controls['eventTitle'].touched && companyCalenderFormGroup.controls['eventTitle'].dirty && companyCalenderFormGroup.controls['eventTitle'].hasError('required') && !isSubmitted">
+                    <p class="error-message">Event Title is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && companyCalenderFormGroup.controls['eventTitle'].hasError('required')">
+                    <p class="error-message">Event Title is mandatory</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Event Description </label>
+                <input type="text" formControlName="eventDescription" class="form-control"
+                    placeholder="Enter Event Description" />
+            </div>
+        </div>
+        <div class="col-12 d-flex justify-content-end py-2">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+
+    </form>
+
+
+
+</div>

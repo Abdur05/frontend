@@ -1,0 +1,27 @@
+<div class="container-fluid ">
+    <form [formGroup]="skillFormGroup">
+        <div class="row">
+            <div class="col-10 py-2 d-flex justify-content-center">
+                <h2><b>Skill</b>
+                </h2>
+            </div>
+            <div class="col-2 d-flex justify-content-end">
+                <mat-icon mat-dialog-close>close</mat-icon>
+            </div>
+        </div>
+        <div class="row border mx-0">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                <label for="">Skill </label><br>
+                <span>{{skillFormGroup.value.skillName ? skillFormGroup.value.skillName : '-'}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                <label for="">Description </label><br>
+                <span>{{skillFormGroup.value.description ? skillFormGroup.value.description : '-'}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                <label for="">Designation </label><br>
+                <span>{{skillFormGroup.value.designation ? skillFormGroup.value.designation : '-'}}</span>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,45 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <div class="row">
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+
+            <div class="row">
+                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center"
+                    (selectedTabChange)="onTabClick($event)">
+                    <mat-tab label="Enroll">
+
+                        <div class="col-12">
+                            <div class="row mx-0">
+                                <div class="col-12 col-sm-12 col-md-12 col-xl-4 col-lg-4 mt-5"
+                                    *ngFor="let list of assetDetails; let i=index">
+                                    <mat-card class="shadow bg-white rounded" appearance="outlined">
+                                        <mat-card-header>
+                                            <mat-card-title>{{list.course_title}}</mat-card-title>
+                                        </mat-card-header>
+                                        <mat-card-content>
+                                            <p>{{list.description}}</p>
+                                        </mat-card-content>
+                                        <mat-card-footer class="example-card-footer d-flex justify-content-end">
+                                            <mat-chip-set>
+                                                <mat-chip style="cursor: pointer !important;"  (click)="enrolledCourse(list._id)" >Enroll</mat-chip>
+                                            </mat-chip-set>
+                                        </mat-card-footer>
+                                    </mat-card>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Inprogress">
+                        <app-inprogress-course-list *ngIf="selectedIndex === 1"></app-inprogress-course-list>
+                    </mat-tab>
+                    <mat-tab label="Completed">
+                        <app-completed-course-list *ngIf="selectedIndex === 2"></app-completed-course-list>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+
+        </div>
+    </div>
+</div>

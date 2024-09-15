@@ -1,0 +1,67 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/employee/loan-request-list">arrow_back</mat-icon> Loan Request</h2>
+    <form [formGroup]="loanRequestFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <div class="row">
+                            <div class="col-12 py-2">
+                                <label for=""> Loan Amount <sup>*</sup></label>
+                                <input type="number" formControlName="loanAmount" class="form-control"
+                                    placeholder="Enter Loan Amount" min="0"
+                                    onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57" />
+                                <div
+                                    *ngIf="loanRequestFormGroup.controls['loanAmount'].touched && loanRequestFormGroup.controls['loanAmount'].dirty && loanRequestFormGroup.controls['loanAmount'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Loan Amount is mandatory</p>
+                                </div>
+                                <div
+                                    *ngIf="isSubmitted && loanRequestFormGroup.controls['loanAmount'].hasError('required')">
+                                    <p class="error-message">Loan Amount is mandatory</p>
+                                </div>
+                            </div>
+                            <div class="col-12 py-2">
+                                <label for=""> Number Of Installment <sup>*</sup></label>
+                                <input type="number" formControlName="installment" class="form-control"
+                                    placeholder="Enter Number Of Installment" min="0"
+                                    onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57" />
+                                <div
+                                    *ngIf="loanRequestFormGroup.controls['installment'].touched && loanRequestFormGroup.controls['installment'].dirty && loanRequestFormGroup.controls['installment'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Number Of Installment is mandatory</p>
+                                </div>
+                                <div
+                                    *ngIf="isSubmitted && loanRequestFormGroup.controls['installment'].hasError('required')">
+                                    <p class="error-message">Number Of Installment is mandatory</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Reason </label>
+                        <textarea type="text" formControlName="reason" class="form-control" placeholder="Enter Reason"
+                            rows="5"></textarea>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for=""> Requested Disbursement Date <sup>*</sup></label>
+                        <input type="date" formControlName="requestedDisbursementDate" class="form-control"
+                            min="{{ today }}" />
+                        <div
+                            *ngIf="loanRequestFormGroup.controls['requestedDisbursementDate'].touched && loanRequestFormGroup.controls['requestedDisbursementDate'].dirty && loanRequestFormGroup.controls['requestedDisbursementDate'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Requested Disbursement Date is mandatory</p>
+                        </div>
+                        <div
+                            *ngIf="isSubmitted && loanRequestFormGroup.controls['requestedDisbursementDate'].hasError('required')">
+                            <p class="error-message">Requested Disbursement Date is mandatory</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

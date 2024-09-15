@@ -1,0 +1,120 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <div class="row">
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+
+            <div class="row mt-3 ">
+                <div class="col-12">
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto"><b>Search Filter</b></legend>
+                        <div class="row">
+                            <div class="filterText col-sm col-md col-lg col-xl">
+                                <input type="text" #searchDataInput id="search-data"
+                                    placeholder="Employee Id/Employee Name" class="form-control"
+                                    (input)="handleFilter($event)">
+                            </div>
+                            <div class="col-sm col-md col-lg col-xl">
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <select class="form-select" (change)="handleFilterList($event)">
+                                        <option [selected]="filterText.status === 'Pending'" value="Pending">
+                                            Pending
+                                        </option>
+                                        <option [selected]="filterText.status === 'Approved'" value="Approved">
+                                            Approved
+                                        </option>
+                                        <option [selected]="filterText.status === 'Rejected'" value="Rejected">
+                                            Rejected
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col d-flex justify-content-end gap-2 mt-4">
+                                <div class="py-1">
+                                    <button class="btn btn-primary" (click)="handleFilterDetails()"
+                                        type="button">Search</button>
+                                </div>
+                                <div class="py-1">
+                                    <button class="btn btn-primary" (click)="searchDataInput.value = ''; filterText = {
+                                                        active: 'O',
+                                                        status: 'Pending'
+                                                      }" type="button">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="row py-2 ">
+                    <div class="col-12">
+                        <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-end ">
+
+                            <button class="btn btn-primary " (click)="nextPage('/employee/approve-loan-request')"
+                                type="button" style="color: white;background: #00acff;">Approve Loan</button>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>SN</th>
+                                <th>Employee Id</th>
+                                <th>Employee Name</th>
+                                <th>Loan Amount</th>
+                                <th>Reason</th>
+                                <th>Number Of Installment</th>
+                                <th>Approval Stage</th>
+                                <th>Status</th>
+                                <th scope="col" *ngIf="rolesView.modify === true">Action</th>
+                                <!-- <th>Inactive / Active</th> -->
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="loanRequestDetail.length === 0">
+                            <tr>
+                                <td colspan="9" class="text-center">No Records</td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr *ngFor="let list of loanRequestDetail; let i=index">
+                                <td>{{i+1}}</td>
+                                <td>{{list.employeeId}}</td>
+                                <td>{{list.employeeName}}</td>
+                                <td>{{list.loanAmount}}</td>
+                                <td>{{list.reason}}</td>
+                                <td>{{list.installment}}</td>
+                                <td>{{list.approvalStageId ? list.approvalStageId : '-'}}</td>
+                                <td>{{list.status}}</td>
+                                <td>
+                                    <div class="d-flex">
+                                        <div *ngIf="rolesView.modify === true">
+                                            <button *ngIf="list.status === 'Pending'" class="btn btn-primary"
+                                                style="font-size: 12px;"
+                                                [routerLink]="'/employee/approve-loan-request/' + list._id">
+                                                Approve
+                                            </button>
+                                            <span *ngIf="list.status === 'A'">Approved</span>
+                                            <span *ngIf="list.status === 'R'">Rejected</span>
+
+                                        </div>
+                                        <!-- <div>
+                                            <mat-icon [routerLink]="'/setting/edit-reason/'+list._id">edit</mat-icon>
+                                        </div> -->
+                                    </div>
+                                </td>
+                                <!-- <td>
+                                    <label class="switch">
+                                        <input type="checkbox" [checked]="list.isActive === 'O'">
+                                        <span class="slider"></span>
+                                    </label>
+                                </td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

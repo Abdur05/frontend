@@ -1,0 +1,119 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/employee/complaint-list">arrow_back</mat-icon> Complaint</h2>
+
+    <form [formGroup]="complaintFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6
+            ">
+                        <div class="row">
+                            <div class="col-12 py-2">
+                                <label for="">Complaint Subject <sup>*</sup></label>
+                                <input type="text" formControlName="complaintName" class="form-control"
+                                    placeholder="Enter Complaint Subject" />
+                                <div
+                                    *ngIf="complaintFormGroup.controls['complaintName'].touched && complaintFormGroup.controls['complaintName'].dirty && complaintFormGroup.controls['complaintName'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Complaint Subject is mandatory</p>
+                                </div>
+                                <div
+                                    *ngIf="isSubmitted && complaintFormGroup.controls['complaintName'].hasError('required')">
+                                    <p class="error-message">Complaint Subject is mandatory</p>
+                                </div>
+
+                            </div>
+                            <div class="col-12 py-2">
+                                <label for="">Complaint Against <sup>*</sup></label>
+                                <select class="form-select" aria-label="Default select example"
+                                    formControlName="complaintAgainst" (change)="handleEmployee($event)">
+                                    <option [selected]="complaintFormGroup.value.complaintAgainst === ''" value=""
+                                        hidden>
+                                        Select
+                                        Complaint Against</option>
+                                    <option *ngFor="let list of employeeDetail" [value]="list.employeeId">
+                                        {{list.employeeId}}&nbsp;-{{list.firstName}}&nbsp;{{list.lastName}}</option>
+
+                                </select>
+                                <div
+                                    *ngIf="complaintFormGroup.controls['complaintAgainst'].touched && complaintFormGroup.controls['complaintAgainst'].dirty && complaintFormGroup.controls['complaintAgainst'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Complaint Against is mandatory</p>
+                                </div>
+                                <div
+                                    *ngIf="isSubmitted && complaintFormGroup.controls['complaintAgainst'].hasError('required')">
+                                    <p class="error-message">Complaint Against is mandatory</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Complaint Description <sup>*</sup></label>
+                        <textarea type="text" formControlName="complaintDescription" class="form-control"
+                            placeholder="Enter Complaint Description" rows="5"></textarea>
+                        <div
+                            *ngIf="complaintFormGroup.controls['complaintDescription'].touched && complaintFormGroup.controls['complaintDescription'].dirty && complaintFormGroup.controls['complaintDescription'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Complaint Description is mandatory</p>
+                        </div>
+                        <div
+                            *ngIf="isSubmitted && complaintFormGroup.controls['complaintDescription'].hasError('required')">
+                            <p class="error-message">Complaint Description is mandatory</p>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Reporting Manager <sup>*</sup></label>
+                        <input type="text" formControlName="reportingManager" class="form-control" readonly />
+                        <div
+                            *ngIf="complaintFormGroup.controls['reportingManager'].touched && complaintFormGroup.controls['reportingManager'].dirty && complaintFormGroup.controls['reportingManager'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Reporting Manager is mandatory</p>
+                        </div>
+                        <div
+                            *ngIf="isSubmitted && complaintFormGroup.controls['reportingManager'].hasError('required')">
+                            <p class="error-message">Reporting Manager is mandatory</p>
+                        </div>
+
+
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Complaint Date <sup>*</sup></label>
+                        <input type="date" formControlName="complaintDate" class="form-control" />
+                        <div
+                            *ngIf="complaintFormGroup.controls.complaintDate.errors && (complaintFormGroup.controls.complaintDate.dirty || complaintFormGroup.controls.complaintDate.touched)">
+                            <div *ngIf="complaintFormGroup.controls.complaintDate.errors.futureDate">
+                                <p class="error-message"> Future date is not allowed.</p>
+                            </div>
+                        </div>
+                        <div
+                            *ngIf="complaintFormGroup.controls['complaintDate'].touched && complaintFormGroup.controls['complaintDate'].dirty && complaintFormGroup.controls['complaintDate'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Complaint date is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && complaintFormGroup.controls['complaintDate'].hasError('required')">
+                            <p class="error-message">Complaint date is mandatory</p>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Remarks </label>
+                        <input type="text" formControlName="remarks" class="form-control" placeholder="Enter Remarks" />
+
+
+                    </div>
+
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+
+
+</div>

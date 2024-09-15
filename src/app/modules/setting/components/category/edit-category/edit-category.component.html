@@ -1,0 +1,53 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/category-list">arrow_back</mat-icon> Category </h2>
+    <form [formGroup]="categoryMasterFormGroup" (ngSubmit)="submitCategory()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Category Name <sup>*</sup></th>
+                                <th>Category Description<sup>*</sup></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="text" formControlName="categoryName" class="form-control"
+                                        placeholder="Enter Category Name">
+                                    <div
+                                        *ngIf="categoryMasterFormGroup.controls['categoryName'].touched && categoryMasterFormGroup.controls['categoryName'].dirty && categoryMasterFormGroup.controls['categoryName'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Category Name is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && categoryMasterFormGroup.controls['categoryName'].hasError('required')">
+                                        <p class="error-message">Category Name is mandatory</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <textarea formControlName="categoryDiscription" style="height: 10px;"
+                                        class="form-control" placeholder="Enter Category Description"></textarea>
+                                    <div
+                                        *ngIf="categoryMasterFormGroup.controls['categoryDiscription'].touched && categoryMasterFormGroup.controls['categoryDiscription'].dirty && categoryMasterFormGroup.controls['categoryDiscription'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Category Description is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && categoryMasterFormGroup.controls['categoryDiscription'].hasError('required')">
+                                        <p class="error-message">Category Description is mandatory</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

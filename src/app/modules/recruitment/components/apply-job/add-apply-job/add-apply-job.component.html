@@ -1,0 +1,118 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/recruitment/apply-job-list">arrow_back</mat-icon>Apply Job</h2>
+
+    <form [formGroup]="applyjobFormGroup">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <h4 style="text-align: center;">{{applyjobFormGroup.value.jobName}}</h4>
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="">Required Skills</label> :
+                            <!-- <span>{{applyjobFormGroup.value.requiredSkills.skill}}</span><br>
+                     -->
+                            <span formArrayName="requiredSkills">
+                                <ng-container
+                                    *ngFor="let skillControl of applyjobFormGroup.get('requiredSkills').controls; let i = index">
+                                    {{ skillControl.value.skillName }},
+                                </ng-container>
+                            </span>
+                            <br>
+
+                            <label for="">Experience Required</label>:
+                            <span>{{applyjobFormGroup.value.experience}}</span><br>
+                            <label for="">Location</label>:
+                            <span>{{applyjobFormGroup.value.location}}</span><br>
+                            <label for="">Apply Before </label>:
+                            <span>{{applyjobFormGroup.value.expirayDate}}</span>
+                        </div>
+                    </div>
+                    <!-- <table>
+                <thead>
+                    <tr>
+                        <th>Required Skills</th>
+                        <th>Experience Required </th>
+                        <th>Location</th>
+                        <th>Apply Before</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" class="form-control" readonly formControlName="requiredSkills"></td>
+                        <td><input type="text" class="form-control" readonly formControlName="experience"></td>
+                        <td><input type="text" class="form-control" readonly formControlName="location"></td>
+                        <td><input type="text" class="form-control" readonly formControlName="expirayDate"></td>
+
+
+                    </tr>
+                </tbody>
+            </table> -->
+
+                </div>
+                <div class="row border mx-0 mt-2">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Full Name <sup>*</sup></label>
+                        <input type="text" formControlName="fullName" class="form-control"
+                            placeholder="Enter Full Name">
+                        <div
+                            *ngIf="applyjobFormGroup.controls['fullName'].touched && applyjobFormGroup.controls['fullName'].dirty && applyjobFormGroup.controls['fullName'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Full Name is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && applyjobFormGroup.controls['fullName'].hasError('required')">
+                            <p class="error-message">Full Name is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Email <sup>*</sup></label>
+                        <input type="email" formControlName="email" class="form-control" placeholder="Enter Email" />
+                        <div
+                            *ngIf="applyjobFormGroup.controls['email'].touched && applyjobFormGroup.controls['email'].dirty && applyjobFormGroup.controls['email'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Mail Id is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && applyjobFormGroup.controls['email'].hasError('required')">
+                            <p class="error-message">Mail Id is mandatory</p>
+                        </div>
+                        <div *ngIf="applyjobFormGroup.get('email').hasError('pattern')">
+                            <p class="error-message">Please enter a valid email address.</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Phone Number <sup>*</sup> </label>
+                        <input type="number" min="0" formControlName="phoneNumber" class="form-control"
+                            placeholder="Enter Phone Number" maxlength="10"
+                            onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57" />
+                        <div
+                            *ngIf="applyjobFormGroup.controls['phoneNumber'].touched && applyjobFormGroup.controls['phoneNumber'].dirty && applyjobFormGroup.controls['phoneNumber'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Mobile Number is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && applyjobFormGroup.controls['phoneNumber'].hasError('required')">
+                            <p class="error-message">Mobile Number is mandatory</p>
+                        </div>
+                        <div *ngIf="applyjobFormGroup.controls['phoneNumber'].hasError('minlength')">
+                            <p class="error-message">Mobile Number is not Valid</p>
+                        </div>
+                        <div *ngIf="applyjobFormGroup.controls['phoneNumber'].hasError('maxlength')">
+                            <p class="error-message">Mobile Number is not Valid</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="py-1">Upload Resume </label><br>
+                        <!-- <span class="upload_text" (click)="uploadFile(inputFile, 'resume')">
+                    {{applyjobFormGroup.value.resumeFilepath ? applyjobFormGroup.value.resumeFilepath :
+                    'Upload Resume'}}</span> 
+                <input type="file" #inputFile class="d-none">-->
+                        <input type="file" formControlName="resumeFilepath">
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="button" class="btn btn-primary" (click)="fileUpload()">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+</div>

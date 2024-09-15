@@ -1,0 +1,74 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/asset/asset-list">arrow_back</mat-icon> Asset Allocation</h2>
+
+    <form [formGroup]="assetAllocationFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Asset Type <sup>*</sup></label>
+                        <select class="form-select" aria-label="Default select example" formControlName="assetType"
+                            (change)="handleAsset($event)">
+                            <option [selected]="assetAllocationFormGroup.value.assetType === ''" value="" hidden>
+                                Select
+                                Asset Type</option>
+                            <option *ngFor="let list of assetMainteinanceDetail" [value]="list.assetTypeName">
+                                {{list.assetTypeName}}
+                            </option>
+                        </select>
+                        <div
+                            *ngIf="assetAllocationFormGroup.controls['assetType'].touched && assetAllocationFormGroup.controls['assetType'].dirty && assetAllocationFormGroup.controls['assetType'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Asset Type is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && assetAllocationFormGroup.controls['assetType'].hasError('required')">
+                            <p class="error-message">Asset Type is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Asset Id <sup>*</sup></label>
+                        <input formControlName="assetId" class="form-control" placeholder="Enter Asset Id"
+                            (typeaheadOnSelect)="typeaheadOnSelect1($event)" [typeahead]="filterAssetAllocationDetail"
+                            typeaheadOptionField="assetId">
+                        <div
+                            *ngIf="assetAllocationFormGroup.controls['assetId'].touched && assetAllocationFormGroup.controls['assetId'].dirty && assetAllocationFormGroup.controls['assetId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Asset Id is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && assetAllocationFormGroup.controls['assetId'].hasError('required')">
+                            <p class="error-message">Asset Id is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Employee Id <sup>*</sup></label>
+                        <input class="form-control" formControlName="employeeId" placeholder="Enter Employee Id"
+                            (typeaheadOnSelect)="typeaheadOnSelect($event)" [typeahead]="employeeDetail"
+                            typeaheadOptionField="employeeId">
+
+                        <div
+                            *ngIf="assetAllocationFormGroup.controls['employeeId'].touched && assetAllocationFormGroup.controls['employeeId'].dirty && assetAllocationFormGroup.controls['employeeId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Employee Id is mandatory</p>
+                        </div>
+                        <div
+                            *ngIf="isSubmitted && assetAllocationFormGroup.controls['employeeId'].hasError('required')">
+                            <p class="error-message">Employee Id is mandatory</p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Allocation Date </label>
+                        <input type="date" formControlName="allocate_date" class="form-control"
+                            max="{{ today | date:'yyyy-MM-dd' }}">
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+</div>

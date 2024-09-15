@@ -1,0 +1,72 @@
+<div class="container-fluid" (click)="$event.stopPropagation();"  (keydown.Tab)="$event.stopPropagation()">
+    <div class="row">
+            <form class="col-12 mt-4">
+                <div class="row">
+                    <div class="col-12" style="position: relative; padding: 0px 10px 0px 30px;">
+                        <h2><mat-icon class="back" (click)="back();$event.stopPropagation()">arrow_back</mat-icon>My Profile</h2>
+                    </div>
+                    <div class="col-12 py-2">
+                        <div class="col-12 d-flex justify-content-center py-1" style="position: relative;">
+                            <img class="img-ava" [src]="imageSrc?imageSrc:'/assets/logs/profile.png'"
+                                *ngIf="!userDetails.profileImg && !imageSrc">
+                            <img class="img-ava" [src]="imageSrc?imageSrc:'/assets/logs/profile.png'"
+                                *ngIf="!userDetails.profileImg && imageSrc">
+                            <img class="img-ava" [src]="'http://localhost:4000/' + userDetails.profileImg"
+                                *ngIf="userDetails.profileImg && !imageSrc">
+                            <img class="img-ava" [src]="imageSrc?imageSrc:'/assets/logs/profile.png'"
+                                *ngIf="userDetails.profileImg && imageSrc">
+                            <sup class="delete_img"><mat-icon
+                                    style="font-size: 20px;display: flex;align-items: center;justify-content: center;"
+                                    (click)="uploadFile(inputFile,'log')">edit</mat-icon></sup>
+                        </div>
+
+                        <input type="file" #inputFile class="d-none" (change)="handleUploadFile($event)">
+                    </div>
+
+                    <div class="col-12 py-1 d-flex justify-content-start" style="position: relative; padding: 0px 10px 0px 30px;">
+                        <div class="row" *ngIf="isEditInput ">
+                            <div class="col-6 form-group">
+                                <input type="text" class="form-control" placeholder="First Name"
+                                    (focusout)="handleFirstName($event)">
+                            </div>
+                            <div class="col-6 form-group">
+                                <input type="text" class="form-control" placeholder="LastName"
+                                    (focusout)="handleLastName($event)">
+                            </div>
+                        </div>
+                        <label *ngIf="!isEditInput">{{userDetails.firstName}} {{userDetails.lastName}} <sup
+                                class="delete_img" (click)="isEditInput = !isEditInput"
+                                style="margin-left: 0px !important;"><mat-icon
+                                    style="font-size: 14px;display: flex;align-items: center;justify-content: center;">edit</mat-icon></sup></label>
+                    </div>
+                    <div class="col-12 py-1 d-flex justify-content-start" style=" padding: 0px 10px 0px 30px;">
+                        <span style="font-size: 14px;">{{userDetails.userName}}</span>
+                    </div>
+                   
+                    <div class="col-12 py-1 d-flex justify-content-start" style=" padding: 0px 10px 0px 30px;">
+                        <div class="row">
+                            <div class="col-12 py-1 d-flex justify-content-start">
+                                <mat-icon>phone_iphone</mat-icon><span
+                                    style="position: relative; left: 10px;">{{userDetails.phoneNumber}}</span>
+                            </div>
+                            <div class="col-12 py-1 d-flex justify-content-start" >
+                                <mat-icon>mail</mat-icon><span
+                                    style="position: relative; left: 10px;">{{userDetails.emailId}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 py-2 d-flex justify-content-end" *ngIf="isEdit || isEditInput">
+                        <button type="button" class="btn btn-primary" (click)="fileUpload()">Save</button>
+                    </div>
+                    <!-- <div class="col-12 py-2 d-flex justify-content-end d-grid gap-2" *ngIf="isEditInput">
+                        <div>
+                            <button type="button"  class="btn btn-danger"  (click)="isEditInput = !isEditInput">Cancel</button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary" (click)="addCode()">Save</button>
+                        </div>
+                    </div> -->
+                </div>
+            </form>
+    </div>
+</div>

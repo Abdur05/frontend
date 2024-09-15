@@ -1,0 +1,314 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <app-loader *ngIf="isLoader"></app-loader>
+
+    <h2><mat-icon class="back" routerLink="/training/slide-list">arrow_back</mat-icon> Slide</h2>
+    <form [formGroup]="courseDetailFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 py-2"
+                        style="justify-content: center;display: flex;">
+                        <h5 for="">Course Title :</h5>
+                        <h5>&nbsp;{{courseDetailFormGroup.value.course_title}}</h5>
+                    </div>
+                    <div class="col-12 d-flex justify-content-end py-2" *ngIf="selectedModule">
+                        <button type="submit" class="btn btn-primary">{{isEdit ? 'Update' : 'Save'}} & Preview</button>
+                    </div>
+                    <div class="col-12 border">
+                        <div class="row">
+                            <div class="col-4 py-2 " style="height: 600px; overflow-y: scroll;">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <ng-container *ngFor="let course of courseDetail">
+                                            <div *ngFor="let module of course.courseModuleList">
+                                                <div class="module mb-3 shadow bg-white rounded">
+                                                    <strong class="text-center ">Module - {{ module.title
+                                                        }}</strong>
+                                                </div>
+
+                                                <!-- <div class="slide mt-2" style="position: relative;">
+
+                                                    <span class="text-name">Introduction<sup
+                                                            style="position: absolute; top: 0; right:-9px"><mat-icon
+                                                                style="font-size: 16px;cursor: pointer;">close</mat-icon></sup></span>
+                                                    <span class="button-move">move</span>
+                                                </div> -->
+                                                <div cdkDropList
+                                                    (cdkDropListDropped)="drop($event, module.courseSlideList)">
+                                                    <ng-container *ngFor="let slide of module.courseSlideList">
+                                                        <div class="shadow bg-white rounded" [ngClass]="{'selectSlider' : selecteSlider === slide.title}" cdkDrag>
+                                                            <div class="slide mt-2 ">
+                                                                <div class="slide " *cdkDragPlaceholder></div>
+                                                                <span class="text-name">{{slide.title}}</span><sup
+                                                                    style="position: absolute; top: 2px !important; right:0px; z-index: 1"><mat-icon
+                                                                        style="font-size: 24px;cursor: pointer;"
+                                                                        (click)="deleteSliderVerfiy(slide)">close</mat-icon></sup>
+                                                                <div class="buttons">
+                                                                    <button type="button" class="btn btn-primary"
+                                                                        (click)="previewSlider(slide)">Preview</button>
+                                                                    <button type="button" class="btn btn-success"
+                                                                        (click)="editSlider(slide)">Edit</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="w-100 text-center bg-warning p-1 text-white"
+                                                                style="opacity: 0.7; cursor: all-scroll;">Click here to
+                                                                move</div>
+                                                        </div>
+
+
+                                                    </ng-container>
+
+                                                </div>
+                                                <!-- <div > -->
+                                                <!-- <div cdkDropList (cdkDropListDropped)="drop($event)" >
+                                                        <div *ngFor="let slide of module.courseSlideList"  class="slide mt-2" cdkDrag
+                                                        style="position: relative;" >
+                                                        <span class="text-name">{{slide.title}}</span><sup
+                                                            style="position: absolute; top: 0; right:-9px"><mat-icon
+                                                                style="font-size: 16px;cursor: pointer;"
+                                                                (click)="deleteSliderVerfiy(slide)">close</mat-icon></sup>
+                                                        <span class="button-move">move</span>
+                                                        <div class="buttons">
+                                                            <button type="button" class="btn btn-primary"
+                                                                (click)="previewSlider(slide)">Preview</button>
+                                                            <button type="button" class="btn btn-success"
+                                                                (click)="editSlider(slide)">Edit</button>
+                                                        </div>
+                                                    </div>
+                                                    </div> -->
+                                                <!-- </div> -->
+
+
+                                                <div class="slide shadow bg-white rounded mt-2 mb-3">
+                                                    <span class="text-name-add"
+                                                        (click)="handleSidle(module, module.courseSlideList.length)">Add
+                                                        Slide</span>
+                                                </div>
+
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="row" *ngIf="previewSlide">
+                                    <div class="col-12">
+                                        <div class="row" *ngIf="previewSlide.content[0].type === 'Text'">
+                                            <div class="col-12 py-2 d-flex justify-content-center">
+                                                <strong class="text-center">{{previewSlide.title}}</strong>
+                                            </div>
+                                            <div class="col-12 py-2">
+                                                <p [innerHTML]="previewSlide.content[0].value"></p>
+                                            </div>
+                                        </div>
+                                        <div class="row" *ngIf="previewSlide.content[0].type === 'PDF / Image'">
+                                            <div class="col-12 py-2 d-flex justify-content-center">
+                                                <strong class="text-center">{{previewSlide.title}}</strong>
+                                            </div>
+                                            <div class="col-12 py-2">
+                                                <iframe style="width: 750px; height: 500px;" [src]="safeUrl"></iframe>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" *ngIf="previewSlide.content[0].type === 'YouTube Url'">
+                                            <div class="col-12 py-2 d-flex justify-content-center">
+                                                <strong class="text-center">{{previewSlide.title}}</strong>
+                                            </div>
+                                            <div class="col-12 py-2 d-flex justify-content-center">
+                                                <iframe style="width: 750px; height: 500px;" [src]="safeUrl"></iframe>
+
+                                                <!-- <a [href]="previewSlide.content[0].value" target="_blank">YouTube URL</a> -->
+                                            </div>
+                                        </div>
+
+                                        <div class="row" *ngIf="previewSlide.content[0].type === 'External Url'">
+                                            <div class="col-12 py-2 d-flex justify-content-center">
+                                                <strong class="text-center">{{previewSlide.title}}</strong>
+                                            </div>
+                                            <div class="col-12 py-2 d-flex justify-content-center">
+                                                <iframe style="width: 750px; height: 500px;" [src]="safeUrl"></iframe>
+                                                <!-- <a  [href]="previewSlide.content[0].value" target="_blank">External URL</a> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="selectedModule && !previewSlide">
+                                    <div class="col-12 mt-2 d-flex align-items-center" style="height: 50px;">
+
+                                        <div class="d-flex gap-5">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" formControlName="type"
+                                                    id="flexRadioDefault1" value="Text" (change)="selectType('Text')">
+                                                <label class="form-check-label"
+                                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;"
+                                                    for="flexRadioDefault1">
+                                                    Text
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" formControlName="type"
+                                                    id="flexRadioDefault2" value="PDF / Image"
+                                                    (change)="selectType('PDF / Image')">
+                                                <label class="form-check-label"
+                                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;"
+                                                    for="flexRadioDefault2">
+                                                    PDF / Image
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" formControlName="type"
+                                                    id="flexRadioDefault3" value="YouTube Url"
+                                                    (change)="selectType('YouTube Url')">
+                                                <label class="form-check-label"
+                                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;"
+                                                    for="flexRadioDefault3">
+                                                    YouTube Url
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" formControlName="type"
+                                                    id="flexRadioDefault4" value="External Url"
+                                                    (change)="selectType('External Url')">
+                                                <label class="form-check-label"
+                                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;"
+                                                    for="flexRadioDefault3">
+                                                    External Url
+                                                </label>
+                                            </div>
+                                            <!-- <div>
+                                                <span class="type-text" [ngClass]="{'select': selectedType === 'Text'}"
+                                                    (click)="selectType('Text')">Text</span>
+                                            </div>
+                                            <div>
+                                                <span class="type-text"
+                                                    [ngClass]="{'select': selectedType === 'PDF / Image'}"
+                                                    (click)="selectType('PDF / Image')">PDF / Image</span>
+                                            </div>
+                                            <div>
+                                                <span class="type-text"
+                                                    [ngClass]="{'select': selectedType === 'YouTube Url'}"
+                                                    (click)="selectType('YouTube Url')">YouTube Url</span>
+                                            </div>
+                                            <div>
+                                                <span class="type-text"
+                                                    [ngClass]="{'select': selectedType === 'External Url'}"
+                                                    (click)="selectType('External Url')">External Url</span>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-12 p-0">
+                                        <hr>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 py-2 ">
+                                        <select class="form-select d-none" (change)="handleFilterDetails($event)"
+                                            formControlName="courseModuleId">
+                                            <option [selected]="courseDetailFormGroup.value.courseModuleId === ''"
+                                                value="" hidden>
+                                                Select Module</option>
+                                            <ng-container *ngFor="let course of courseDetail">
+                                                <option *ngFor="let module of course.courseModuleList"
+                                                    [value]="module._id">
+                                                    {{module.title}}
+                                                </option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <div class="row" *ngIf="courseDetailFormGroup.value.type">
+                                            <div class="col-12 py-2">
+                                                <label for="title">Slide Title: </label>
+                                                <input type="text" class="form-control" formControlName="title">
+                                                <div
+                                                    *ngIf="courseDetailFormGroup.controls['title'].touched && courseDetailFormGroup.controls['title'].dirty && courseDetailFormGroup.controls['title'].hasError('required') && !isSubmitted">
+                                                    <p class="error-message">Slide Title is mandatory</p>
+                                                </div>
+                                                <div
+                                                    *ngIf="isSubmitted && courseDetailFormGroup.controls['title'].hasError('required')">
+                                                    <p class="error-message">Slide Title is mandatory</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 py-2">
+                                                <label for="title">Heading</label>
+                                                <input type="text" class="form-control" formControlName="heading">
+                                                <div
+                                                *ngIf="courseDetailFormGroup.controls['heading'].touched && courseDetailFormGroup.controls['heading'].dirty && courseDetailFormGroup.controls['heading'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">Heading is mandatory</p>
+                                            </div>
+                                            <div
+                                                *ngIf="isSubmitted && courseDetailFormGroup.controls['heading'].hasError('required')">
+                                                <p class="error-message">Heading is mandatory</p>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div formArrayName="content">
+                                            <ng-container
+                                                *ngFor="let list of courseDetailFormGroup.get('content')['controls']; let i = index;"
+                                                [formGroupName]="i">
+                                                <div class="row">
+                                                    <div class="col-12 py-2" *ngIf="list.value.type === 'Text'">
+                                                        <label>Text</label>
+                                                        <textarea class="form-control" rows="10"
+                                                            formControlName="value"></textarea>
+                                                    </div>
+                                                    <div class="col-12 py-2" *ngIf="list.value.type === 'YouTube Url'">
+                                                        <label>YouTube Url</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="YouTube Url" formControlName="value">
+                                                    </div>
+                                                    <div class="col-12 py-2" *ngIf="list.value.type === 'External Url'">
+                                                        <label>External Url</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="External Url" formControlName="value">
+
+                                                    </div>
+                                                    <div class="col-12 py-2" *ngIf="list.value.type === 'PDF / Image'">
+                                                        <label>Upload</label>
+                                                        <input type="file" class="form-control" #inputAccess
+                                                            (change)="handleUploadFile($event, inputAccess, 'file_path')">
+
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<!-- <div class="module"><label for=""> Module 1</label></div>
+                        <div class="slide" (click)="selectSlide('Module 1', 'Slide 1')">Slides 1
+                            <div class="buttons">
+                                <button class="btn btn-primary">Preview</button>
+                                <button class="btn btn-success">Update</button>
+                            </div>
+                        </div>
+                        <div class="slide" (click)="selectSlide('Module 1', 'Slide 2')">Slides 2
+                            <div class="buttons">
+                                <button class="btn btn-primary">Preview</button>
+                                <button class="btn btn-success">Update</button>
+                            </div>
+                        </div>
+                        <div class="module"><label for=""> Module 2</label></div>
+                        <div class="slide" (click)="selectSlide('Module 2', 'Slide 1')">Slides 1
+                            <div class="buttons">
+                                <button class="btn btn-primary">Preview</button>
+                                <button class="btn btn-success">Update</button>
+                            </div>
+                        </div>
+                        <div class="slide" (click)="selectSlide('Module 2', 'Slide 2')">Slides 2
+                            <div class="buttons">
+                                <button class="btn btn-primary">Preview</button>
+                                <button class="btn btn-success">Update</button>
+                            </div>
+                        </div> -->

@@ -1,0 +1,58 @@
+
+
+.back{
+    background-color: red;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;position: relative;
+    right: 6px;
+top:5px;
+}
+
+.upload_icon{
+    /* position: relative;
+    top: 5px; */
+    cursor: pointer;
+}
+
+.img-ava{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: contain;
+    border: var(--bs-border-width) solid var(--bs-border-color)
+}
+
+.upload_text{
+    cursor: pointer;
+    background: #00acff;
+    padding: 5px;
+    color: white;
+    border-radius: 7px;
+}
+
+.file-border{
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    appearance: none;
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    height: 140px;
+}
+
+
+.delete_img{
+    position: absolute;
+    background: red;
+    margin-left: 42px;
+    align-items: center;
+    height: -moz-fit-content;
+    height: fit-content;
+    border-radius: 50%;
+    color: white;
+}

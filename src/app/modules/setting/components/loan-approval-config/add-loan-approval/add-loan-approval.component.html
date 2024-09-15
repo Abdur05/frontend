@@ -1,0 +1,82 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/loan-approval-list">arrow_back</mat-icon> Loan Approval</h2>
+    <form [formGroup]="loanApprovalConfigFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Employee Type </label>
+                        <select class="form-select " aria-label="Default select example"
+                            formControlName="employeeTypeId">
+                            <option [selected]="loanApprovalConfigFormGroup.value.employeeTypeId === ''" value="">
+                                Select
+                                Employee Type</option>
+                            <option *ngFor="let list of empTypeDetail" [value]="list._id">{{list.employeeType}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Role </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="roleId">
+                            <option [selected]="loanApprovalConfigFormGroup.value.roleId === ''" value="">
+                                Select
+                                Role</option>
+                            <option *ngFor="let list of roleDetail" [value]="list._id">{{list.roleName}}
+                            </option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="row py-2">
+                    <div class="col-12">
+                        <div class="col-12 d-flex justify-content-end py-2">
+                            <button type="button" class="btn btn-primary" (click)="addDetail()">Add</button>
+                        </div>
+                        <table class="table table-hover ">
+
+                            <thead>
+                                <tr>
+                                    <th *ngIf="employeeTypeDetail.controls.length>1">Action</th>
+                                    <th>Stages</th>
+                                    <th>Approval Stages</th>
+                                </tr>
+                            </thead>
+                            <tbody formArrayName="approvalLevels">
+                                <tr *ngFor="let list of loanApprovalConfigFormGroup.get('approvalLevels')['controls'];let i=index"
+                                    [formGroupName]="i">
+                                    <td *ngIf="employeeTypeDetail.controls.length>1">
+                                        <mat-icon (click)="deleteRow(i)">delete</mat-icon>
+                                    </td>
+                                    <td style="width: 100px !important;"><input type="number" class="form-control "
+                                            [value]="i+1" readonly></td>
+                                    <td>
+                                        <!-- <input type="text" formControlName="employeeType" class="form-control"
+                                    placeholder="Enter Approval Stages"> -->
+                                        <select class="form-select " aria-label="Default select example"
+                                            formControlName="stages" (change)="handleRoleDetail($event)">
+                                            <option [selected]="loanApprovalConfigFormGroup.value.stages === ''"
+                                                value="">
+                                                Select
+                                                Approval Stages</option>
+                                            <option *ngFor="let list of roleDetail" [disabled]="list.disable"
+                                                [value]="list._id">{{list.roleName}}
+                                            </option>
+
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

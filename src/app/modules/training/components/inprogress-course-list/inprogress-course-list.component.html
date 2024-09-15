@@ -1,0 +1,38 @@
+<!-- <div class="container-fluid mt-3"> -->
+<!-- <div class="row"> -->
+<div class="col-12" [ngStyle]="{'height' : isLoader ? '100vh' : 'fit-content'}">
+    <app-loader *ngIf="isLoader"></app-loader>
+    <div class="row mx-0">
+        <ng-container *ngIf="assetDetails.length === 0">
+            <div class="col-12 d-flex justify-content-center align-items-center py-2" style="height: 500px;">
+                <span>No Record Found!</span>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="assetDetails.length !== 0">
+            <div class="col-12 col-sm-12 col-md-12 col-xl-4 col-lg-4 mt-5" *ngFor="let list of assetDetails; let i=index">
+                <mat-card class="example-card" appearance="outlined">
+                    <mat-card-header>
+                        <mat-card-title >{{list.courseDetails.course_title}}</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p class="py-2">{{list.courseDetails.description}}</p>
+                        <div class="row py-1">
+                            <div class="col-12">
+                                <span>Completion Percentage : </span><strong>&nbsp;
+                                    {{list.courseDetails.percentageCompletion}}</strong>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                    <mat-card-footer class="example-card-footer d-flex justify-content-end">
+    
+                        <mat-chip-set>
+                            <mat-chip style="cursor: pointer;" [routerLink]="'/training/view-course/' + list.courseDetails._id">View</mat-chip>
+                        </mat-chip-set>
+                    </mat-card-footer>
+                </mat-card>
+            </div>
+        </ng-container>
+    </div>
+</div>
+<!-- </div> -->
+<!-- </div> -->

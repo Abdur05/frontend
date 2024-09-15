@@ -1,0 +1,84 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/email-notification-list">arrow_back</mat-icon> Email Notification
+    </h2>
+
+    <form [formGroup]="emailNotificationFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Notification Id <sup>*</sup></label>
+                        <input type="text" formControlName="notificationId" class="form-control"
+                            placeholder="Enter Notification Id" maxlength="10">
+                        <div
+                            *ngIf="emailNotificationFormGroup.controls['notificationId'].touched && emailNotificationFormGroup.controls['notificationId'].dirty && emailNotificationFormGroup.controls['notificationId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Notification Id is mandatory</p>
+                        </div>
+                        <div
+                            *ngIf="isSubmitted && emailNotificationFormGroup.controls['notificationId'].hasError('required')">
+                            <p class="error-message">Notification Id is mandatory</p>
+                        </div>
+                        <!-- <div *ngIf="emailNotificationFormGroup.controls['notificationId'].hasError('minlength')">
+                    <p class="error-message">Must have 4 character</p>
+                </div>
+                <div *ngIf="emailNotificationFormGroup.controls['notificationId'].hasError('maxlength')">
+                    <p class="error-message">Must have 4 character</p>
+                </div> -->
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for=""> Description </label>
+                        <input type="text" formControlName="description" class="form-control"
+                            placeholder="Enter  Description" />
+
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for=""> Email Subject </label>
+                        <input type="text" formControlName="emailSubject" class="form-control"
+                            placeholder="Enter Email Subject" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 py-2">
+                            <label for=""> Email Content </label>
+                            <textarea formControlName="emailContent" class="form-control"
+                                placeholder="Enter Email Content" cols="30" rows="5"></textarea>
+                            <!-- <input type="text" /> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for=""> From Screen </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="fromScreen">
+                            <option [selected]="emailNotificationFormGroup.value.fromScreen === ''" value="" hidden>
+                                Select
+                                Screen Name</option>
+                            <option [ngClass]="{'d-none':list.disable === true}" *ngFor="let list of subScreenList"
+                                [value]="list.subMenuName">
+                                {{list.subMenuName}}</option>
+
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for=""> Send To </label>
+                        <ng-multiselect-dropdown class="form-control" style="border: none;" formControlName="sendTo"
+                            [placeholder]="'Send To'" [settings]="dropdownSettings" [data]="dropdownList">
+                        </ng-multiselect-dropdown>
+                    </div>
+                </div>
+
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+
+
+</div>

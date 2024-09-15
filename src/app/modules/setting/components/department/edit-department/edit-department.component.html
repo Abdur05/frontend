@@ -1,0 +1,75 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/department-list">arrow_back</mat-icon>Department</h2>
+    <form [formGroup]="departmentFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Department Id <sup>*</sup></label>
+                        <input type="text" formControlName="departmentId" class="form-control"
+                            placeholder="Enter Department Id" readonly>
+                        <div
+                            *ngIf="departmentFormGroup.controls['departmentId'].touched && departmentFormGroup.controls['departmentId'].dirty && departmentFormGroup.controls['departmentId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Department Id is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && departmentFormGroup.controls['departmentId'].hasError('required')">
+                            <p class="error-message">Department Id is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Department Name <sup>*</sup></label>
+                        <input type="text" formControlName="departmentName" class="form-control"
+                            placeholder="Enter Department Name">
+                        <div
+                            *ngIf="departmentFormGroup.controls['departmentName'].touched && departmentFormGroup.controls['departmentName'].dirty && departmentFormGroup.controls['departmentName'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Department Name is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && departmentFormGroup.controls['departmentName'].hasError('required')">
+                            <p class="error-message">Department Name is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Description </label>
+                        <input type="text" formControlName="description" class="form-control"
+                            placeholder="Enter Description" />
+                        <div
+                            *ngIf="departmentFormGroup.controls['description'].touched && departmentFormGroup.controls['description'].dirty && departmentFormGroup.controls['description'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Description is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && departmentFormGroup.controls['description'].hasError('required')">
+                            <p class="error-message">Description is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Head Of Department <sup>*</sup></label>
+                        <select class="form-select " aria-label="Default select example"
+                            formControlName="headofDepartment">
+                            <option [selected]="departmentFormGroup.value.headofDepartment === ''" value="" hidden>
+                                Select
+                                Head Of Department</option>
+                            <option *ngFor="let list of employeeDetail" [value]="list.employeeId">{{list.employeeId}}
+                                &nbsp;
+                                -
+                                {{list.firstName}}</option>
+                        </select>
+                        <div
+                            *ngIf="departmentFormGroup.controls['headofDepartment'].touched && departmentFormGroup.controls['headofDepartment'].dirty && departmentFormGroup.controls['headofDepartment'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Head Of Department is mandatory</p>
+                        </div>
+                        <div
+                            *ngIf="isSubmitted && departmentFormGroup.controls['headofDepartment'].hasError('required')">
+                            <p class="error-message">Head Of Department is mandatory</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

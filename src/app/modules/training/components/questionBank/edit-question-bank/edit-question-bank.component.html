@@ -1,0 +1,148 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/training/question-list">arrow_back</mat-icon> Question Bank</h2>
+    <form [formGroup]="questionFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Course Id <sup>*</sup></label>
+                        <select class="form-select" aria-label="Default select example" formControlName="courseId"
+                            (change)="handleCourse($event)">
+                            <option [selected]="questionFormGroup.value.courseId === ''" value="" hidden>
+                                Select
+                                Course Id</option>
+                            <option *ngFor="let list of courseDetail" [value]="list._id">{{list.course_title}}</option>
+                        </select>
+                        <div
+                            *ngIf="questionFormGroup.controls['courseId'].touched && questionFormGroup.controls['courseId'].dirty && questionFormGroup.controls['courseId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Course Id is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && questionFormGroup.controls['courseId'].hasError('required')">
+                            <p class="error-message">Course Id is mandatory</p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Module Id <sup>*</sup></label>
+                        <select class="form-select" aria-label="Default select example"
+                            formControlName="courseModuleId">
+                            <option [selected]="questionFormGroup.value.courseModuleId === ''" value="" hidden>
+                                Select
+                                Module Id</option>
+                            <option *ngFor="let list of moduleDetails" [value]="list._id">{{list.title}}</option>
+                        </select>
+                        <div
+                            *ngIf="questionFormGroup.controls['courseModuleId'].touched && questionFormGroup.controls['courseModuleId'].dirty && questionFormGroup.controls['courseModuleId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Module Id is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && questionFormGroup.controls['courseModuleId'].hasError('required')">
+                            <p class="error-message">Module Id is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Question Type <sup>*</sup></label>
+                        <select class="form-select" aria-label="Default select example" formControlName="question_type"
+                            (change)="handleQuestionType()">
+                            <option [selected]="questionFormGroup.value.question_type === ''" value="" hidden>
+                                Select
+                                Question Type</option>
+                            <option *ngFor="let list of questionTypeList" [value]="list">{{list}}</option>
+                        </select>
+                        <div
+                            *ngIf="questionFormGroup.controls['question_type'].touched && questionFormGroup.controls['question_type'].dirty && questionFormGroup.controls['question_type'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Question Type is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && questionFormGroup.controls['question_type'].hasError('required')">
+                            <p class="error-message">Question Type is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Question <sup>*</sup> </label>
+                        <textarea formControlName="question" style="height: 10px;" class="form-control"
+                            placeholder="Enter  Question"></textarea>
+                        <div
+                            *ngIf="questionFormGroup.controls['question'].touched && questionFormGroup.controls['question'].dirty && questionFormGroup.controls['question'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Question is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && questionFormGroup.controls['question'].hasError('required')">
+                            <p class="error-message">Question is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12" formArrayName="options">
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-end">
+                                <button type="button" class="btn btn-primary" (click)="addOptions()">Add
+                                    Options</button>
+                            </div>
+                            <div class="col-12">
+                                <div class="row">
+
+
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2 mt-4"
+                                        *ngFor="let list of questionFormGroup.get('options')['controls']; let i = index;"
+                                        [formGroupName]="i">
+                                        <div class="input-group"
+                                            *ngIf="questionFormGroup.value.question_type === 'MCQ-single'">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"
+                                                    style="padding: 0.70rem 0.75rem !important; border-radius: 0 !important;"
+                                                    id="btnGroupAddon">
+                                                    <input class="form-check-input" tabindex="-1" type="radio"
+                                                        [checked]="list.value.correct_answer" name="flexRadioDefault"
+                                                        id="flexRadioDefault{{i}}" (change)="correctAnswer($event,i)">
+                                                </div>
+                                            </div>
+                                            <input type="text" class="form-control" placeholder="option"
+                                                aria-describedby="btnGroupAddon" formControlName="option">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" *ngIf="optinalController.controls.length > 1" style="padding: 7px 7px !important; border-radius: 0 !important;"
+                                                id="basic-addon2"><mat-icon (click)="removeOptions(i)">delete</mat-icon></span>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="input-group"
+                                            *ngIf="questionFormGroup.value.question_type === 'MCQ-multiple'">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"
+                                                    style="padding: 0.70rem 0.75rem !important; border-radius: 0 !important;"
+                                                    id="btnGroupAddon">
+                                                    <input class="form-check-input" tabindex="-1" type="checkbox"
+                                                        (change)="handleCheckAnswer($event, i)" name="flexRadioDefault"
+                                                        id="flexRadioDefault{{i}}"
+                                                        [checked]="list.value.correct_answer">
+                                                </div>
+                                            </div>
+                                            <input type="text" class="form-control" placeholder="option"
+                                                aria-describedby="btnGroupAddon" formControlName="option">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" *ngIf="optinalController.controls.length > 1" style="padding: 7px 7px !important; border-radius: 0 !important;"
+                                                    id="basic-addon2"><mat-icon (click)="removeOptions(i)" >delete</mat-icon></span>
+                                            </div>
+
+                                        </div>
+                                        <div
+                                            *ngIf="list.controls['option'].touched && list.controls['option'].dirty && list.controls['option'].hasError('required') && !isSubmitted">
+                                            <p class="error-message">Option is mandatory</p>
+                                        </div>
+                                        <div *ngIf="isSubmitted && list.controls['option'].hasError('required')">
+                                            <p class="error-message">Option is mandatory</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

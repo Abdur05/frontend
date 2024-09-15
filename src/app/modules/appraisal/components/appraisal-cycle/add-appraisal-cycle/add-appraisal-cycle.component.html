@@ -1,0 +1,678 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/appraisal/appraisal-cycle-list">arrow_back</mat-icon>Appraisal Cycle
+    </h2>
+
+    <form [formGroup]="skillFormGroup">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Appraisal Name <sup>*</sup></label>
+                        <input type="text" formControlName="appraisalName" class="form-control"
+                            placeholder="Appraisal Name" />
+                        <div
+                            *ngIf="skillFormGroup.controls['appraisalName'].touched && skillFormGroup.controls['appraisalName'].dirty && skillFormGroup.controls['appraisalName'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Appraisal Name is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && skillFormGroup.controls['appraisalName'].hasError('required')">
+                            <p class="error-message">Appraisal Name is mandatory</p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Appraisal Cycle Period <sup>*</sup></label>
+                        <input type="text" [bsValue]="bsValueRange" class="form-control" bsDaterangepicker
+                            placeholder="Appraisal Cycle Period" (bsValueChange)="onValueChange($event)" />
+                        <!-- <div
+                    *ngIf="skillFormGroup.controls['dates'].touched && skillFormGroup.controls['dates'].dirty && skillFormGroup.controls['dates'].hasError('required') && !isSubmitted">
+                    <p class="error-message">Appraisal Cycle Period is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && skillFormGroup.controls['dates'].hasError('required')">
+                    <p class="error-message">Appraisal Cycle Period is mandatory</p>
+                </div> -->
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Description <sup>*</sup></label>
+                        <input type="text" formControlName="description" class="form-control"
+                            placeholder="Description" />
+                        <div
+                            *ngIf="skillFormGroup.controls['description'].touched && skillFormGroup.controls['description'].dirty && skillFormGroup.controls['description'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Description is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && skillFormGroup.controls['description'].hasError('required')">
+                            <p class="error-message">Description is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <div class="row">
+                            <div class="col-12 py-2">
+                                <section class="file-border">
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-center py-1"
+                                            style="position: relative;">
+                                            <img class="img-ava"
+                                                [src]="imageSrc?imageSrc:'/assets/logs/profile.png'"><sup
+                                                class="delete_img" (click)="deletePerview()" *ngIf="imageSrc"><mat-icon
+                                                    style="font-size: 20px;display: flex;align-items: center;justify-content: center;">delete</mat-icon></sup>
+
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-center py-1">
+                                            <span (click)="uploadFile(inputFile,'log')" class="upload_text">
+                                                Choose Guideline Document</span>
+                                            <input type="file" #inputFile class="d-none"
+                                                (change)="handleUploadFile($event)">
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 py-2" formGroupName="appraisalProcessConfigurationDetails">
+                        <fieldset class="border p-2">
+                            <legend class="float-none w-auto"><label>Appraisal Process Configuration Details</label>
+                            </legend>
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                                    <Label>Process Period</Label>
+                                    <input type="text" placeholder="Process Period" class="form-control"
+                                        bsDaterangepicker [bsValue]="bsValueRange"
+                                        (bsValueChange)="onValueProcessPeriod($event)">
+                                    <div
+                                        *ngIf="skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['processPeriod'].touched && skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['processPeriod'].dirty && skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['processPeriod'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Process Period is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['processPeriod'].hasError('required')">
+                                        <p class="error-message">Process Period is mandatory</p>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-12 col-sm-12 col-md-6 col-xl-6 col-lg-6 d-flex justify-content-start py-2 mt-4">
+                                    <Label>Self Appraisal</Label>
+                                    <input type="checkbox" id="1" style="position: relative; left: 16px; top:-4px"
+                                        formControlName="selfAppraisal">
+                                    <div
+                                        *ngIf="skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['selfAppraisal'].touched && skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['selfAppraisal'].dirty && skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['selfAppraisal'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Self Appraisal is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['selfAppraisal'].hasError('required')">
+                                        <p class="error-message">Self Appraisal is mandatory</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2"
+                                    *ngIf="skillFormGroup.get('appraisalProcessConfigurationDetails.selfAppraisal').value">
+                                    <Label>Self Appraisal Period</Label>
+
+                                    <input type="text" placeholder="Self Appraisal Period" class="form-control"
+                                        bsDaterangepicker [bsValue]="bsValueRange"
+                                        (bsValueChange)="onValueSelfAppraisal($event)">
+                                    <div
+                                        *ngIf="skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['selfAppraisalPeriod'].touched && skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['selfAppraisalPeriod'].dirty && skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['selfAppraisalPeriod'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Self Appraisal Period is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['selfAppraisalPeriod'].hasError('required')">
+                                        <p class="error-message">Self Appraisal Period is mandatory</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                                    <Label>Review Period</Label>
+
+                                    <input type="text" placeholder="Review Period" class="form-control"
+                                        bsDaterangepicker [bsValue]="bsValueRange"
+                                        (bsValueChange)="onValueReviewPeriod($event)">
+                                    <div
+                                        *ngIf="skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['reviewPeriod'].touched && skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['reviewPeriod'].dirty && skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['reviewPeriod'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Review Period is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['reviewPeriod'].hasError('required')">
+                                        <p class="error-message">Review Period is mandatory</p>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-12 col-sm-12 col-md-6 col-xl-6 col-lg-6 d-flex justify-content-start py-2 mt-4">
+                                    <Label>Salary Hike</Label>
+                                    <input type="checkbox" id="1" style="position: relative; left: 16px; top:-4px"
+                                        [checked]="skillFormGroup.value.appraisalProcessConfigurationDetails.salaryHike === 'Y'">
+                                </div>
+
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                                    <Label>Normalization Period</Label>
+
+                                    <input type="text" placeholder="Normalization Period" class="form-control"
+                                        bsDaterangepicker [bsValue]="bsValueRange"
+                                        (bsValueChange)="onValueNormalizationPeriod($event)">
+                                    <div
+                                        *ngIf="skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['normalizationPeriod'].touched && skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['normalizationPeriod'].dirty && skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['normalizationPeriod'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Normalization Period is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && skillFormGroup.controls.appraisalProcessConfigurationDetails.controls['normalizationPeriod'].hasError('required')">
+                                        <p class="error-message">Normalization Period is mandatory</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+
+                    <div class="col-12 py-2" formGroupName="moduleRating">
+                        <fieldset class="border p-2">
+                            <legend class="float-none w-auto"><label>Module Rating</label></legend>
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                                    <Label>Rating Type</Label>
+                                    <select class="form-select" aria-label="Default select example"
+                                        formControlName="ratingType">
+                                        <option [selected]="skillFormGroup.value.moduleRating.ratingType === ''"
+                                            value="" hidden>
+                                            Select
+                                            Rating Type </option>
+                                        <option [selected]="skillFormGroup.value.moduleRating.ratingType === 'Star'"
+                                            value="Star">
+                                            Star</option>
+                                        <option [selected]="skillFormGroup.value.moduleRating.ratingType === 'Number'"
+                                            value="Number">
+                                            Number</option>
+                                        <option [selected]="skillFormGroup.value.moduleRating.ratingType === 'Text'"
+                                            value="Text">
+                                            Text </option>
+
+                                    </select>
+
+                                    <div
+                                        *ngIf="skillFormGroup.get('moduleRating').controls['ratingType'].touched && skillFormGroup.get('moduleRating').controls['ratingType'].dirty && skillFormGroup.get('moduleRating').controls['ratingType'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Rating Type is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && skillFormGroup.get('moduleRating').controls['ratingType'].hasError('required')">
+                                        <p class="error-message">Rating Type is mandatory</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-12 col-md-6 col-xl-6 col-lg-6  py-2">
+                                    <Label>Decimal Points in Score</Label>
+                                    <select class="form-select" aria-label="Default select example"
+                                        formControlName="decimalPointsScore">
+                                        <option [selected]="skillFormGroup.value.moduleRating.decimalPointsScore === ''"
+                                            value="" hidden>
+                                            Select
+                                            Decimal Point in Score</option>
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                    </select>
+                                    <!-- <input type="number" min="0" id="1" class="form-control"
+                                formControlName="decimalPointsScore"> -->
+                                    <div
+                                        *ngIf="skillFormGroup.get('moduleRating').controls['decimalPointsScore'].touched && skillFormGroup.get('moduleRating').controls['decimalPointsScore'].dirty && skillFormGroup.get('moduleRating').controls['decimalPointsScore'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Decimal Point Score is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && skillFormGroup.get('moduleRating').controls['decimalPointsScore'].hasError('required')">
+                                        <p class="error-message">Decimal Point Score is mandatory</p>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                            <Label>Final Score</Label>
+                            <input type="number" min="0" id="1" class="form-control" formControlName="finalScore"
+                                placeholder="Final Score">
+                            <div
+                                *ngIf="skillFormGroup.get('moduleRating').controls['finalScore'].touched && skillFormGroup.get('moduleRating').controls['finalScore'].dirty && skillFormGroup.get('moduleRating').controls['finalScore'].hasError('required') && !isSubmitted">
+                                <p class="error-message">Final Score is mandatory</p>
+                            </div>
+                            <div
+                                *ngIf="isSubmitted && skillFormGroup.get('moduleRating').controls['finalScore'].hasError('required')">
+                                <p class="error-message">Final Score is mandatory</p>
+                            </div>
+                        </div> -->
+
+                                <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                                    <label for="ReferenceType">Final Score</label>
+                                    <div class="d-flex mt-2 d-grid gap-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" formControlName="finalScore"
+                                                value="es">
+                                            <label class="form-check-label"
+                                                style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                                Actual Score
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" formControlName="finalScore"
+                                                value="ds">
+                                            <label class="form-check-label"
+                                                style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                                Round-off Score
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-12 py-2" formGroupName="ratingScoreRange">
+                        <fieldset class="border p-2">
+                            <legend class="float-none w-auto"><label>Rating Score Range</label></legend>
+                            <div class="row">
+                                <div
+                                    class="col-12 col-sm-12 col-md-12 col-xl-12 col-lg-12 d-flex justify-content-start py-2">
+                                    <Label>Lock Rating</Label>
+                                    <input type="checkbox" id="1" style="position: relative; left: 16px; top:-4px"
+                                        [checked]="skillFormGroup.value.ratingScoreRange.lockRating === 1"
+                                        (change)="handleCheckBox1($event, 'lockRating')">
+                                    <div
+                                        *ngIf="skillFormGroup.controls.ratingScoreRange.controls['lockRating'].touched && skillFormGroup.controls.ratingScoreRange.controls['lockRating'].dirty && skillFormGroup.controls.ratingScoreRange.controls['lockRating'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Lock Rating is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && skillFormGroup.controls.ratingScoreRange.controls['lockRating'].hasError('required')">
+                                        <p class="error-message">Lock Rating is mandatory</p>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <mat-card class="mb-2">
+                                                <mat-card-content>
+                                                    <div class="row">
+                                                        <div class="col-5">
+                                                            <span
+                                                                *ngIf="indexValue1 === ''">{{skillFormGroup.value.ratingScoreRange.rateingField1}}</span>
+                                                            <input class="form-control" placeholder="Outstanding"
+                                                                type="text" *ngIf="indexValue1 === 1"
+                                                                formControlName="rateingField1">
+                                                        </div>
+                                                        <div class="col-1 d-flex justify-content-center">
+                                                            <p class="vertical-line" *ngIf="indexValue1 === ''">
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-5">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <span
+                                                                        *ngIf="indexValue1 === ''">{{skillFormGroup.value.ratingScoreRange.rateingField2}}</span>
+                                                                    <input class="form-control" placeholder="Rating"
+                                                                        type="number" *ngIf="indexValue1 === 1"
+                                                                        formControlName="rateingField2">
+
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <span
+                                                                        *ngIf="indexValue1 === ''">{{skillFormGroup.value.ratingScoreRange.rateingField3}}</span>
+
+                                                                    <input class="form-control" placeholder="Rating"
+                                                                        type="number" *ngIf="indexValue1 === 1"
+                                                                        formControlName="rateingField3">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-1 d-flex justify-content-center d-grid gap-2">
+                                                            <div *ngIf="indexValue1 === ''">
+                                                                <mat-icon *ngIf="indexValue1 === ''"
+                                                                    (click)="indexValue1 = (indexValue1 === 1 ? '' : 1)">edit</mat-icon>
+                                                            </div>
+                                                            <div *ngIf="indexValue1 === 1" class="mt-2">
+                                                                <mat-icon *ngIf="indexValue1 === 1"
+                                                                    (click)="indexValue1 = ''">done</mat-icon>
+
+                                                            </div>
+                                                            <div *ngIf="indexValue1 === 1">
+                                                                <mat-icon *ngIf="indexValue1 === 1"
+                                                                    (click)="indexValue1 = ''">minimize</mat-icon>
+
+                                                            </div>
+
+
+                                                        </div>
+
+
+                                                    </div>
+                                                </mat-card-content>
+                                            </mat-card>
+                                            <mat-card class="mb-2">
+                                                <mat-card-content>
+                                                    <div class="row">
+                                                        <div class="col-5">
+                                                            <span
+                                                                *ngIf="indexValue2 === ''">{{skillFormGroup.value.ratingScoreRange.rateingField21}}</span>
+                                                            <input class="form-control" placeholder="Outstanding"
+                                                                type="text" *ngIf="indexValue2 === 1"
+                                                                formControlName="rateingField21">
+                                                        </div>
+                                                        <div class="col-1 d-flex justify-content-center">
+                                                            <p class="vertical-line" *ngIf="indexValue2 === ''">
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-5">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <span
+                                                                        *ngIf="indexValue2 === ''">{{skillFormGroup.value.ratingScoreRange.rateingField22}}</span>
+                                                                    <input class="form-control" placeholder="Rating"
+                                                                        type="number" *ngIf="indexValue2 === 1"
+                                                                        formControlName="rateingField22">
+
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <span
+                                                                        *ngIf="indexValue2 === ''">{{skillFormGroup.value.ratingScoreRange.rateingField23}}</span>
+
+                                                                    <input class="form-control" placeholder="Rating"
+                                                                        type="number" *ngIf="indexValue2 === 1"
+                                                                        formControlName="rateingField23">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-1 d-flex justify-content-center d-grid gap-2">
+                                                            <div *ngIf="indexValue2 === ''">
+                                                                <mat-icon *ngIf="indexValue2 === ''"
+                                                                    (click)="indexValue2 = (indexValue2 === 1 ? '' : 1)">edit</mat-icon>
+                                                            </div>
+                                                            <div *ngIf="indexValue2 === 1" class="mt-2">
+                                                                <mat-icon *ngIf="indexValue2 === 1"
+                                                                    (click)="indexValue2 = ''">done</mat-icon>
+
+                                                            </div>
+                                                            <div *ngIf="indexValue2 === 1">
+                                                                <mat-icon *ngIf="indexValue2 === 1"
+                                                                    (click)="indexValue2 = ''">minimize</mat-icon>
+
+                                                            </div>
+
+
+                                                        </div>
+
+
+                                                    </div>
+                                                </mat-card-content>
+                                            </mat-card>
+                                            <mat-card class="mb-2">
+                                                <mat-card-content>
+                                                    <div class="row">
+                                                        <div class="col-5">
+                                                            <span
+                                                                *ngIf="indexValue3 === ''">{{skillFormGroup.value.ratingScoreRange.rateingField31}}</span>
+                                                            <input class="form-control" placeholder="Outstanding"
+                                                                type="text" *ngIf="indexValue3 === 1"
+                                                                formControlName="rateingField31">
+                                                        </div>
+                                                        <div class="col-1 d-flex justify-content-center">
+                                                            <p class="vertical-line" *ngIf="indexValue3 === ''">
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-5">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <span
+                                                                        *ngIf="indexValue3 === ''">{{skillFormGroup.value.ratingScoreRange.rateingField32}}</span>
+                                                                    <input class="form-control" placeholder="Rating"
+                                                                        type="number" *ngIf="indexValue3 === 1"
+                                                                        formControlName="rateingField32">
+
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <span
+                                                                        *ngIf="indexValue3 === ''">{{skillFormGroup.value.ratingScoreRange.rateingField33}}</span>
+
+                                                                    <input class="form-control" placeholder="Rating"
+                                                                        type="number" *ngIf="indexValue3 === 1"
+                                                                        formControlName="rateingField33">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-1 d-flex justify-content-center d-grid gap-2">
+                                                            <div *ngIf="indexValue3 === ''">
+                                                                <mat-icon *ngIf="indexValue3 === ''"
+                                                                    (click)="indexValue3 = (indexValue3 === 1 ? '' : 1)">edit</mat-icon>
+                                                            </div>
+                                                            <div *ngIf="indexValue3 === 1" class="mt-2">
+                                                                <mat-icon *ngIf="indexValue3 === 1"
+                                                                    (click)="indexValue3 = ''">done</mat-icon>
+
+                                                            </div>
+                                                            <div *ngIf="indexValue3 === 1">
+                                                                <mat-icon *ngIf="indexValue3 === 1"
+                                                                    (click)="indexValue3 = ''">minimize</mat-icon>
+
+                                                            </div>
+
+
+                                                        </div>
+
+
+                                                    </div>
+                                                </mat-card-content>
+                                            </mat-card>
+                                            <mat-card class="mb-2">
+                                                <mat-card-content>
+                                                    <div class="row">
+                                                        <div class="col-5">
+                                                            <span
+                                                                *ngIf="indexValue4 === ''">{{skillFormGroup.value.ratingScoreRange.rateingField41}}</span>
+                                                            <input class="form-control" placeholder="Outstanding"
+                                                                type="text" *ngIf="indexValue4 === 1"
+                                                                formControlName="rateingField41">
+                                                        </div>
+                                                        <div class="col-1 d-flex justify-content-center">
+                                                            <p class="vertical-line" *ngIf="indexValue4 === ''">
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-5">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <span
+                                                                        *ngIf="indexValue4 === ''">{{skillFormGroup.value.ratingScoreRange.rateingField42}}</span>
+                                                                    <input class="form-control" placeholder="Rating"
+                                                                        type="number" *ngIf="indexValue4 === 1"
+                                                                        formControlName="rateingField42">
+
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <span
+                                                                        *ngIf="indexValue4 === ''">{{skillFormGroup.value.ratingScoreRange.rateingField43}}</span>
+
+                                                                    <input class="form-control" placeholder="Rating"
+                                                                        type="number" *ngIf="indexValue4 === 1"
+                                                                        formControlName="rateingField43">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-1 d-flex justify-content-center d-grid gap-2">
+                                                            <div *ngIf="indexValue4 === ''">
+                                                                <mat-icon *ngIf="indexValue4 === ''"
+                                                                    (click)="indexValue4 = (indexValue4 === 1 ? '' : 1)">edit</mat-icon>
+                                                            </div>
+                                                            <div *ngIf="indexValue4 === 1" class="mt-2">
+                                                                <mat-icon *ngIf="indexValue4 === 1"
+                                                                    (click)="indexValue4 = ''">done</mat-icon>
+
+                                                            </div>
+                                                            <div *ngIf="indexValue4 === 1">
+                                                                <mat-icon *ngIf="indexValue4 === 1"
+                                                                    (click)="indexValue4 = ''">minimize</mat-icon>
+
+                                                            </div>
+
+
+                                                        </div>
+
+
+                                                    </div>
+                                                </mat-card-content>
+                                            </mat-card>
+                                            <mat-card class="mb-2">
+                                                <mat-card-content>
+                                                    <div class="row">
+                                                        <div class="col-5">
+                                                            <span
+                                                                *ngIf="indexValue5 === ''">{{skillFormGroup.value.ratingScoreRange.rateingField51}}</span>
+                                                            <input class="form-control" placeholder="Outstanding"
+                                                                type="text" *ngIf="indexValue5 === 1"
+                                                                formControlName="rateingField51">
+                                                        </div>
+                                                        <div class="col-1 d-flex justify-content-center">
+                                                            <p class="vertical-line" *ngIf="indexValue5 === ''">
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-5">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <span
+                                                                        *ngIf="indexValue5 === ''">{{skillFormGroup.value.ratingScoreRange.rateingField52}}</span>
+                                                                    <input class="form-control" placeholder="Rating"
+                                                                        type="number" *ngIf="indexValue5 === 1"
+                                                                        formControlName="rateingField52">
+
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <span
+                                                                        *ngIf="indexValue5 === ''">{{skillFormGroup.value.ratingScoreRange.rateingField53}}</span>
+
+                                                                    <input class="form-control" placeholder="Rating"
+                                                                        type="number" *ngIf="indexValue5 === 1"
+                                                                        formControlName="rateingField53">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-1 d-flex justify-content-center d-grid gap-2">
+                                                            <div *ngIf="indexValue5 === ''">
+                                                                <mat-icon *ngIf="indexValue5 === ''"
+                                                                    (click)="indexValue5 = (indexValue5 === 1 ? '' : 1)">edit</mat-icon>
+                                                            </div>
+                                                            <div *ngIf="indexValue5 === 1" class="mt-2">
+                                                                <mat-icon *ngIf="indexValue5 === 1"
+                                                                    (click)="indexValue5 = ''">done</mat-icon>
+
+                                                            </div>
+                                                            <div *ngIf="indexValue5 === 1">
+                                                                <mat-icon *ngIf="indexValue5 === 1"
+                                                                    (click)="indexValue5 = ''">minimize</mat-icon>
+
+                                                            </div>
+
+
+                                                        </div>
+
+
+                                                    </div>
+                                                </mat-card-content>
+                                            </mat-card>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+
+                    <div class="col-12 py-2">
+                        <fieldset class="border p-2">
+                            <legend class="float-none w-auto"><label>Reviewers</label></legend>
+
+                            <div class="row" formArrayName="reviewers">
+                                <div class="col-12"
+                                    *ngFor="let list of skillFormGroup.get('reviewers')['controls']; let i = index;"
+                                    [formGroupName]="i">
+                                    <mat-card class="mb-2 mt-2">
+                                        <mat-card-content>
+                                            <div class="row">
+                                                <div class="col-11 col-sm-11 col-md-11 col-lg-5 col-xl-5 py-2">
+                                                    <select class="form-select" aria-label="Default select example"
+                                                        formControlName="basedOn">
+                                                        <option [selected]="list.value.basedOn === ''" value="" hidden>
+                                                            Select
+                                                        </option>
+                                                        <option [selected]="list.value.basedOn === 'Reporting To'"
+                                                            value="Reporting To">
+                                                            Reporting To</option>
+                                                        <option [selected]="list.value.basedOn === 'Employee'"
+                                                            value="Employee">
+                                                            Employee</option>
+
+
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-11 col-sm-11 col-md-11 col-lg-5 col-xl-5 py-2">
+                                                    <select class="form-select" aria-label="Default select example"
+                                                        formControlName="tagTo">
+                                                        <option [selected]="list.value.tagTo === ''" value="" hidden>
+                                                            Select
+                                                        </option>
+                                                        <option [selected]="list.value.tagTo === 'Single Level'"
+                                                            value="Single Level">
+                                                            Single Level</option>
+                                                        <option [selected]="list.value.tagTo === 'Employee Name'"
+                                                            value="Employee Name">
+                                                            Employee Name</option>
+
+
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-1">
+                                                    <div class="row">
+                                                        <div class="col-12 d-flex d-grid gap-2">
+                                                            <div style="position: relative; top: 5px;">
+                                                                <mat-icon (click)="addReviewers()">add</mat-icon>
+
+                                                            </div>
+                                                            <div>
+                                                                <mat-icon
+                                                                    (click)="removeReviewers(i)">minimize</mat-icon>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </mat-card-content>
+                                    </mat-card>
+
+                                </div>
+                            </div>
+                        </fieldset>
+
+                    </div>
+
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="button" class="btn btn-primary" (click)="fileUpload()">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+
+
+</div>

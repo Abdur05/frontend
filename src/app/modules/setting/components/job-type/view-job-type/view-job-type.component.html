@@ -1,0 +1,32 @@
+<div class="container-fluid ">
+    <div class="row">
+        <div class="col-12 d-flex justify-content-end  ">
+            <mat-icon (click)="close()">close</mat-icon>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center py-2 ">
+            <h3>Job Type</h3>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-12 py-2">
+            <div class="row border mx-0">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+
+                    <label for="">Job Type </label><br>
+                    <span>{{jobTypeDetails.jobType}}</span>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                    <label for="">Description </label><br>
+                    <span>{{jobTypeDetails.description ? jobTypeDetails.description : '-' }}</span>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

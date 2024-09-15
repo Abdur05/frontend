@@ -1,0 +1,574 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back">arrow_back</mat-icon> General Setting Maintenance</h2>
+
+    <form [formGroup]="generalSettingFormFroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Effective From <sup>*</sup></label>
+                        <input type="date" formControlName="effectiveForm" class="form-control">
+                        <div
+                            *ngIf="generalSettingFormFroup.controls['effectiveForm'].touched && generalSettingFormFroup.controls['effectiveForm'].dirty && generalSettingFormFroup.controls['effectiveForm'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Effective From is mandatory</p>
+                        </div>
+                        <div
+                            *ngIf="isSubmitted && generalSettingFormFroup.controls['effectiveForm'].hasError('required')">
+                            <p class="error-message">Effective From is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Default Shift Time </label>
+                        <!-- <input type="text" formControlName="description" class="form-control"
+                    placeholder="Enter Reason Description" /> -->
+                        <select class="form-select" formControlName="defaultShiftTime">
+                            <option value="">Select Default Shift Time</option>
+                            <option value="General">General</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Scale View :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="scaleView" value="es">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Enable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="scaleView" value="ds">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Disable
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                            <label for="">Working Hours</label>
+                            <hr style="width: 210%;">
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Total Hours Calculation :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="totalHours" value="f">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    First Check-in & Last Check-out
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="totalHours" value="e">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Every Valid Check-in & Last Check-out
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Minimum Hours Required for day :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="minHours" value="s">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Strict-Mode
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="minHours" value="l">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Lanient Mode(Expected Hours)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 border ">
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="manualInput" value="m">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Manual Input
+                                </label>
+                            </div>
+                            <div class="form-check ">
+                                <input class="form-check-input" type="radio" formControlName="manualInput" value="s">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Shift Hours
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="">Full Day</label>
+                            </div>
+                            <div class="col-6">
+                                <input type="time" class="form-control " formControlName="fullDay">
+
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <label for="">Half Day</label>
+                            </div>
+                            <div class="col-6">
+                                <input type="time" class="form-control " formControlName="halfDay">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                            <input type="checkbox" formControlName="showOvertime" id="">
+                            <label for="" class="p-1">Show OverTime/Deviation</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                            <label for="">Pay Days/Hours Calculation</label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Include Weekend :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="weekend" value="ew">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Enable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="weekend" value="dw">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Disable
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Include Holiday :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="holiday" value="eh">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Enable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="holiday" value="dh">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Disable
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Include Leave :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="leave" value="el">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Enable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="leave" value="dl">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Disable
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Carry Overbalance Hours in overtime report :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="carryOverbalance"
+                                    value="ec">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Enable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="carryOverbalance"
+                                    value="dc">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Disable
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 py-2 ">
+                        <label for="">Late Night Work Hours</label>
+                        <p>For each location, define a period of time to track late night work hours. Late night work
+                            hours will
+                            be tracked separatelyto facilitate separate pay calculation</p>
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                                <input type="checkbox" formControlName="enableTracking" id="">
+                                <label for="" class="p-1">Enable Tracking</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Web check-in/Check-out :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="webcheck" value="ew">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Enable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="webcheck" value="dw">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Disable
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Mobile check-in/Check-out :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="mobileCheck" value="em">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Enable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="mobileCheck" value="dm">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Disable
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Make Location sharing mandatory :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="makeLocation" value="wc">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Web check-in/Check-out
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="makeLocation" value="mc">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Mobile check-in/Check-out
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Show All check-in/Check-out entries:</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="showAllEntriesEnable"
+                                    value="es">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Enable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="showAllEntriesEnable"
+                                    value="ds">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Disable
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">View their reportees entries :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="viewTheirEntries"
+                                    value="ev">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Enable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="viewTheirEntries"
+                                    value="dv">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Disable
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Edit their reportees entries :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="editTheirEntries"
+                                    value="ee">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Enable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="editTheirEntries"
+                                    value="de">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Disable
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 border ">
+                            <input type="checkbox" formControlName="notifyme" id="">
+                            <label for="" class="ms-2">Notify</label>
+                            <input type="email" formControlName="emailNotify" id="" class="form-control"
+                                placeholder="example@gmail.com">
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Edit their own entries :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="editEntries" value="et">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Enable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="editEntries" value="dt">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Disable
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 py-2 ">
+                        <label for="">Shift Remainder</label>
+
+                    </div>
+
+                    <div class="col-12  ">
+                        <label for="">Check-in remainder for employees</label>
+                        <div class="row">
+                            <div class="col-4">
+                                <input type="time" id="" class="form-control" formControlName="checkInRemainderBefore">
+                            </div>
+                            <div class="col">
+                                <span>hours before Shift start time</span>
+                            </div>
+                        </div>
+                        <div class="row py-2">
+                            <div class="col-4">
+                                <input type="time" class="form-control" formControlName="checkInRemainderAfter">
+                            </div>
+                            <div class="col">
+                                <span>hours after Shift start time</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12  ">
+                        <label for="">Check-in remainder for employees</label>
+                        <div class="row">
+                            <div class="col-4">
+                                <input type="time" class="form-control" formControlName="checkInEndBefore">
+                            </div>
+                            <div class="col">
+                                <span>hours before Shift end time</span>
+                            </div>
+                        </div>
+                        <div class="row py-2">
+                            <div class="col-4">
+                                <input type="time" class="form-control" formControlName="checkInEndAfter">
+                            </div>
+                            <div class="col">
+                                <span>hours after Shift end time</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 py-2 ">
+                        <label for="">Notification to Reporting Manager for absence of Check-in</label>
+                        <div class="row">
+                            <div class="col-4">
+                                <input type="time" class="form-control" formControlName="notificationReportingManager">
+                            </div>
+                            <div class="col">
+                                <span>hours before Shift start time</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 py-3 ">
+                        <label for="">Export Setting</label>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Password Protection :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="passwordProtection"
+                                    value="e">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Enable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="passwordProtection"
+                                    value="d">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Disable
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 py-3 ">
+                        <label for="">Regularization Setting</label>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Regularization For future dates :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="regularizationForFuture"
+                                    value="e">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Enable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="regularizationForFuture"
+                                    value="d">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Disable
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Reason For Regularization :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="reasonForRegularization"
+                                    value="e">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Enable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="reasonForRegularization"
+                                    value="d">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Disable
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 border ">
+                            <input type="text" class="form-control" formControlName="forgotOut"
+                                placeholder="Forgot to check out">
+                            <input type="text" class="form-control mt-2" formControlName="forgotIn"
+                                placeholder="Forgot to check in">
+                            <input type="text" class="form-control mt-2" formControlName="forgotId"
+                                placeholder="Forgot my ID Card">
+                            <input type="text" class="form-control mt-2" formControlName="systemError"
+                                placeholder="System Error">
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Regularization entries will :</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="createNewCkeck"
+                                    value="createNewCkeck">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Create a new check-in/check-out entry
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="replaceExistingCheck"
+                                    value="replaceExistingCheck">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;">
+                                    Replace existing check-in/check-out entry
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+
+
+</div>

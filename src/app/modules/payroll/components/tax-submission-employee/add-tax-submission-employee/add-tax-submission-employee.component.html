@@ -1,0 +1,100 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/payroll/tax-submission-employee-list">arrow_back</mat-icon> Tax Submission
+    </h2>
+
+    <form [formGroup]="taxSubmisiionEmployeeFormGroup">
+        <!-- <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}"> -->
+                <!-- <div class="row border mx-0" formArrayName="components">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Fiscal Year <sup>*</sup></label>
+                <input type="text" formControlName="fiscal_year" class="form-control" placeholder="Enter Fiscal Year">
+              
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Proof Amount </label>
+                <input type="number" min="0" formControlName="proof_amount" class="form-control"
+                    placeholder="Enter Proof Amount" />
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <select class="form-select" formControlName="component_code_id">
+                    <option [selected]="taxSubmisiionEmployeeFormGroup.value.component_code_id === ''" value="" hidden>
+                        Select
+                        Component Code</option>
+                    <option *ngFor="let val of taxDecDetail" [value]="val._id">{{val.component_code}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <span class="upload_text" (click)="uploadFile(inputFile, 'resume')">
+                    {{taxSubmisiionEmployeeFormGroup.value.TaxDocuments ?
+                    taxSubmisiionEmployeeFormGroup.value.TaxDocuments :
+                    'Upload Documents'}}</span>
+                <input type="file" #inputFile class="d-none" (change)="handleUploadFile($event)">
+            </div>
+        </div> -->
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th *ngIf="taxDeclarationDetail.controls.length>1">Action</th>
+                            <th>Fiscal Year</th>
+                            <th>Component Code<sup>*</sup></th>
+                            <th>Proof Amount</th>
+                            <th>Upload Document</th>
+                        </tr>
+                    </thead>
+                    <tbody formArrayName="components">
+                        <tr *ngFor="let detail of taxSubmisiionEmployeeFormGroup.get('components')['controls'];let i=index"
+                            [formGroupName]="i">
+                            <td *ngIf="taxDeclarationDetail.controls.length>1">
+                                <mat-icon (click)="deleteRow(i)">delete</mat-icon>
+                            </td>
+                            <td>
+                                <input type="text" formControlName="fiscal_year" class="form-control"
+                                    placeholder="Enter Fiscal Year">
+                            </td>
+                            <td>
+                                <select class="form-select" formControlName="component_code_id">
+                                    <option [selected]="detail.value.component_code_id === ''" value="" hidden>
+                                        Select
+                                        Component Code</option>
+                                    <option *ngFor="let val of taxDecDetail" [value]="val._id">{{val.component_code}}
+                                    </option>
+                                </select>
+                                <div
+                                    *ngIf="detail.controls['component_code_id'].touched && detail.controls['component_code_id'].dirty && detail.controls['component_code_id'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Component Code is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && detail.controls['component_code_id'].hasError('required')">
+                                    <p class="error-message">Component Code is mandatory</p>
+                                </div>
+
+                            </td>
+                            <td>
+                                <input type="number" formControlName="proof_amount" class="form-control"
+                                    placeholder="Enter Proof Amount">
+                            </td>
+                            <td>
+                                <!-- <input type="file" formControlName="TaxDocuments" class="form-control"> -->
+                                <span class="upload_text" (click)="uploadFile(inputFile, 'resume')">
+                                    {{detail.value.TaxDocuments ?
+                                    detail.value.TaxDocuments :
+                                    'Upload Documents'}}</span>
+                                <input type="file" #inputFile class="d-none" (change)="handleUploadFile($event,i)">
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="button" class="btn btn-primary" (click)="fileUpload()">Save</button>
+                </div>
+            <!-- </div>
+        </div> -->
+    </form>
+</div>

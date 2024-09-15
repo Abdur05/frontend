@@ -1,0 +1,130 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-10 py-2 d-flex justify-content-center">
+            <h2><b>Event Maintenance</b>
+            </h2>
+
+        </div>
+        <div class="col-2 d-flex justify-content-end">
+            <mat-icon mat-dialog-close>close</mat-icon>
+        </div>
+    </div>
+    <form [formGroup]="holidayFormData" (ngSubmit)="submitData()">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 py-2">
+                <label>Event Title<sup>*</sup></label>
+                <input type="text" placeholder="Event Title" class="form-control" formControlName="eventTitle">
+                <div
+                    *ngIf="holidayFormData.controls['eventTitle'].touched && holidayFormData.controls['eventTitle'].dirty && holidayFormData.controls['eventTitle'].hasError('required') && !isSubmitted">
+                    <p class="error-message">Event Title is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && holidayFormData.controls['eventTitle'].hasError('required')">
+                    <p class="error-message">Event Title is mandatory</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 py-2">
+                <label>Event Description<sup>*</sup></label>
+                <input type="text" placeholder="Event Description" class="form-control"
+                    formControlName="eventDescription">
+                <div
+                    *ngIf="holidayFormData.controls['eventDescription'].touched && holidayFormData.controls['eventDescription'].dirty && holidayFormData.controls['eventDescription'].hasError('required') && !isSubmitted">
+                    <p class="error-message">Event Description is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && holidayFormData.controls['eventDescription'].hasError('required')">
+                    <p class="error-message">Event Description is mandatory</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 py-2">
+                <label>Event Type</label>
+                <select class="form-select" formControlName="eventTypeId" aria-label="Default select example"
+                    (change)="handleEventType($event)">
+                    <option [selected]="holidayFormData.value.eventTypeId === ''" value="" hidden>Select
+                        Event Type</option>
+                    <option *ngFor="let list of eventTypeDetail" [value]="list._id">{{list.eventType}}</option>
+
+                </select>
+                <div
+                    *ngIf="holidayFormData.controls['eventTypeId'].touched && holidayFormData.controls['eventTypeId'].dirty && holidayFormData.controls['eventTypeId'].hasError('required') && !isSubmitted">
+                    <p class="error-message">Event Type is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && holidayFormData.controls['eventTypeId'].hasError('required')">
+                    <p class="error-message">Event Type is mandatory</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 py-2">
+                <label>Start Date</label>
+                <input type="date" placeholder="Start Date" class="form-control" formControlName="startDate">
+                <div
+                    *ngIf="holidayFormData.controls['startDate'].touched && holidayFormData.controls['startDate'].dirty && holidayFormData.controls['startDate'].hasError('required') && !isSubmitted">
+                    <p class="error-message">Start Date is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && holidayFormData.controls['startDate'].hasError('required')">
+                    <p class="error-message">Start Date is mandatory</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 py-2">
+                <label>Start Time</label>
+                <input type="time" placeholder="Start Time" class="form-control" formControlName="startTime"
+                    (focusout)="calculateTotalHours()">
+                <div
+                    *ngIf="holidayFormData.controls['startTime'].touched && holidayFormData.controls['startTime'].dirty && holidayFormData.controls['startTime'].hasError('required') && !isSubmitted">
+                    <p class="error-message">Start Time is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && holidayFormData.controls['startTime'].hasError('required')">
+                    <p class="error-message">Start Time is mandatory</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 py-2">
+                <label>End Date</label>
+                <input type="date" placeholder="End Date" class="form-control" formControlName="endDate"
+                    (change)="checkDateValue($event)">
+                <div
+                    *ngIf="holidayFormData.controls['endDate'].touched && holidayFormData.controls['endDate'].dirty && holidayFormData.controls['endDate'].hasError('required') && !isSubmitted">
+                    <p class="error-message">End Date is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && holidayFormData.controls['endDate'].hasError('required')">
+                    <p class="error-message">End Date is mandatory</p>
+                </div>
+                <div *ngIf="holidayFormData.controls['endDate'].hasError('customError')">
+                    <p class="error-message">End Date To Always greater or equal to From Date </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 py-2">
+                <label>End Time</label>
+                <input type="Time" placeholder="End Time" class="form-control" formControlName="endTime"
+                    (focusout)="calculateTotalHours()">
+                <div
+                    *ngIf="holidayFormData.controls['endTime'].touched && holidayFormData.controls['endTime'].dirty && holidayFormData.controls['endTime'].hasError('required') && !isSubmitted">
+                    <p class="error-message">End Time is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && holidayFormData.controls['endTime'].hasError('required')">
+                    <p class="error-message">End Time is mandatory</p>
+                </div>
+                <div *ngIf="holidayFormData.get('endTime').hasError('oldGreaterThanNew')">
+                    <p class="error-message">End Time cannot be greater than Start Time.</p>
+                </div>
+            </div>
+            <!-- <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 py-2">
+                <label>Year<sup>*</sup></label>
+                <select class="form-select" formControlName="year" aria-label="Default select example">
+                    <option [selected]="holidayFormData.value.year === ''" value="" hidden>Select
+                        Year</option>
+                    <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                </select> -->
+
+                <!-- <div
+                    *ngIf="holidayFormData.controls['eventDescription'].touched && holidayFormData.controls['eventDescription'].dirty && holidayFormData.controls['eventDescription'].hasError('required') && !isSubmitted">
+                    <p class="error-message">Event Description is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && holidayFormData.controls['eventDescription'].hasError('required')">
+                    <p class="error-message">Event Description is mandatory</p>
+                </div> -->
+            <!-- </div> -->
+
+        </div>
+        <div class="col-12 d-flex justify-content-end py-2">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </form>
+</div>

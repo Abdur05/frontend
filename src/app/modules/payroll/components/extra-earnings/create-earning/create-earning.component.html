@@ -1,0 +1,151 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/payroll/extra-earnings">arrow_back</mat-icon> Extra Earning
+    </h2>
+    <form [formGroup]="advancePaymentFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Department <sup>*</sup></label>
+                        <select class="form-select" aria-label="Default select example" formControlName="department" (change)="handleDeperament($event)">
+                            <option [selected]="advancePaymentFormGroup.value.department === ''" value="" hidden>
+                                Select
+                                Department</option>
+                            <option value="All">All</option>
+                            <option *ngFor="let list of departmentDetail" [value]="list._id">
+                                {{list.departmentName}}</option>
+                        </select>
+                        <div
+                            *ngIf="advancePaymentFormGroup.controls['department'].touched && advancePaymentFormGroup.controls['department'].dirty && advancePaymentFormGroup.controls['department'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Department is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && advancePaymentFormGroup.controls['department'].hasError('required')">
+                            <p class="error-message">Department is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Designation<sup>*</sup></label>
+                        <select class="form-select" aria-label="Default select example" formControlName="designation">
+                            <option [selected]="advancePaymentFormGroup.value.designation === ''" value="" hidden>
+                                Select
+                                Designation</option>
+                            <option value="All">All</option>
+                            <option *ngFor="let list of filterDesignationList" [value]="list._id">
+                                {{list.designationName}}</option>
+                        </select>
+                        <div
+                            *ngIf="advancePaymentFormGroup.controls['designation'].touched && advancePaymentFormGroup.controls['designation'].dirty && advancePaymentFormGroup.controls['designation'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Designation is mandatory</p>
+                        </div>
+                        <div
+                            *ngIf="isSubmitted && advancePaymentFormGroup.controls['designation'].hasError('required')">
+                            <p class="error-message">Designation is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Transaction Date <sup>*</sup></label>
+                        <input type="date" formControlName="transaction_date" class="form-control"
+                            min="{{ today | date:'yyyy-MM-dd' }}" />
+                        <div
+                            *ngIf="advancePaymentFormGroup.controls['transaction_date'].touched && advancePaymentFormGroup.controls['transaction_date'].dirty && advancePaymentFormGroup.controls['transaction_date'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Transaction Date is mandatory</p>
+                        </div>
+                        <div
+                            *ngIf="isSubmitted && advancePaymentFormGroup.controls['transaction_date'].hasError('required')">
+                            <p class="error-message">Transaction Date is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Earning Component <sup>*</sup></label>
+                        <select class="form-select" aria-label="Default select example"
+                            formControlName="earning_component" (change)="updateTableHeader($event)">
+                            <option [selected]="advancePaymentFormGroup.value.earning_component === ''" value="" hidden>
+                                Select
+                                Earning Component</option>
+                            <ng-container *ngFor="let list of salaryDetail">
+                                <option *ngIf="list.component_type==='extra_earnings'" [value]="list._id">
+                                    {{list.component_name}}</option>
+                            </ng-container>
+                        </select>
+                        <div
+                            *ngIf="advancePaymentFormGroup.controls['transaction_date'].touched && advancePaymentFormGroup.controls['transaction_date'].dirty && advancePaymentFormGroup.controls['transaction_date'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Transaction Date is mandatory</p>
+                        </div>
+                        <div
+                            *ngIf="isSubmitted && advancePaymentFormGroup.controls['transaction_date'].hasError('required')">
+                            <p class="error-message">Transaction Date is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Percentage/Flat Amount <sup>*</sup></label>
+                        <select class="form-select" aria-label="Default select example"
+                            formControlName="percentage_FlatAmount">
+                            <option [selected]="advancePaymentFormGroup.value.percentage_FlatAmount === ''" value=""
+                                hidden>
+                                Select
+                                Percentage/Flat Amount</option>
+                            <option value="Percentage">Percentage</option>
+                            <option value="Flat Amount">Flat Amount</option>
+                        </select>
+                        <div
+                            *ngIf="advancePaymentFormGroup.controls['percentage_FlatAmount'].touched && advancePaymentFormGroup.controls['percentage_FlatAmount'].dirty && advancePaymentFormGroup.controls['percentage_FlatAmount'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Percentage FlatAmount is mandatory</p>
+                        </div>
+                        <div
+                            *ngIf="isSubmitted && advancePaymentFormGroup.controls['percentage_FlatAmount'].hasError('required')">
+                            <p class="error-message">Percentage FlatAmount is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2" *ngIf="showAmountField">
+                        <label for="">{{ amountLabel }}<sup>*</sup> </label>
+                        <input type="number" class="form-control" formControlName="percentage_amount">
+                        <div
+                            *ngIf="advancePaymentFormGroup.controls['percentage_amount'].touched && advancePaymentFormGroup.controls['percentage_amount'].dirty && advancePaymentFormGroup.controls['percentage_amount'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Percentage Amount is mandatory</p>
+                        </div>
+                        <div
+                            *ngIf="isSubmitted && advancePaymentFormGroup.controls['percentage_amount'].hasError('required')">
+                            <p class="error-message">Percentage Amount is mandatory</p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-center py-2">
+                        <button type="button" class="btn btn-primary" (click)="getEmployee()">Get Employee</button>
+                    </div>
+                    <table class="table table-hover" *ngIf="showTableAndSaveButton">
+                        <thead>
+                            <tr>
+                                <th>Employee Code </th>
+                                <th>Employee Name</th>
+                                <th style="text-transform: uppercase;"> {{ tableHeader }} <sup>*</sup></th>
+                            </tr>
+                        </thead>
+                        <tbody formArrayName="employeeDetails">
+                            <ng-container
+                                *ngFor="let list of advancePaymentFormGroup.get('employeeDetails')['controls'];let i=index"
+                                [formGroupName]="i">
+                                <tr>
+                                    <td>
+                                        {{employeeResponse[i]?.employeeId}}
+                                    </td>
+                                    <td>
+                                        {{employeeResponse[i]?.firstName}}&nbsp;{{employeeResponse[i]?.lastname}}
+                                    </td>
+                                    <td>
+                                        <input type="text" formControlName="amount" class="form-control">
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2" *ngIf="showTableAndSaveButton">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

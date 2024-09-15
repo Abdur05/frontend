@@ -1,0 +1,51 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/policy/policy-list">arrow_back</mat-icon> Policy Maintenance</h2>
+
+    <form [formGroup]="policyDataformGroup">
+        <div class="row border mx-0">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Policy Name <sup>*</sup></label>
+                <input type="text" formControlName="policyName" class="form-control" placeholder="Enter Policy Name"
+                    readonly>
+                <div
+                    *ngIf="policyDataformGroup.controls['policyName'].touched && policyDataformGroup.controls['policyName'].dirty && policyDataformGroup.controls['policyName'].hasError('required') && !isSubmitted">
+                    <p class="error-message">Policy Name is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && policyDataformGroup.controls['policyName'].hasError('required')">
+                    <p class="error-message">Policy Name is mandatory</p>
+                </div>
+
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for=""> Description </label>
+                <input type="text" formControlName="description" class="form-control"
+                    placeholder="Enter  Description" />
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="" class="py-1">Upload Policy </label><br>
+                <span class="upload_text" (click)="uploadFile(inputFile, 'resume')">
+                    {{policyDataformGroup.value.upload_policy ? policyDataformGroup.value.upload_policy :
+                    'Upload Policy'}}</span><mat-icon
+                    (click)="openDialog(policyDataformGroup.value.upload_policy)">visibility</mat-icon>
+                <input type="file" #inputFile class="d-none" (change)="handleUploadFile($event)">
+                <input type="file" #inputFile class="d-none" (change)="handleUploadFile($event)">
+
+                <div>
+                    <embed *ngIf="selectedFileVerfiy.type==='application/pdf'" src={{selectedFileVerfiy.name}} type="">
+                </div>
+                <div>
+                    <img *ngIf="selectedFileVerfiy.type!='application/pdf'" src={{selectedFileVerfiy.name}} alt="">
+                </div>
+
+            </div>
+        </div>
+        <div class="col-12 d-flex justify-content-end py-2">
+            <button type="button" class="btn btn-primary" (click)="fileUpload()">Save</button>
+        </div>
+
+    </form>
+
+
+
+</div>

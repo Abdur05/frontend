@@ -1,0 +1,187 @@
+<div class="container-fluid">
+    <app-loader *ngIf="isLoader"></app-loader>
+    <div class="row">
+
+
+        <div class="col-12" *ngIf="assetDetails" style="background-color: #de405c; ">
+            <div class="section">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <h2>Course Title : {{assetDetails?.courseDetails?.course_title}}</h2>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2 d-flex justify-content-end">
+                        <mat-icon routerLink="/training/enroll-list">close</mat-icon>
+                    </div>
+                    <div class="col-12 py-1">
+                        <span>Course ID: {{assetDetails?.courseDetails?._id}}</span>
+                    </div>
+                    <div class="col-12 py-1" style="position: relative;">
+                        <star-rating [starType]="'svg'" [rating]="4"></star-rating><span
+                            style="position: absolute; top: 0; left:120px"> (rate by 4 by 20 users)</span>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <div class="d-flex d-grid gap-5">
+                            <div>
+                                <mat-icon
+                                    style="font-size: 20px !important; height: 18px !important">schedule</mat-icon><span>&nbsp;{{assetDetails?.courseDetails?.duration}} Hrs</span>
+                            </div>
+                            <div>
+                                <mat-icon
+                                    style="font-size: 19px !important; height: 18px !important">calendar_today</mat-icon><span>&nbsp;{{assetDetails?.courseDetails?.createdAt
+                                    | date:"dd-MMM-yyyy"}}</span>
+                            </div>
+                            <div>
+                                <mat-icon
+                                    style="font-size: 24px !important; height: 18px !important">groups</mat-icon><span>&nbsp;3917
+                                    Completions</span>
+                            </div>
+                            <div>
+                                <mat-icon fontSet="material-symbols-outlined"
+                                    style="font-size: 20px !important; height: 18px !important">social_leaderboard</mat-icon><span>&nbsp;5
+                                    Points</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-12" *ngIf="assetDetails" style="position: absolute; top: 175px;">
+            <mat-card class="example-card" appearance="outlined">
+                <mat-card-content>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <p style="border-bottom: 1px solid;
+                            border-width: 2px;
+                            width: fit-content;">About this course</p>
+                        </div>
+                        <div class="col-12">
+                            <p>{{assetDetails?.courseDetails?.description}}</p>
+                        </div>
+                        <div class="col-12 px-5">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>{{assetDetails?.courseDetails?.course_title}} - Course</h2>
+
+                                </div>
+
+                                <div class="col-3">
+                                    <mat-icon style="position: relative; top: 9px">language</mat-icon><span
+                                        style="position: absolute;">&nbsp; <span>Langauge</span><br><span style="position: absolute;
+                                left: 10px;
+                                width: 100%;">Engish</span></span>
+                                </div>
+
+                                <div class="col-3">
+                                    <mat-icon fontSet="material-symbols-outlined"
+                                        style="position: relative; top: 9px">check_circle</mat-icon><span
+                                        style="position: absolute;">&nbsp; <span>Status</span><br><span style="position: absolute;
+                                left: 10px;
+                                width: 100%;">{{assetDetails?.courseDetails?.percentageCompletion < 100 ? 'Incompleted'
+                                                : 'Completed' }}</span></span>
+                                </div>
+
+                                <div class="col-3">
+                                    <!-- <span>View More</span> -->
+                                </div>
+
+                                <div class="col-3">
+                                    <button type="button" class="btn btn-primary mb-2" 
+                                        [routerLink]="'/training/preview-course/' + assetDetails?.courseDetails?._id">Launch</button><br>
+                                    <!-- <span>Attempt History</span> -->
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <hr>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="assetDetails?.courseDetails?.questionBank.length !== 0">
+                                <div class="col-12">
+                                    <h2>{{assetDetails?.courseDetails?.questionBank[0]?.title}} - Assessment</h2>
+                                </div>
+
+                                <div class="col-3">
+                                    <mat-icon style="position: relative; top: 9px">language</mat-icon><span
+                                        style="position: absolute;">&nbsp; <span>Langauge</span><br><span style="position: absolute;
+                                left: 10px;
+                                width: 100%;">Engish</span></span>
+                                </div>
+
+                                <div class="col-3" *ngIf="assetDetails?.courseDetails?.assessmentDetails[0]?.status !== 'Completed'">
+                                    <mat-icon fontSet="material-symbols-outlined"
+                                        style="position: relative; top: 9px">sports_score</mat-icon><span
+                                        style="position: absolute;">&nbsp; <span>Mastery Score</span><br><span style="position: absolute;
+                                left: 10px;
+                                width: 100%;">{{assetDetails?.courseDetails?.questionBank[0]?.passPercentage
+                                            }}</span></span>
+                                </div>
+
+                                <div class="col-3" *ngIf="assetDetails?.courseDetails?.assessmentDetails[0]?.status === 'Completed'">
+                                    <mat-icon fontSet="material-symbols-outlined"
+                                        style="position: relative; top: 9px">sports_score</mat-icon><span
+                                        style="position: absolute;">&nbsp; <span>Your Score</span><br><span style="position: absolute;
+                                left: 10px;
+                                width: 100%;">{{assetDetails?.courseDetails?.assessmentDetails[0]?.totalMarks
+                                            }}</span></span>
+                                </div>
+
+                                <div class="col-3">
+                                    <mat-icon fontSet="material-symbols-outlined"
+                                        style="position: relative; top: 9px">check_circle</mat-icon><span
+                                        style="position: absolute;">&nbsp; <span>Status</span><br><span style="position: absolute;
+                                left: 10px;
+                                width: 100%;">{{assetDetails?.courseDetails?.assessmentDetails.length !== 0 ?
+                                            (assetDetails?.courseDetails?.assessmentDetails[0].status === 'Completed' ?
+                                            'Completed' : 'InComplete'): 'Yet to starts'}}</span></span>
+                                </div>
+
+
+
+                                <div class="col-3">
+                                    <button type="button" class="btn btn-primary mb-2"
+                                        [routerLink]="'/training/assessment-content/' + assetDetails?.courseDetails?._id" [disabled]="assetDetails?.courseDetails?.assessmentDetails[0]?.status === 'Completed'">Launch</button><br>
+                                    <span class="text-danger" style="cursor: pointer;"
+                                        (click)="viewAttemptDetails(assetDetails?.courseDetails?.assessmentDetails[0]?.status)">Attempt History</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <!-- <div class="col-12 py-2" [ngStyle]="{'height' : isLoader ? '100vh' : 'fit-content'}">
+            <div class="row mx-0">
+                <div class="col-12 col-sm-12 col-md-12 col-xl-4 col-lg-4 mt-5" *ngFor="let list of assetDetails; let i=index">
+                    <mat-card class="example-card" appearance="outlined">
+                        <mat-card-header>
+                            <mat-card-title >{{list.courseDetails.course_title}}</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <p class="py-2">{{list.courseDetails.description}}</p>
+                            <div class="row py-1">
+                                <div class="col-12">
+                                    <span>Completion Percentage : </span><strong>&nbsp;
+                                        {{list.courseDetails.percentageCompletion}}</strong>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-footer class="example-card-footer d-flex justify-content-end">
+        
+                            <mat-chip-set>
+                                <mat-chip [routerLink]="'/training/view-course/' + list.courseDetails._id">View</mat-chip>
+                            </mat-chip-set>
+                        </mat-card-footer>
+                    </mat-card>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>

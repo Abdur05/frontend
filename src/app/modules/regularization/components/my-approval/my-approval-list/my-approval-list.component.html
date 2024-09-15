@@ -1,0 +1,145 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <div class="row">
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+            <div class="row mt-3 ">
+                <div class="col-12">
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto"><b>Search Filter</b></legend>
+
+                        <div class="row">
+                            <div class="filterText col-sm col-md col-lg col-xl">
+                                <input type="text" #searchDataInput id="search-data"
+                                    placeholder="Employee Id/Employee Name" class="form-control w-50"
+                                    (input)="handleFilter($event)">
+                            </div>
+                            <div class="col-sm col-md col-lg col-xl">
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <select class="form-select" (change)="handleFilterList($event)">
+                                        <option [selected]="filterText.text === 'waiting for approve'" value="waiting for approve">Waiting
+                                            for Approval</option>
+                                        <option [selected]="filterText.text === 'A'" value="A">Approved</option>
+                                        <option [selected]="filterText.text === 'R'" value="R">Rejected</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col d-flex justify-content-end gap-2 mt-4">
+                                <div class="py-1">
+                                    <button class="btn btn-primary" (click)="handleFilterDetails()"
+                                        type="button">Search</button>
+                                </div>
+                                <div class="py-1">
+                                    <button class="btn btn-primary"
+                                        (click)="searchDataInput.value = ''; filterText = {
+                                            active: 'O',
+                                            text: 'waiting for approve',
+                                            type:'Approval'
+                                          }"
+                                        type="button">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end ">
+
+                    <!-- <button class="btn btn-primary " (click)="nextPage('/regularization/add-my-request')"
+                            type="button" style="color: white;background: #00acff;">Add Request</button> -->
+
+                    <!-- <button class="btn btn-danger" type="button" style="color: white;" (click)="handleDeleteMuliple()">
+                        <mat-icon style="width: 15px; height: 15px;">delete</mat-icon>
+                        Delete Selected Approval</button> -->
+                    <!-- <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item>
+                                <span>Import Request</span>
+                            </button>
+                            <button mat-menu-item>
+                                <span>Export Request</span>
+                            </button>
+                            <button mat-menu-item>
+                                <span>Sample Request Sheet</span>
+                            </button>
+                        </mat-menu> 
+
+
+                    </div>-->
+                </div>
+            </div>
+
+            <div class="table-responsive py-2">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" class="zzzz">SN</th>
+                            <th rowspan="2" class="zzzz">Employee Id</th>
+                            <th rowspan="2" class="zzzz">Employee Name</th>
+                            <th rowspan="2" class="zzzz">Attendance Date</th>
+                            <th colspan="2" class="zzzz">Hours</th>
+                            <th colspan="2" class="zzzz">Status</th>
+                            <th rowspan="2" class="zzzz">Reason</th>
+                            <th rowspan="2" class="zzzz">Approval Status</th>
+                            <!-- <th rowspan="2" class="zzzz">Inactive/Active</th> -->
+                            <!-- <th rowspan="2" class="zzzz"><input type="checkbox" [checked]="selectAll"
+                                            (change)="selectdata($event)"> Select All</th> -->
+                        </tr>
+                        <tr>
+                            <th>Old</th>
+                            <th>New</th>
+                            <th>Old</th>
+                            <th>New</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="myRequestDetail.length === 0">
+                        <tr>
+                            <td colspan="12" class="text-center">No Records</td>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr *ngFor="let list of myRequestDetail; let i=index">
+                            <td>{{i+1}}</td>
+                            <td>{{list.employeeId}}</td>
+                            <td>{{list.employeeName}}</td>
+                            <td>{{list.attendanceDate}}</td>
+                            <td>-</td>
+                            <td>{{list.totalHours}}</td>
+                            <td>Absent</td>
+                            <td>Present</td>
+                            <td>{{list.reason}}</td>
+                            <td>
+                                <button *ngIf="list.status === 'waiting for approve'" class="btn btn-primary"
+                                    style="font-size: 12px;"
+                                    [routerLink]="'/regularization/edit-my-approval/' + list._id">
+                                    Click for Approval
+                                </button>
+                                <span *ngIf="list.status === 'A'">Approved</span>
+                                <span *ngIf="list.status === 'R'">Rejected</span>
+
+                                <!-- <td>
+                        <label class="switch">
+                            <input type="checkbox" [checked]="list.isActive === 'O'" (change)="deleteRecords(list)">
+                            <span class="slider"></span>
+                        </label>
+                    </td> -->
+                                <!-- <td><input type="checkbox" class="checkbox" [checked]="list.check"
+                                            (change)="particularcheck($event,i)"></td> -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-12 py-2 d-flex justify-content-center" *ngIf="totalItem > 10">
+        <pagination [totalItems]="totalItem" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)">
+        </pagination>
+    </div>
+</div>

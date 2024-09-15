@@ -1,0 +1,141 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <div class="row">
+        <div class="col-12">
+            <h2><mat-icon class="back" routerLink="/payroll/salary-list">arrow_back</mat-icon>Salary Component
+                Maintenance</h2>
+        </div>
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+          
+
+            <form [formGroup]="salaryFormGroup" (ngSubmit)="submitData()">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Component Type <sup>*</sup></label>
+                        <select class="form-select " aria-label="Default select example"
+                            formControlName="componentType">
+                            <option [selected]="salaryFormGroup.value.componentType === ''" value="" hidden>
+                                Select
+                                Component Type</option>
+                            <option value="Earning">Earning</option>
+                            <option value="Deduction">Deduction</option>
+                            <option value="Reimbursement">Reimbursement</option>
+                        </select>
+                        <div
+                            *ngIf="salaryFormGroup.controls['componentType'].touched && salaryFormGroup.controls['componentType'].dirty && salaryFormGroup.controls['componentType'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Component Type is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && salaryFormGroup.controls['componentType'].hasError('required')">
+                            <p class="error-message">Component Type is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Component Name <sup>*</sup></label>
+                        <input type="text" formControlName="componentName" class="form-control"
+                            placeholder="Enter Component Name " />
+                        <div
+                            *ngIf="salaryFormGroup.controls['componentName'].touched && salaryFormGroup.controls['componentName'].dirty && salaryFormGroup.controls['componentName'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Component Name is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && salaryFormGroup.controls['componentName'].hasError('required')">
+                            <p class="error-message">Component Name is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Name is Payslip <sup>*</sup></label>
+                        <input type="text" formControlName="nameinPayslip" class="form-control"
+                            placeholder="Enter Name is Payslip " />
+                        <div
+                            *ngIf="salaryFormGroup.controls['nameinPayslip'].touched && salaryFormGroup.controls['nameinPayslip'].dirty && salaryFormGroup.controls['nameinPayslip'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Name in Payslip is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && salaryFormGroup.controls['nameinPayslip'].hasError('required')">
+                            <p class="error-message">Name in Payslip is mandatory</p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2"
+                        *ngIf="salaryFormGroup.value.componentType !== 'Deduction' && salaryFormGroup.value.componentType !== 'Reimbursement'">
+                        <label for="">Enter Amount </label>
+                        <input type="number" min="0" formControlName="amount" class="form-control"
+                            placeholder="Enter Amount " />
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2"
+                        *ngIf="salaryFormGroup.value.componentType === 'Deduction'">
+                        <label for="" class="">Maximum Deduction Amount </label>
+                        <input type="number" min="0" class="form-control" placeholder="Enter Maximum Deduction Amount"
+                            formControlName="maximumDeductionAmount">
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2"
+                        *ngIf="salaryFormGroup.value.componentType === 'Deduction'">
+                        <label for="" class="">Frequency </label>
+                        <select class="form-select " aria-label="Default select example"
+                            formControlName="frequencyDeduction">
+                            <option [selected]="salaryFormGroup.value.frequencyDeduction === ''" value="" hidden>
+                                Select
+                                Frequency</option>
+                            <option value="Daily">Daily</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Yearly">Yearly</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2"
+                        *ngIf="salaryFormGroup.value.componentType === 'Reimbursement'">
+                        <label for="" class="">Maximum Reimbursement Amount </label>
+                        <input type="number" min="0" class="form-control"
+                            placeholder="Enter Maximum Reimbursement Amount"
+                            formControlName="maximumReimbursementAmount">
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2"
+                        *ngIf="salaryFormGroup.value.componentType === 'Reimbursement'">
+                        <label for="" class="">Frequency </label>
+                        <select class="form-select " aria-label="Default select example"
+                            formControlName="frequencyReimbursement">
+                            <option [selected]="salaryFormGroup.value.frequencyReimbursement === ''" value="" hidden>
+                                Select
+                                Frequency</option>
+                            <option value="Daily">Daily</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Yearly">Yearly</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 "
+                        *ngIf="salaryFormGroup.value.componentType !== 'Deduction' && salaryFormGroup.value.componentType !== 'Reimbursement'">
+                        <label for="CalculationType">Calculation Type</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="flatAmount"
+                                    id="flexRadioDefault1" value="f">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;"
+                                    for="flexRadioDefault1">
+                                    Flat Amount
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="flatAmount"
+                                    id="flexRadioDefault2" value="p">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;"
+                                    for="flexRadioDefault2">
+                                    Percentage of Basic
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+
+</div>

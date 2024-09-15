@@ -1,0 +1,56 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/training/module-list">arrow_back</mat-icon> Module</h2>
+    <form [formGroup]="modulesDetailFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for=""> Title <sup>*</sup></label>
+                        <input type="text" class="form-control" formControlName="title" placeholder="Enter Title">
+                        <div
+                            *ngIf="modulesDetailFormGroup.controls['title'].touched && modulesDetailFormGroup.controls['title'].dirty && modulesDetailFormGroup.controls['title'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Title is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && modulesDetailFormGroup.controls['title'].hasError('required')">
+                            <p class="error-message">Title is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Description <sup>*</sup> </label>
+                        <textarea formControlName="description" style="height: 10px;" class="form-control"
+                            placeholder="Enter  Description"></textarea>
+                        <div
+                            *ngIf="modulesDetailFormGroup.controls['description'].touched && modulesDetailFormGroup.controls['description'].dirty && modulesDetailFormGroup.controls['description'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Description is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && modulesDetailFormGroup.controls['description'].hasError('required')">
+                            <p class="error-message">Description is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Course Id <sup>*</sup></label>
+                        <select class="form-select" aria-label="Default select example" formControlName="courseId">
+                            <option [selected]="modulesDetailFormGroup.value.courseId === ''" value="" hidden>
+                                Select
+                                Course Id</option>
+                            <option *ngFor="let list of courseDetail" [value]="list._id">{{list.course_title}}</option>
+                        </select>
+                        <div
+                            *ngIf="modulesDetailFormGroup.controls['courseId'].touched && modulesDetailFormGroup.controls['courseId'].dirty && modulesDetailFormGroup.controls['courseId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Course Id is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && modulesDetailFormGroup.controls['courseId'].hasError('required')">
+                            <p class="error-message">Course Id is mandatory</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,70 @@
+<div class="container-fluid">
+    <div class="row" style="background-color: #070739;">
+        <div class="col-6 py-2 d-flex">
+            <strong style="color: orange;">{{questionDetails?.title}}</strong>
+        </div>
+        <div class="col-6 py-2 d-flex justify-content-end">
+            <span class="text-danger" style="cursor: pointer;" (click)="handleExit()">Exit</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-10 offset-1">
+            <div class="row py-2">
+                <div class="col-6 py-1">
+                    <span>Question {{currentQuestion+1}}/{{questionDetails.noOfQuestion}}</span>
+                </div>
+                <div class="col-6 py-1 d-flex justify-content-end">
+                    <mat-icon fontSet="material-symbols-outlined">timer</mat-icon><span id="timerDisplay"></span>
+                </div>
+                
+                <div class="col-12">
+                    <hr class="m-0">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12" *ngFor="let list of questionDetails?.questions; let i = index">
+                    <div class="row" *ngIf="currentQuestion === i">
+                        <div class="col-12 py-1">
+                            <span>{{list?.questionDetails?.question}}</span>
+                        </div>
+
+                        <div class="col-6 py-1" *ngFor="let optionsList of list?.questionDetails?.options; let j = index">
+                            <form>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-check" *ngIf="list.questionDetails.question_type === 'MCQ-single'">
+                                            <input class="form-check-input" type="radio" 
+                                             name="flexRadioDefault"
+                                            id="flexRadioDefault{{j}}" (change)="selectOption('radio', optionsList._id)">
+                                            <label class="form-check-label" for="flexRadioDefault{{j}}">
+                                              {{optionsList.option}} 
+                                            </label>
+                                          </div>
+    
+                                          <div class="form-check" *ngIf="list.questionDetails.question_type === 'MCQ-multiple'">
+                                            <input class="form-check-input" type="checkbox" 
+                                             name="flexRadioDefault{{j}}"
+                                            id="flexRadioDefault{{j}}" (change)="selectOption('checkbox', optionsList._id)">
+                                            <label class="form-check-label" for="exampleRadios1">
+                                              {{optionsList.option}}
+                                            </label>
+                                          </div>
+                                    </div>
+                                </div>
+                            </form>
+                           
+                        </div>
+
+                        <div class="col-12 py-2">
+                            <button type="button" class="btn btn-primary" *ngIf="questionDetails?.questions.length !== (currentQuestion+1)" (click)="handleSubmit(i)">Submit</button>
+                        </div>
+                        <div class="col-12 py-2" *ngIf="questionDetails?.questions.length === (currentQuestion+1)">
+                            <button type="button" class="btn btn-primary" (click)="handleSubmit(i)">Finish</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

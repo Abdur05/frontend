@@ -1,0 +1,70 @@
+<div class="container">
+    <div class="col-12 py-2 d-flex justify-content-end">
+        <mat-icon (click)="close()">close</mat-icon>
+    </div>
+    <h2>Review Tax Submission</h2>
+    <div class="row border mx-0">
+        <ng-container *ngFor="let list of reviewTaxSubmDetail">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                <label for="">Employee Id </label><br>
+                <span>{{list.declarations.emp_code ? list.declarations.emp_code : '-'}}</span>
+            </div>
+            <div class="py-2">
+                <h2 style="text-align: center !important;">Tax Details:</h2>
+            </div>
+            <ng-container>
+                <div class="col-12 py-2">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Eligible investments for tax deductions</th>
+                                <th>Eligible Amount</th>
+                                <th>Declared</th>
+                                <th>Submission</th>
+                                <th>Proof</th>
+                                <th>Comment</th>
+                                <th>Update Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let component of list.declarations.components; let i = index">
+                                <td>{{ component.component_name }}</td>
+                                <td>{{ component.eligible_amount }}</td>
+                                <td>{{ component.declared_amount }}</td>
+                                <td>{{ component.proof_amount }}</td>
+                              
+                                <td>
+                                  <mat-icon (click)="handleUpdate(component.documents)">visibility</mat-icon>
+                                </td>
+                                <td>
+                                  <input type="text" class="form-control" [readonly]="statuses.at(i).value === 'Accepted' || statuses.at(i).value === 'Submitted'" (focusout)="handleComment($event, i, componentCodeIds.at(i).value, statuses.at(i).value)">
+                                  <div class="error-message" *ngIf="errorIndex === i">
+                                    <span>Comment is Mandatory</span>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <form [formGroup]="taxSubmisiionEmployeeFormGroup">
+                                      <div formArrayName="status">
+                                        <select
+                                          class="form-select" [ngStyle]="{'pointer-events': statuses.at(i).value === 'Accepted' ? 'none' : 'all'}"
+                                          [formControlName]="i" #selectInput
+                                          (change)="submitData(componentCodeIds.at(i).value, statuses.at(i).value, i)"
+                                        >
+                                          <option value="">Select Status</option>
+                                          <option value="Accepted">Accepted</option>
+                                          <option value="Rejected">Rejected</option>
+                                        </select>
+                                      </div>
+                                    </form>
+                                  </div>
+                                </td>
+                              </tr>
+                              
+                        </tbody>
+                    </table>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>

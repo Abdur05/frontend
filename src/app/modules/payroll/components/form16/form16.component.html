@@ -1,0 +1,66 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <div class="row">
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+            <div class="row mt-3 ">
+                <div class="col-12">
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto"><b>Search Filter</b></legend>
+                        <div class="row">
+                            <div class="col-xs-12 col-12 col-md-6 col-lg-6 col-xl-6">
+                                <select class="form-select" (change)="onFiscalYearChange($event)">
+                                    <option selected value="">Select Fiscal Year</option>
+                                    <option *ngFor="let year of year" [value]="year">{{ year }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="row py-2 ">
+                    <div class="col-12">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end ">
+                            <button class="btn btn-primary " type="button" *ngIf="rolesView.add === true" (click)="createForm()">Upload
+                                Form16 Zip Folder
+                            </button>
+                            <!-- <button class="btn btn-primary " type="button" (click)="uploadFile(inputFile, 'file')">Upload
+                        Form16 Zip Folder
+                        <input type="file" #inputFile class="d-none" (change)="handleUploadFile($event)">
+                    </button> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>SN</th>
+                                <th>Emp Id</th>
+                                <th>Emp Name</th>
+                                <th *ngIf="rolesView.view === true">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="form16Detail.length === 0">
+                                <td colspan="7" class="text-center">No Records</td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <ng-container *ngFor="let list of form16Detail;let i=index">
+                                <tr *ngFor="let val of list.employee_details">
+                                    <td>{{i+1}}</td>
+                                    <td>{{list.form16?.emp_code}}</td>
+                                    <td>{{val.firstName}} &nbsp;{{val.lastName}}</td>
+                                    <td *ngIf="rolesView.view === true">
+                                        <mat-icon (click)="handleUpdate(list.form16?.file)">visibility</mat-icon>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

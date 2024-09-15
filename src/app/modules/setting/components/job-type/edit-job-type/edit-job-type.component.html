@@ -1,0 +1,45 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/job-type-list">arrow_back</mat-icon> Job Type</h2>
+    <form [formGroup]="jobTypeFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Job Type <sup>*</sup></th>
+                                <th>Description <sup>*</sup></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="text" formControlName="jobType" class="form-control"
+                                        placeholder="Enter Job Type" readonly>
+                                </td>
+                                <td>
+                                    <textarea formControlName="description" style="height: 10px;" class="form-control"
+                                        placeholder="Enter Description"></textarea>
+                                    <div
+                                        *ngIf="jobTypeFormGroup.controls['description'].touched && jobTypeFormGroup.controls['description'].dirty && jobTypeFormGroup.controls['description'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Description is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && jobTypeFormGroup.controls['description'].hasError('required')">
+                                        <p class="error-message">Description is mandatory</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

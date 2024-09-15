@@ -1,0 +1,111 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/recognition-list">arrow_back</mat-icon> Award </h2>
+    <form [formGroup]="recognitionFormGroup" (ngSubmit)="submitAward()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-xl py-2">
+                        <label for="">Nominator Employee Id <sup>*</sup></label>
+                        <select class="form-select" formControlName="nominatoreEmpId"
+                            (change)="changeEmloyeeName($event)">
+                            <option [selected]="recognitionFormGroup.value.nominatoreEmpId===''" value="" hidden>Select
+                                Nominator Employee Id
+                            </option>
+                            <option *ngFor="let list of emloyeeDetail" [value]="list.employeeId">{{list.employeeId}}
+                            </option>
+                        </select>
+                        <div
+                            *ngIf="recognitionFormGroup.controls['nominatoreEmpId'].touched && recognitionFormGroup.controls['nominatoreEmpId'].dirty && recognitionFormGroup.controls['nominatoreEmpId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Nominator Employee Id is mandatory</p>
+                        </div>
+                        <div
+                            *ngIf="isSubmitted && recognitionFormGroup.controls['nominatoreEmpId'].hasError('required')">
+                            <p class="error-message">Nominator Employee Id is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Nominator Employee Name <sup>*</sup></label>
+                        <input type="text" formControlName="nominatoreEmpName" class="form-control" readonly />
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-xl py-2">
+                        <label for="">Award <sup>*</sup></label>
+                        <select class="form-select" formControlName="awardMasterId">
+                            <option [selected]="recognitionFormGroup.value.awardMasterId===''" value="" hidden>Select
+                                Award
+                            </option>
+                            <option *ngFor="let list of awardDetail" [value]="list._id">{{list.awardName}}</option>
+                        </select>
+                        <div
+                            *ngIf="recognitionFormGroup.controls['awardMasterId'].touched && recognitionFormGroup.controls['awardMasterId'].dirty && recognitionFormGroup.controls['awardMasterId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Award is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && recognitionFormGroup.controls['awardMasterId'].hasError('required')">
+                            <p class="error-message">Award is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-xl py-2">
+                        <label for="">Expired Date <sup>*</sup></label>
+                        <input type="date" class="form-control" formControlName="expiredDate" min="{{today}}" />
+                        <div
+                            *ngIf="recognitionFormGroup.controls['expiredDate'].touched && recognitionFormGroup.controls['expiredDate'].dirty && recognitionFormGroup.controls['expiredDate'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Expired Date is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && recognitionFormGroup.controls['expiredDate'].hasError('required')">
+                            <p class="error-message">Expired Date is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-end py-2">
+                        <button type="button" class="btn btn-primary" (click)="addFormArray()">Add </button>
+                    </div>
+                    <table class="table table-hover py-2">
+                        <thead>
+                            <tr>
+                                <th *ngIf="recognitionFormArrayDetail.controls.length>1">Action</th>
+                                <th>Achievement Summery For Congratulatory Email </th>
+                                <th>Contribution To Organization</th>
+                                <th>Contribution To BusinessSupport</th>
+                                <th>Contribution To Creation Of Assets</th>
+                                <th>Additional Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody formArrayName="nominationDetails">
+                            <tr *ngFor="let list of recognitionFormGroup.get('nominationDetails')['controls'];let i=index"
+                                [formGroupName]="i">
+                                <td *ngIf="recognitionFormArrayDetail.controls.length>1">
+                                    <mat-icon (click)="deleteFormArray(i)">delete</mat-icon>
+                                </td>
+                                <td>
+                                    <input type="text" formControlName="AchievementSummeryForCongratulatoryEmail"
+                                        class="form-control"
+                                        placeholder="Enter Achievement Summery For Congratulatory Email">
+                                </td>
+                                <td>
+                                    <input type="text" formControlName="ContributionToOrganization" class="form-control"
+                                        placeholder="Enter Contribution To Organization" />
+                                </td>
+                                <td>
+                                    <input type="text" formControlName="ContributionToBusinessSupport"
+                                        class="form-control" placeholder="Enter Contribution To BusinessSupport" />
+                                </td>
+                                <td>
+                                    <input type="text" formControlName="ContributionToCreationOfAssets"
+                                        class="form-control" placeholder="Enter Contribution To Creation Of Assets" />
+                                </td>
+                                <td>
+                                    <input type="text" formControlName="AdditionalRemarks" class="form-control"
+                                        placeholder="Enter Additional Remarks" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,86 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/award-list">arrow_back</mat-icon> Award </h2>
+    <form [formGroup]="awardFormGroup" (ngSubmit)="submitCategory()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-xl py-2">
+                        <label for="">Award Name <sup>*</sup></label>
+                        <input type="text" class="form-control" formControlName="awardName"
+                            placeholder="Enter Award Name" />
+                        <div
+                            *ngIf="awardFormGroup.controls['awardName'].touched && awardFormGroup.controls['awardName'].dirty && awardFormGroup.controls['awardName'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Award Name is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && awardFormGroup.controls['awardName'].hasError('required')">
+                            <p class="error-message">Award Name is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-xl py-2">
+                        <label for="">Category <sup>*</sup></label>
+                        <select class="form-select" formControlName="category">
+                            <option [selected]="awardFormGroup.value.category===''" value="" hidden>Select Category
+                            </option>
+                            <option *ngFor="let list of categoryDetail" [value]="list._id">{{list.categoryName}}
+                            </option>
+                        </select>
+                        <div
+                            *ngIf="awardFormGroup.controls['category'].touched && awardFormGroup.controls['category'].dirty && awardFormGroup.controls['category'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Category is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && awardFormGroup.controls['category'].hasError('required')">
+                            <p class="error-message">Category is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-xl py-2">
+                        <label for="">Sub Category <sup>*</sup></label>
+                        <select class="form-select" formControlName="subCategory">
+                            <option [selected]="awardFormGroup.value.subCategory===''" value="" hidden>Select Sub
+                                Category
+                            </option>
+                            <option *ngFor="let list of subCategoryDetail" [value]="list._id">{{list.subCategoryName}}
+                            </option>
+                        </select>
+                        <div
+                            *ngIf="awardFormGroup.controls['subCategory'].touched && awardFormGroup.controls['subCategory'].dirty && awardFormGroup.controls['subCategory'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Sub Category is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && awardFormGroup.controls['subCategory'].hasError('required')">
+                            <p class="error-message">Sub Category is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-xl py-2">
+                        <label for="">Gems Point <sup>*</sup></label>
+                        <input type="number" min="0" class="form-control" formControlName="gemsPoint"
+                            placeholder="Enter Gems Point" />
+                        <div
+                            *ngIf="awardFormGroup.controls['gemsPoint'].touched && awardFormGroup.controls['gemsPoint'].dirty && awardFormGroup.controls['gemsPoint'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Gems Point is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && awardFormGroup.controls['gemsPoint'].hasError('required')">
+                            <p class="error-message">Gems Point is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-xl py-2">
+                        <label for="">Award Description <sup>*</sup></label>
+                        <input type="text" class="form-control" formControlName="awardDiscription"
+                            placeholder="Enter Award Description" />
+                        <div
+                            *ngIf="awardFormGroup.controls['awardDiscription'].touched && awardFormGroup.controls['awardDiscription'].dirty && awardFormGroup.controls['awardDiscription'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Award Description is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && awardFormGroup.controls['awardDiscription'].hasError('required')">
+                            <p class="error-message">Award Description is mandatory</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

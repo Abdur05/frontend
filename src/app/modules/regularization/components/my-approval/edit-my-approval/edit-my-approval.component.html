@@ -1,0 +1,161 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/regularization/my-approval-list">arrow_back</mat-icon>My Approval</h2>
+    <form [formGroup]="myRequestFormGroup">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Employee Id <sup>*</sup></label>
+                        <input class="form-control" formControlName="employeeId" placeholder="Enter Employee Id"
+                            (typeaheadOnSelect)="typeaheadOnSelect($event)" [typeahead]="employeeDetail"
+                            typeaheadOptionField="employeeId" readonly>
+                        <div
+                            *ngIf="myRequestFormGroup.controls['employeeId'].touched && myRequestFormGroup.controls['employeeId'].dirty && myRequestFormGroup.controls['employeeId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Employee Id is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && myRequestFormGroup.controls['employeeId'].hasError('required')">
+                            <p class="error-message">Employee Id is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Attendance date <sup>*</sup></label>
+                        <input type="date" formControlName="attendanceDate" class="form-control" readonly>
+                        <div
+                            *ngIf="myRequestFormGroup.controls['attendanceDate'].touched && myRequestFormGroup.controls['attendanceDate'].dirty && myRequestFormGroup.controls['attendanceDate'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Attendance Date is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && myRequestFormGroup.controls['attendanceDate'].hasError('required')">
+                            <p class="error-message">Attendance Date is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-12 py-2">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" class="zzzz">Check-in<sup>*</sup></th>
+                                        <th colspan="2" class="zzzz">Check-out<sup>*</sup></th>
+                                        <th colspan="2" class="zzzz"> Hours</th>
+                                        <th colspan="2" class="zzzz"> Status</th>
+                                        <th rowspan="2" class="zzzz">Reason<sup>*</sup></th>
+                                        <th rowspan="2" class="zzzz">Description</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Old</th>
+                                        <th>New</th>
+                                        <th>Old</th>
+                                        <th>New</th>
+                                        <th>Old</th>
+                                        <th>New</th>
+                                        <th>Old</th>
+                                        <th>New</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <!-- <td >
+                                <mat-icon style="cursor:pointer" (click)="deleterow(i)">delete</mat-icon>
+                            </td> -->
+                                        <td>-
+                                            <!-- <input type="time" class="form-control " formControlName="checkIn"
+                                        (focusout)="calculateTotalHours()" readonly>
+                                    <div
+                                        *ngIf="myRequestFormGroup.controls['checkIn'].touched && myRequestFormGroup.controls['checkIn'].dirty && myRequestFormGroup.controls['checkIn'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Check In is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && myRequestFormGroup.controls['checkIn'].hasError('required')">
+                                        <p class="error-message">Check In is mandatory</p>
+                                    </div> -->
+                                        </td>
+                                        <td>
+                                            <input type="time" class="form-control " formControlName="checkIn"
+                                                (focusout)="calculateTotalHoursNew()" readonly>
+                                            <div
+                                                *ngIf="myRequestFormGroup.controls['checkInNew'].touched && myRequestFormGroup.controls['checkInNew'].dirty && myRequestFormGroup.controls['checkInNew'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">Check In is mandatory</p>
+                                            </div>
+                                            <div
+                                                *ngIf="isSubmitted && myRequestFormGroup.controls['checkInNew'].hasError('required')">
+                                                <p class="error-message">Check In is mandatory</p>
+                                            </div>
+
+                                        </td>
+                                        <td>-
+                                            <!-- <input type="time" class="form-control " formControlName="checkOut"
+                                        (focusout)="calculateTotalHours()" readonly>
+                                    <div
+                                        *ngIf="myRequestFormGroup.controls['checkOut'].touched && myRequestFormGroup.controls['checkOut'].dirty && myRequestFormGroup.controls['checkOut'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Check Out is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && myRequestFormGroup.controls['checkOut'].hasError('required')">
+                                        <p class="error-message">Check Out is mandatory</p>
+                                    </div> -->
+                                        </td>
+                                        <td>
+                                            <input type="time" class="form-control " formControlName="checkOut"
+                                                (focusout)="calculateTotalHoursNew()" readonly>
+                                            <div
+                                                *ngIf="myRequestFormGroup.controls['checkOutNew'].touched && myRequestFormGroup.controls['checkOutNew'].dirty && myRequestFormGroup.controls['checkOutNew'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">Check Out is mandatory</p>
+                                            </div>
+                                            <div
+                                                *ngIf="isSubmitted && myRequestFormGroup.controls['checkOutNew'].hasError('required')">
+                                                <p class="error-message">Check Out is mandatory</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control " placeholder="Enter Hours"
+                                                readonly formControlName="hoursNew" readonly>
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control " placeholder="Enter Hours"
+                                                readonly formControlName="totalHours" readonly>
+                                        </td>
+                                        <td>Absent</td>
+                                        <td>Present</td>
+                                        <td>
+                                            <span>{{myRequestFormGroup.value.reason}}</span>
+                                            <!-- <select class="form-select " aria-label="Default select example"
+                                                formControlName="reason">
+                                                <option [selected]="myRequestFormGroup.value.reason === ''" value=""
+                                                    hidden>
+                                                    Select
+                                                    Reason</option>
+                                                <option *ngFor="let list of reasonDetail" [value]="list.description">
+                                                    {{list.description}}</option>
+
+                                                <div
+                                                    *ngIf="myRequestFormGroup.controls['reason'].touched && myRequestFormGroup.controls['reason'].dirty && myRequestFormGroup.controls['reason'].hasError('required') && !isSubmitted">
+                                                    <p class="error-message">Reason is mandatory</p>
+                                                </div>
+                                                <div
+                                                    *ngIf="isSubmitted && myRequestFormGroup.controls['reason'].hasError('required')">
+                                                    <p class="error-message">Reason is mandatory</p>
+                                                </div>
+
+                                            </select> -->
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control " formControlName="description"
+                                                readonly>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2 gap-2">
+                    <button type="button" class="btn btn-primary" (click)="submitData('A')">Approve</button>
+                    <!-- <button type="button" class="btn btn-primary ">Reject</button> -->
+                    <button type="button" class="btn btn-danger " (click)="submitData('R')">Reject</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

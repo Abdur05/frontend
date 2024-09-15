@@ -1,0 +1,31 @@
+<div class="container-fluid ">
+    <h2> Form 16</h2>
+
+    <form [formGroup]="form16DataformGroup" (ngSubmit)="uploadZipFile()">
+
+        <div class="row border mx-0">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Fiscal Year <sup>*</sup></label>
+                <select class="form-select" formControlName="fiscal_year">
+                    <option selected value="">Select Fiscal Year</option>
+                    <option *ngFor="let year of year">{{ year }}</option>
+                </select>
+                <div
+                    *ngIf="form16DataformGroup.controls['fiscal_year'].touched && form16DataformGroup.controls['fiscal_year'].dirty && form16DataformGroup.controls['fiscal_year'].hasError('required') && !isSubmitted">
+                    <p class="error-message">Policy Name is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && form16DataformGroup.controls['fiscal_year'].hasError('required')">
+                    <p class="error-message">Policy Name is mandatory</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for=""> Upload File </label>
+                <input type="file" formControlName="file" #inputFile class="form-control"
+                    (change)="handleUploadFile($event)" />
+            </div>
+        </div>
+        <div class="col-12 d-flex justify-content-end py-2">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </form>
+</div>

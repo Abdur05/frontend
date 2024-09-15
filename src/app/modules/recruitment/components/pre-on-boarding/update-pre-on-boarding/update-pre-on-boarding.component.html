@@ -1,0 +1,452 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/recruitment/pre-onBoarding-list">arrow_back</mat-icon>Pre OnBoarding</h2>
+    <form [formGroup]="preOnBoardingFormGroup">
+        <div class="row border mx-0 ">
+
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">First Name <sup>*</sup> </label>
+                <input type="text" formControlName="firstName" class="form-control" placeholder="Enter First Name"
+                    readonly>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Last Name <sup>*</sup> </label>
+                <input type="text" formControlName="lastName" class="form-control" placeholder="Enter Last Name"
+                    readonly>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                <label for="">Candidate Email <sup>*</sup> </label>
+                <input type="text" formControlName="email" class="form-control" placeholder="Enter Email" readonly>
+            </div>
+        </div>
+        <!-- <div class="example-action-buttons">
+            <button mat-button (click)="accordion.openAll()">Expand All</button>
+            <button mat-button (click)="accordion.closeAll()">Collapse All</button>
+        </div> -->
+        <mat-accordion class="example-headers-align" multi>
+            <mat-expansion-panel [expanded]="true">
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="button" class="btn btn-primary" (click)="addEductaionDetail()">Add Education</button>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th *ngIf="educationDetail.controls.length>1">Action</th>
+                            <th>Education<sup>*</sup></th>
+                            <th>Univercity<sup>*</sup></th>
+                            <th>Start Date<sup>*</sup></th>
+                            <th>End Date<sup>*</sup></th>
+                            <th>Student Id<sup>*</sup></th>
+                            <th>Program Type<sup>*</sup></th>
+                            <th>% marks/ CGPA<sup>*</sup></th>
+                            <th>Attach Certificate<sup>*</sup></th>
+                        </tr>
+                    </thead>
+                    <tbody formArrayName="education">
+                        <tr *ngFor="let list of preOnBoardingFormGroup.get('education')['controls'];let i=index"
+                            [formGroupName]="i">
+                            <td *ngIf="educationDetail.controls.length>1">
+                                <mat-icon (click)="deleteEductaionRow(i)">delete</mat-icon>
+
+                            </td>
+                            <td>
+                                <select class="form-select" formControlName="education">
+                                    <option [selected]="educationDetail.value.education === ''" value="" hidden>Select
+                                        Education</option>
+                                    <option value="UG">UG</option>
+                                    <option value="PG">PG</option>
+                                </select>
+                                <div
+                                    *ngIf="list.controls['education'].touched && list.controls['education'].dirty && list.controls['education'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Education is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && list.controls['education'].hasError('required')">
+                                    <p class="error-message">Education is mandatory</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="text" formControlName="univercity" class="form-control"
+                                    placeholder="Enter Univercity">
+                                <div
+                                    *ngIf="list.controls['univercity'].touched && list.controls['univercity'].dirty && list.controls['univercity'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Univercity is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && list.controls['univercity'].hasError('required')">
+                                    <p class="error-message">Univercity is mandatory</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="date" class="form-control " formControlName="education_start_date">
+                            </td>
+                            <td>
+                                <input type="date" class="form-control " formControlName="education_end_date"
+                                    (blur)="validateDates(list, i)">
+                                <div *ngIf="list.controls['education_end_date'].hasError('invalidEndDate')">
+                                    <p class="error-message"> End date must be greater start date</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control " placeholder="Enter Student ID/Reg. No"
+                                    formControlName="education_student_id">
+                            </td>
+                            <td>
+                                <select class="form-select " aria-label="Default select example"
+                                    formControlName="education_program_type">
+                                    <option [selected]="list.value.education_program_type === ''" value="" hidden>
+                                        Select
+                                        Program Type</option>
+                                    <option value="Part Time">Part Time</option>
+                                    <option value="Full Time">Full Time</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control " placeholder="Enter % marks/CGPA"
+                                    formControlName="education_marks_cgpa">
+
+                            </td>
+                            <td>
+                                <input type="file" class="form-control" #inputFile
+                                    (change)="handleUploadFile($event, i, inputFile,'education', 'attachCertificate')">
+
+                                <!-- <span class="upload_text" (click)="uploadFile(inputFile, 'attach')">
+                                    {{list.value.attachCertificate ? list.value.attachCertificate
+                                    :
+                                    'Attach Certificate'}}</span> <input type="file" #inputFile class="d-none"
+                                    (change)="handleUploadFile($event)"> -->
+                                <div
+                                    *ngIf="list.controls['attachCertificate'].touched && list.controls['attachCertificate'].dirty && list.controls['attachCertificate'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Attach Certificate is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && list.controls['attachCertificate'].hasError('required')">
+                                    <p class="error-message">Attach Certificate is mandatory</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="button" class="btn btn-primary" (click)="addDetail()">Add Company</button>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th *ngIf="companyDetail.controls.length>1">Action</th>
+                            <th>Company Name <sup>*</sup></th>
+                            <th>Total No Of Experience <sup>*</sup></th>
+                            <th>Start Date <sup>*</sup></th>
+                            <th>End Date <sup>*</sup></th>
+                            <th>Reprting Manager <sup>*</sup></th>
+                            <th>Reprting Manager Designation <sup>*</sup></th>
+                            <th>Employee Id <sup>*</sup></th>
+                            <th>Reason For Leaving <sup>*</sup></th>
+                            <th>Experience/Releiving Certificate <sup>*</sup></th>
+                            <th>Hike Letter<sup>*</sup></th>
+                            <th>Pay Slip File <sup>*</sup></th>
+                        </tr>
+                    </thead>
+                    <tbody formArrayName="companyName">
+                        <tr *ngFor="let list of preOnBoardingFormGroup.get('companyName')['controls'];let i=index"
+                            [formGroupName]="i">
+                            <td *ngIf="companyDetail.controls.length>1">
+                                <mat-icon (click)="deleteRow(i)">delete</mat-icon>
+
+                            </td>
+                            <td>
+                                <input type="text" formControlName="companyName" class="form-control"
+                                    placeholder="Enter Company Name">
+                                <div
+                                    *ngIf="list.controls['companyName'].touched && list.controls['companyName'].dirty && list.controls['companyName'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Company Name is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && list.controls['companyName'].hasError('required')">
+                                    <p class="error-message">Company Name is mandatory</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="number" min="0" formControlName="totalExperience" class="form-control"
+                                    placeholder="Enter Total No Of Experience">
+                                <div
+                                    *ngIf="list.controls['totalExperience'].touched && list.controls['totalExperience'].dirty && list.controls['totalExperience'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Total No Of Experience is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && list.controls['totalExperience'].hasError('required')">
+                                    <p class="error-message">Total No Of Experience is mandatory</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="date" formControlName="company_start_date" class="form-control ">
+                                <div
+                                    *ngIf="list.controls['company_start_date'].touched && list.controls['company_start_date'].dirty && list.controls['company_start_date'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Start Date is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && list.controls['company_start_date'].hasError('required')">
+                                    <p class="error-message">Start Date is mandatory</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="date" class="form-control " formControlName="company_end_date"
+                                    (blur)="validateDates2(list, i)">
+                                <div
+                                    *ngIf="list.controls['company_end_date'].touched && list.controls['company_end_date'].dirty && list.controls['company_end_date'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">End Date is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && list.controls['company_end_date'].hasError('required')">
+                                    <p class="error-message">End Date is mandatory</p>
+                                </div>
+                                <div *ngIf="list.controls['company_end_date'].hasError('invalidEndDate')">
+                                    <p class="error-message"> End date must be greater start date</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="text" formControlName="company_reporting_manager" class="form-control "
+                                    placeholder="Enter Reporting Manager Name">
+                                <div
+                                    *ngIf="list.controls['company_reporting_manager'].touched && list.controls['company_reporting_manager'].dirty && list.controls['company_reporting_manager'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Reporting Manager is mandatory</p>
+                                </div>
+                                <div
+                                    *ngIf="isSubmitted && list.controls['company_reporting_manager'].hasError('required')">
+                                    <p class="error-message">Reporting Manager is mandatory</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control"
+                                    placeholder="Enter Reporting Manager Designation"
+                                    formControlName="company_reporting_manager_designation">
+                                <div
+                                    *ngIf="list.controls['company_reporting_manager_designation'].touched && list.controls['company_reporting_manager_designation'].dirty && list.controls['company_reporting_manager_designation'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Reporting Manager Designation is mandatory</p>
+                                </div>
+                                <div
+                                    *ngIf="isSubmitted && list.controls['company_reporting_manager_designation'].hasError('required')">
+                                    <p class="error-message">Reporting Manager Designation is mandatory</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="text" formControlName="company_employee_id" class="form-control "
+                                    placeholder="Enter Employee Id">
+                                <div
+                                    *ngIf="list.controls['company_employee_id'].touched && list.controls['company_employee_id'].dirty && list.controls['company_employee_id'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Employee Id is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && list.controls['company_employee_id'].hasError('required')">
+                                    <p class="error-message">Employee Id is mandatory</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="text" formControlName="company_reason_for_leaving" class="form-control "
+                                    placeholder="Enter Reason For Leaving">
+                                <div
+                                    *ngIf="list.controls['company_reason_for_leaving'].touched && list.controls['company_reason_for_leaving'].dirty && list.controls['company_reason_for_leaving'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Company Reason for leaving is mandatory</p>
+                                </div>
+                                <div
+                                    *ngIf="isSubmitted && list.controls['company_reason_for_leaving'].hasError('required')">
+                                    <p class="error-message">Company Reason for leaving is mandatory</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="file" class="form-control" #inputExp
+                                    (change)="handleUploadFile($event, i, inputExp,'companyName', 'experienceLetterFilePath')">
+                                <!-- <span class="upload_text" (click)="uploadFile(inputFile, 'resume')">
+                                    {{educationDetail.value.experienceLetterFilePath ?
+                                    educationDetail.value.experienceLetterFilePath
+                                    :
+                                    'Experience/Releiving Letter'}}</span><mat-icon
+                                    (click)="openDialog(educationDetail.value.experienceLetterFilePath)">visibility</mat-icon>
+                                <input type="file" #inputFile class="d-none" (change)="handleUploadFile($event)"> -->
+                                <!-- <input type="file" #inputFile class="d-none"> -->
+                                <div
+                                    *ngIf="list.controls['experienceLetterFilePath'].touched && list.controls['experienceLetterFilePath'].dirty && list.controls['experienceLetterFilePath'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Experience/Releiving Letter is mandatory</p>
+                                </div>
+                                <div
+                                    *ngIf="isSubmitted && list.controls['experienceLetterFilePath'].hasError('required')">
+                                    <p class="error-message">Experience/Releiving Letter is mandatory</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="file" class="form-control" #inputHike
+                                    (change)="handleUploadFile($event, i, inputHike,'companyName', 'hikeLetterFilePath')">
+
+                                <!-- <span class="upload_text" (click)="uploadFile(inputFile, 'resume')">
+                                    {{educationDetail.value.hikeLetterFilePath ?
+                                    educationDetail.value.hikeLetterFilePath
+                                    :
+                                    'Hike Letter'}}</span><mat-icon
+                                    (click)="openDialog(educationDetail.value.hikeLetterFilePath)">visibility</mat-icon>
+                                <input type="file" #inputFile class="d-none" (change)="handleUploadFile($event)">
+                                <input type="file" #inputFile class="d-none"> -->
+
+                            </td>
+                            <td>
+                                <input type="file" class="form-control" #inputPay
+                                    (change)="handleUploadFile($event, i, inputPay,'companyName','paySlipFilePath')">
+
+                                <!-- <span class="upload_text" (click)="uploadFile(inputFile, 'resume')">
+                                    {{educationDetail.value.paySlipFilePath ? educationDetail.value.paySlipFilePath
+                                    :
+                                    'Pay Slip Letter'}}</span><mat-icon
+                                    (click)="openDialog(educationDetail.value.paySlipFilePath)">visibility</mat-icon>
+                                <input type="file" #inputFile class="d-none" (change)="handleUploadFile($event)">
+                                <input type="file" #inputFile class="d-none"> -->
+                                <div
+                                    *ngIf="list.controls['paySlipFilePath'].touched && list.controls['paySlipFilePath'].dirty && list.controls['paySlipFilePath'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Pay Slip is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && list.controls['paySlipFilePath'].hasError('required')">
+                                    <p class="error-message">Pay Slip is mandatory</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </mat-expansion-panel>
+        </mat-accordion>
+
+        <!-- <mat-tab-group animationDuration="0ms" class="py-2">
+            <mat-tab label="Education">
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="button" class="btn btn-primary" (click)="addEductaionDetail()">Add Education</button>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th *ngIf="educationDetail.controls.length>1">Action</th>
+                            <th>Education<sup>*</sup></th>
+                            <th>Univercity<sup>*</sup></th>
+                            <th>Attach Certificate<sup>*</sup></th>
+                        </tr>
+                    </thead>
+                    <tbody formArrayName="educationList">
+                        <tr *ngFor="let list of preOnBoardingFormGroup.get('educationList')['controls'];let i=index"
+                            [formGroupName]="i">
+                            <td *ngIf="educationDetail.controls.length>1">
+                                <mat-icon (click)="deleteEductaionRow(i)">delete</mat-icon>
+
+                            </td>
+                            <td>
+                                <select class="form-select" formControlName="education">
+                                    <option [selected]="educationDetail.value.education === ''" value="" hidden>Select
+                                        Education</option>
+                                    <option value="UG">UG</option>
+                                    <option value="PG">PG</option>
+                                </select>
+                                <div
+                                    *ngIf="list.controls['education'].touched && list.controls['education'].dirty && list.controls['education'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Education is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && list.controls['education'].hasError('required')">
+                                    <p class="error-message">Education is mandatory</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="text" formControlName="univercity" class="form-control"
+                                    placeholder="Enter Univercity">
+                                <div
+                                    *ngIf="list.controls['univercity'].touched && list.controls['univercity'].dirty && list.controls['univercity'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Univercity is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && list.controls['univercity'].hasError('required')">
+                                    <p class="error-message">Univercity is mandatory</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="file" class="form-control" formControlName="attachCertificate">
+                                <div
+                                    *ngIf="list.controls['attachCertificate'].touched && list.controls['attachCertificate'].dirty && list.controls['attachCertificate'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Attach Certificate is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && list.controls['attachCertificate'].hasError('required')">
+                                    <p class="error-message">Attach Certificate is mandatory</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </mat-tab>
+            <mat-tab label="companyName">
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="button" class="btn btn-primary" (click)="addDetail()">Add Company</button>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th *ngIf="companyDetail.controls.length>1">Action</th>
+                            <th>Company Name <sup>*</sup></th>
+                            <th>Total No Of Experience <sup>*</sup></th>
+                            <th>Experience/Releiving Certificate <sup>*</sup></th>
+                            <th>Hike Letter</th>
+                            <th>Pay Slip File <sup>*</sup></th>
+                        </tr>
+                    </thead>
+                    <tbody formArrayName="companyList">
+                        <tr *ngFor="let list of preOnBoardingFormGroup.get('companyList')['controls'];let i=index"
+                            [formGroupName]="i">
+                            <td *ngIf="companyDetail.controls.length>1">
+                                <mat-icon (click)="deleteRow(i)">delete</mat-icon>
+
+                            </td>
+                            <td>
+                                <input type="text" formControlName="companyName" class="form-control"
+                                    placeholder="Enter Company Name">
+                                <div
+                                    *ngIf="list.controls['companyName'].touched && list.controls['companyName'].dirty && list.controls['companyName'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Company Name is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && list.controls['companyName'].hasError('required')">
+                                    <p class="error-message">Company Name is mandatory</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="number" min="0" formControlName="totalExperience" class="form-control"
+                                    placeholder="Enter Total No Of Experience">
+                                <div
+                                    *ngIf="list.controls['totalExperience'].touched && list.controls['totalExperience'].dirty && list.controls['totalExperience'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Total No Of Experience is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && list.controls['totalExperience'].hasError('required')">
+                                    <p class="error-message">Total No Of Experience is mandatory</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="file" class="form-control" formControlName="experienceLetterFilePath">
+                                <div
+                                    *ngIf="list.controls['experienceLetterFilePath'].touched && list.controls['experienceLetterFilePath'].dirty && list.controls['experienceLetterFilePath'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Experience/Releiving Letter is mandatory</p>
+                                </div>
+                                <div
+                                    *ngIf="isSubmitted && list.controls['experienceLetterFilePath'].hasError('required')">
+                                    <p class="error-message">Experience/Releiving Letter is mandatory</p>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="file" class="form-control" formControlName="hikeLetterFilePath">
+
+                              
+                            </td>
+                            <td>
+                                <input type="file" class="form-control" formControlName="hikeLetterFilePath">
+
+                                <div
+                                    *ngIf="list.controls['paySlipFilePath'].touched && list.controls['paySlipFilePath'].dirty && list.controls['paySlipFilePath'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Pay Slip is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && list.controls['paySlipFilePath'].hasError('required')">
+                                    <p class="error-message">Pay Slip is mandatory</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </mat-tab>
+        </mat-tab-group> -->
+        <div class="col-12 d-flex justify-content-end py-2">
+            <button type="button" class="btn btn-primary" (click)="submitData()">Save</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,44 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 d-flex justify-content-end py-2">
+            <mat-icon (click)="close()">close</mat-icon>
+        </div>
+
+
+        <div class="col-12 d-flex justify-content-center py-2">
+            <strong>Attempt History</strong>
+        </div>
+
+        <!-- <div class="col-10 offset-1 py-2">
+            <li>Completion status of Brainbench/Skillsoft/Mindworks course will be updat after 24 hours from the time of
+                completion.
+            </li>
+            <li>Completion status of iON course will be updated after 1 hour and 20 minute from the time of completion.
+            </li>
+        </div> -->
+
+        <div class="col-10 offset-1 py-2 mt-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Attempt Date</th>
+                        <th>Attempt On</th>
+                        <th>Score</th>
+                        <th>Completion Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let list of assetDetails">
+                        <td>{{list.submitedOn | date:"dd/MM/yyyy"}}</td>
+                        <td>{{list.submitedOn | date:"hh:mm a"}}</td>
+                        <td>{{list.totalMarks}}</td>
+                        <!-- <td>{{list.submitStatus === 'Pending' ? 'Incompleted' : 'Completed'}} </td> -->
+
+                        <td>{{list.submitStatus === 'Pending' ? 'Incompleted' : 'Completed'}} {{(data === 'Completed' && list.submitStatus === 'Pending' && list.totalMarks !== 0) ? '(You scored Pass Percentage so assesment will be completed)' : '' }}</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

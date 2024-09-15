@@ -1,0 +1,33 @@
+<div class="container-fluid">
+    <div class="row" *ngIf="acceptShow">
+       <div class="col-12" >
+        <p style="height: 700px;display: flex;
+        align-items: center;
+        justify-content: center;">I am grateful that you have accepted the offer letter!</p>
+       </div> 
+    </div>
+    <div class="row" *ngIf="!acceptShow">
+
+        <div class="col-12 py-2">
+            <div class="d-flex justify-content-end d-grid gap-2">
+                <div>
+                    <button type="button" class="btn btn-danger"
+                        (click)="handleOfferUpdateStatus('Rejected')">Reject</button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary"
+                        (click)="handleOfferUpdateStatus('Accepted')">Accept</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <ngx-extended-pdf-viewer
+                    [src]="pdfSrc" style="height: 400px; width: 100%;"
+                    [textLayer]="true" [showHandToolButton]="true">
+                </ngx-extended-pdf-viewer>
+        </div>
+
+       
+    </div>
+</div>

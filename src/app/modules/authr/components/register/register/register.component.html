@@ -1,0 +1,157 @@
+<div class="imageL">
+    <div class="container-fluid">
+
+        <div class="row">
+            <section class="wrapper">
+                <form [formGroup]="registerFormGroup" (ngSubmit)="signupHandle()">
+                    <!-- <div class=" col-4 py-2  ">
+                        <img src="assets/hatch.jpg" alt="im">
+                    </div> -->
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="form-group col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                                <label for="name">First Name <sup>*</sup></label>
+                                <input type="text" class="form-control" id="name" formControlName="firstName"
+                                    placeholder="Enter First Name" />
+                                <div
+                                    *ngIf="registerFormGroup.controls['firstName'].touched && registerFormGroup.controls['firstName'].dirty && registerFormGroup.controls['firstName'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">First Name is mandatory</p>
+                                </div>
+                                <div
+                                    *ngIf="isSubmitted && registerFormGroup.controls['firstName'].hasError('required')">
+                                    <p class="error-message">First Name is mandatory</p>
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                                <label for="name">Last Name <sup>*</sup></label>
+                                <input type="text" class="form-control" id="name" formControlName="lastName"
+                                    placeholder="Enter Last Name" />
+                                <div
+                                    *ngIf="registerFormGroup.controls['lastName'].touched && registerFormGroup.controls['lastName'].dirty && registerFormGroup.controls['lastName'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Last Name is mandatory</p>
+                                </div>
+                                <div *ngIf="isSubmitted && registerFormGroup.controls['lastName'].hasError('required')">
+                                    <p class="error-message">Last Name is mandatory</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-12 py-2">
+                        <label for="name">User Name <sup>*</sup></label>
+                        <input type="text" class="form-control" id="name" formControlName="userName"
+                            placeholder="Enter User Name / PhoneNumber" />
+                        <div
+                            *ngIf="registerFormGroup.controls['userName'].touched && registerFormGroup.controls['userName'].dirty && registerFormGroup.controls['userName'].hasError('required') && !isSubmitted">
+                            <p class="error-message">User Name is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && registerFormGroup.controls['userName'].hasError('required')">
+                            <p class="error-message">User Name is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="form-group col-12 py-2">
+                        <label for="email">Email address <sup>*</sup></label>
+                        <input type="email" class="form-control" id="email" formControlName="emailId"
+                            placeholder="Enter email" />
+                        <div
+                            *ngIf="registerFormGroup.controls['emailId'].touched && registerFormGroup.controls['emailId'].dirty && registerFormGroup.controls['emailId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Email Id is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && registerFormGroup.controls['emailId'].hasError('required')">
+                            <p class="error-message">Email Id is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="form-group col-12 py-2" style="position: relative;">
+                        <label for="password">Password <sup>*</sup></label>
+                        <input [type]="text ? 'text':'password'" class="form-control" id="password"
+                            formControlName="password" placeholder="Password" />
+                        <div class="eye-icon" style="position: absolute;">
+                            <!-- <mat-icon *ngIf="!text" style="display: flex;position: relative; top: 5px; cursor: pointer;"
+                                    (click)="text=!text">visibility</mat-icon> -->
+                            <img src="/assets/logs/view.png" *ngIf="!text"
+                                style="cursor: pointer;width: 25px; object-fit: contain;" (click)="text=!text">
+                            <mat-icon *ngIf="text"
+                                style="display: flex;position: relative; top: 5px; cursor: pointer; font-size: 20px;"
+                                (click)="text=!text">visibility_off</mat-icon>
+                        </div>
+
+                    </div>
+                    <div
+                        *ngIf="registerFormGroup.controls['password'].touched && registerFormGroup.controls['password'].dirty && registerFormGroup.controls['password'].hasError('required') && !isSubmitted">
+                        <p class="error-message">Password is mandatory</p>
+                    </div>
+                    <div *ngIf="isSubmitted && registerFormGroup.controls['password'].hasError('required')">
+                        <p class="error-message">Password is mandatory</p>
+                    </div>
+                    <div class="text-red-400 text-sm"
+                        *ngIf="this.registerFormGroup.get('password')?.dirty && registerFormGroup.controls['password'].hasError('pattern')">
+                        <p class="block mb-0 py-1"
+                            [ngStyle]="{'color': this.registerFormGroup.get('password')?.value?.match('^(?=.*[A-Z])') ? 'green':'red'}">
+                            At least one uppercase
+                            letter.</p>
+                        <p class="block mb-0 py-1"
+                            [ngStyle]="{'color': this.registerFormGroup.get('password')?.value?.match('(?=.*[a-z])') ? 'green':'red'}">
+                            At least one lowercase
+                            letter.</p>
+                        <p class="block mb-0 py-1"
+                            [ngStyle]="{'color': this.registerFormGroup.get('password')?.value?.match('(.*[0-9].*)') ? 'green':'red'}">
+                            At least one
+                            digit.</p>
+                        <p class="block mb-0 py-1"
+                            [ngStyle]="{'color': this.registerFormGroup.get('password')?.value?.match('(?=.*[!@#$%^&*])') ? 'green':'red'}">
+                            At least one
+                            special
+                            character.</p>
+                        <p class="block mb-0 py-1"
+                            [ngStyle]="{'color': this.registerFormGroup.get('password')?.value?.match('.{8,}') ? 'green':'red'}">
+                            At least 8 characters
+                            long.</p>
+
+                    </div>
+                    <div class="form-group col-12 py-2">
+                        <label for="name">Phone Number <sup>*</sup></label>
+                        <input maxlength="10" class="form-control" id="name" formControlName="phoneNumber"
+                            placeholder="Enter Phone Number" />
+                        <div
+                            *ngIf="registerFormGroup.controls['phoneNumber'].touched && registerFormGroup.controls['phoneNumber'].dirty && registerFormGroup.controls['phoneNumber'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Phone Number is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && registerFormGroup.controls['phoneNumber'].hasError('required')">
+                            <p class="error-message">Phone Number is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group form-check py-2">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1"
+                                formControlName="termsConditions" value="yes">
+                            <label style="font-size: small;">I have accept terms and Condition</label>
+
+                        </div>
+                        <div
+                            *ngIf="registerFormGroup.controls['termsConditions'].touched && registerFormGroup.controls['termsConditions'].dirty && registerFormGroup.controls['termsConditions'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Terms and Condition is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && registerFormGroup.controls['termsConditions'].hasError('required')">
+                            <p class="error-message">Please Accept the Terms and Condition</p>
+                        </div>
+                    </div>
+                    <div class=" col-12 d-flex justify-content-center py-2">
+                        <button type="submit" class="btn btn-primary h-100 w-100"
+                            style="background-color: #00acff !important; ">Sign
+                            Up</button>
+                    </div>
+
+
+
+                    <div class="form-group col-12 py-2">
+                        <p style="margin-left: 20%; font-size: 14px;">Already have an account <span class="text-primary"
+                                style="cursor: pointer;" routerLink="/authr/login">Sign
+                                In</span></p>
+                    </div>
+                    <div class="form-group col-12 py-2">
+                        <p style="font-size: 14px;">© 2024-25 Hatchlong I Privacy Police I Terms and Conditions</p>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>

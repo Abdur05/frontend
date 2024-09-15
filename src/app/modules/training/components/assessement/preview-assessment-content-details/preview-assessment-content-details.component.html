@@ -1,0 +1,46 @@
+<div class="container">
+    <div  class="row">
+        <div class="col-12 d-flex justify-content-center py-2">
+            <h1>Instruction</h1>
+        </div>
+        <div class="col-12 p-0">
+            <hr>
+        </div>
+        <div class="col-6 offset-3 py-2">
+          <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td>Number of Questions</td>
+                    <td>{{data.noOfQuestion}}</td>
+                </tr>
+                <tr>
+                    <td>Maximum Duration</td>
+                    <td>{{data.duration}} minute(s)</td>
+                </tr>
+                <tr>
+                    <td>Mastery Score</td>
+                    <td>{{data.passPercentage}} %</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="col-12 py-2">
+            <li>Consider your response to a question carefully, before moving to the next question. Once you move to the next question, you will not be able to revisit your earlier responses.
+            </li>
+        </div>
+
+        <div class="col-12 py-2">
+            <li>In case your score is not updated after clearing the assessment, please raise a GHD ticket with the pdf downloaded at the end of the assessment.
+            </li>
+        </div>
+
+        <div class="col-12 d-flex justify-content-center py-2">
+            <h2 class="text-success">GOOD LUCK!</h2>
+        </div>
+
+        <div class="col-12 d-flex justify-content-center py-2">
+            <button type="button" class="btn btn-primary" (click)="startAssessment()">Start</button>
+        </div>
+    </div>
+</div>

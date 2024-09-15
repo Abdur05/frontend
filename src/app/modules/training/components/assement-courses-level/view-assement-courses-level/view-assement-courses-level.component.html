@@ -1,0 +1,95 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <form [formGroup]="questionFormGroup" (ngSubmit)="submitData()">
+
+                <div class="row py-2">
+                    <div class="col-12 d-flex justify-content-center">
+                        <h2> Assessment - <span>&nbsp;{{assesmentDetails.courseTitle}}</span>
+                        </h2>
+                    </div>
+                </div>
+                <div class="row border mx-0">
+
+                    <!-- <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label>Course Title : </label> <span>&nbsp;{{assesmentDetails.courseTitle}}</span>
+                    </div> -->
+
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label>Assessment Title : </label> <span>&nbsp;{{assesmentDetails.title}}</span>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label>Total Questions : </label> <span>&nbsp;{{assesmentDetails.noOfQuestion}}</span>
+                    </div>
+
+
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label>Total Marks : </label> <span>&nbsp;{{assesmentDetails.totalMarks}}</span>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label>Pass Percentage : </label> <span>&nbsp;{{assesmentDetails.passPercentage}}</span>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label>No Of Attempts Allowed : </label>
+                        <span>&nbsp;{{assesmentDetails.noOfAttemptsAllowed}}</span>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label>Duration(mins) : </label> <span>&nbsp;{{assesmentDetails.duration}}</span>
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <div class="col-12 py-2">
+                        <h2>Question</h2>
+                    </div>
+                </div> -->
+                <div class="row border mx-0 mt-2 mb-2">
+                    <div class="col-12">
+                        <div class="row border mx-0 mt-2 mb-2" *ngFor="let list of assesmentDetails.questions">
+
+                            <div class="col-6 py-2">
+                                <label>Question Title : </label> <span>&nbsp;{{list.questionDetails.question}}</span>
+
+                            </div>
+                            <div class="col-6 d-flex justify-content-end py-2">
+                                <label>Mark : </label> <span>&nbsp;{{list.marks}}</span>
+
+                            </div>
+                            <div class="col-12 py-2"
+                                *ngFor="let optionsList of list.questionDetails.options; let i = index">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-check" *ngIf="list.questionDetails.question_type === 'MCQ-single'">
+                                            <input class="form-check-input" type="radio" style="pointer-events: none;"
+                                            (change)="handleCheckAnswer($event, i)" name="flexRadioDefault{{i}}"
+                                            id="flexRadioDefault{{i}}" [checked]="optionsList.correct_answer">
+                                            <label class="form-check-label" for="exampleRadios1">
+                                              {{optionsList.option}}
+                                            </label>
+                                          </div>
+
+                                          <div class="form-check" *ngIf="list.questionDetails.question_type === 'MCQ-multiple'">
+                                            <input class="form-check-input" type="checkbox" style="pointer-events: none;"
+                                            (change)="handleCheckAnswer($event, i)" name="flexRadioDefault{{i}}"
+                                            id="flexRadioDefault{{i}}" [checked]="optionsList.correct_answer">
+                                            <label class="form-check-label" for="exampleRadios1">
+                                              {{optionsList.option}}
+                                            </label>
+                                          </div>
+                                  
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

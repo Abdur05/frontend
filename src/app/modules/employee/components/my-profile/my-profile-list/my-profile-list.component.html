@@ -1,0 +1,155 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <app-loader *ngIf="isLoader"></app-loader>
+
+    <div class="row">
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+
+            <div class="row py-2" *ngIf="roleName === 'Reporting Manager' || roleName === 'Supervisor' || roleName === 'Admin'">
+                <div class="col-12">
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto"><b>Search Filter</b></legend>
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-1 filterText">
+                                <input type="text" #searchDataInput name="" id="search-data"
+                                    placeholder="Employee Id/First Name/Last Name/Mail Id/Mobile Number"
+                                    class="form-control " (input)="handleFilter($event)">
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 py-1">
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <select class="form-select" (change)="handleFilterList($event)">
+                                        <option [selected]="selectedFilter === ''" value="">All</option>
+                                        <option [selected]="selectedFilter === true" [value]="true">Active</option>
+                                        <option [selected]="selectedFilter === false" [value]="false">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div
+                                class="col-12 col-sm-12 col-md-12 col-lg-12 d-grid gap-2 col-xl-12 py-2 d-flex justify-content-end">
+                                <div class="py-1">
+                                    <button class="btn btn-primary " (click)="handleFilterDetails()"
+                                        type="button">Search</button>
+                                </div>
+                                <div class="py-1">
+                                    <button class="btn btn-primary "
+                                        (click)="searchDataInput.value = ''; filterText = ''"
+                                        type="button">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mt-4">
+                    <h2>My Team</h2>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 py-2">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end " *ngIf="rolesView?.add === true">
+                        <button class="btn btn-primary " (click)="nextPage('/employee/my-profile')" type="button"
+                            style="color: white;background: #00acff;">Add Employee</button>
+                        <!-- <button class="btn btn-danger" type="button" style="color: white;" (click)="handleDeleteMuliple()">
+                            <mat-icon style="width: 15px; height: 15px;">delete</mat-icon>
+                            Delete Selected Employee</button> -->
+                        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="importHandle(uploadInput)">
+                                <span>Import Employee</span>
+                            </button>
+                            <input class="d-none" type="file" #uploadInput (change)="handleFileData($event)">
+                            <button mat-menu-item (click)="exportExcel()">
+                                <span>Export Employee</span>
+                            </button>
+                            <button mat-menu-item (click)="downloadExcel()">
+                                <span>Sample Employee Sheet</span>
+                            </button>
+                        </mat-menu>
+                    </div>
+                </div>
+            </div>
+            <div class="row py-2">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>SN</th>
+                                    <th>Employee Id</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Mail Id</th>
+                                    <th>Mobile</th>
+                                    <th>Designation</th>
+                                    <th>Department</th>
+                                    <th>Reporting Manager</th>
+                                    <th>Location</th>
+                                    <th scope="col" *ngIf="rolesView?.modify === true || rolesView?.view === true ">
+                                        Action</th>
+                                    <th scope="col" *ngIf="rolesView?.close === true">Inactive/Active</th>
+                                    <!-- <th scope="col"><input type="checkbox" [checked]="selectAll"
+                                            (change)="selectdata($event)"> Select All</th> -->
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="myProfileDetail.length === 0">
+                                <tr>
+                                    <td colspan="12" class="text-center">No Records</td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr *ngFor="let list of myProfileDetail; let i=index">
+                                    <td>{{i+1}}</td>
+                                    <td>{{list.employeeId}}</td>
+                                    <td>{{list.firstName}}</td>
+                                    <td>{{list.lastName}}</td>
+                                    <td style="text-transform: none !important;">{{list.mailId}}</td>
+                                    <td>{{list.mobile}}</td>
+                                    <td>{{list.designation?.designationName ? list.designation?.designationName :'-'}}
+                                    </td>
+                                    <td>{{list.department?.departmentName ? list.department?.departmentName :'-'}}</td>
+                                    <td>{{list.reportingManager ? list.reportingManager :'-'}}</td>
+                                    <td>{{list.locationId?.locationId ? list.locationId?.locationId:'-'}}</td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <div *ngIf="rolesView?.modify === true">
+                                                <mat-icon
+                                                    [routerLink]="'/employee/edit-my-profile/'+list._id">edit</mat-icon>
+                                            </div>
+                                            <div *ngIf="rolesView?.view === true">
+                                                <mat-icon (click)="openDialog(list._id)">visibility</mat-icon>
+                                            </div>
+                                            <!-- <div>
+                                                <mat-icon (click)="deleteRecords(list)">delete</mat-icon>
+                                            </div> -->
+                                        </div>
+                                    </td>
+                                    <td *ngIf="rolesView?.close === true">
+                                        <label class="switch">
+                                            <input type="checkbox" [checked]="list.isActive === true"
+                                                (change)="deleteRecords(list)">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </td>
+
+                                    <!-- <td><input type="checkbox" class="checkbox" [checked]="list.check"
+                                            (change)="particularcheck($event,i)"></td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-12 py-2 d-flex justify-content-center" *ngIf="totalItem > 10">
+        <pagination [totalItems]="totalItem" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)">
+        </pagination>
+    </div>
+</div>

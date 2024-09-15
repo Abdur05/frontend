@@ -1,0 +1,109 @@
+<div class="container-fluid ">
+    <div class="row">
+        <div class="col-12 d-flex justify-content-end py-2 ">
+            <mat-icon (click)="close()">close</mat-icon>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-12">
+            <form [formGroup]="profileFormGroup" (ngSubmit)="handleProfileCreate()">
+                <div class="row border mx-0">
+                   
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Reporting Manager <sup>*</sup></label>
+                        <select class="form-select " aria-label="Default select example"
+                            formControlName="reportingManager">
+                            <option [selected]="profileFormGroup.value.reportingManager === ''" value="">
+                                Select
+                                Reporting Manager</option>
+                            <option *ngFor="let list of filterProfileDetails" [value]="list.employeeId">
+                                {{list.employeeId}}&nbsp;-{{list.firstName}}&nbsp;{{list.lastName}}</option>
+                        </select>
+                        <div
+                            *ngIf="profileFormGroup.controls['reportingManager'].touched && profileFormGroup.controls['reportingManager'].dirty && profileFormGroup.controls['reportingManager'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Reporting Manager is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && profileFormGroup.controls['reportingManager'].hasError('required')">
+                            <p class="error-message">Reporting Manager is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Role <sup>*</sup></label>
+                        <select class="form-select " aria-label="Default select example" formControlName="roleId"
+                            (change)="handleRole($event)">
+                            <option [selected]="profileFormGroup.value.roleId === ''" value="">
+                                Select
+                                Role</option>
+                            <option *ngFor="let list of filterRoleList" [value]="list._id">{{list.roleName}}</option>
+                        </select>
+                        <div
+                            *ngIf="profileFormGroup.controls['roleId'].touched && profileFormGroup.controls['roleId'].dirty && profileFormGroup.controls['roleId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Role is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && profileFormGroup.controls['roleId'].hasError('required')">
+                            <p class="error-message">Role is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Location </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="locationId">
+                            <option [selected]="profileFormGroup.value.locationId === ''" value="">
+                                Select
+                                Location</option>
+                            <option *ngFor="let list of locationDetail" [value]="list._id">{{list.locationId}} -
+                                {{list.locationName}}</option>
+                        </select>
+                        <div
+                            *ngIf="profileFormGroup.controls['locationId'].touched && profileFormGroup.controls['locationId'].dirty && profileFormGroup.controls['locationId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Location is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && profileFormGroup.controls['locationId'].hasError('required')">
+                            <p class="error-message">Location is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Default Shift </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="defaultShift">
+                            <option [selected]="profileFormGroup.value.defaultShift === ''" value="">
+                                Select
+                                Default Shift</option>
+                            <option *ngFor="let list of shiftDetail" [value]="list._id">{{list.description}}</option>
+                        </select>
+                        <div
+                            *ngIf="profileFormGroup.controls['defaultShift'].touched && profileFormGroup.controls['defaultShift'].dirty && profileFormGroup.controls['defaultShift'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Default Shift is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && profileFormGroup.controls['defaultShift'].hasError('required')">
+                            <p class="error-message">Default Shift is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Employee Type <sup>*</sup></label>
+                        <select class="form-select " aria-label="Default select example"
+                            formControlName="employeeTypeId">
+                            <option [selected]="profileFormGroup.value.employeeTypeId === ''" value="">
+                                Select
+                                Employee Type</option>
+                            <option *ngFor="let list of employeeTypeDetail" [value]="list._id">{{list.employeeType}}
+                            </option>
+                        </select>
+                        <div
+                            *ngIf="profileFormGroup.controls['employeeTypeId'].touched && profileFormGroup.controls['employeeTypeId'].dirty && profileFormGroup.controls['employeeTypeId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Employee Type is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && profileFormGroup.controls['employeeTypeId'].hasError('required')">
+                            <p class="error-message">Employee Type is mandatory</p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

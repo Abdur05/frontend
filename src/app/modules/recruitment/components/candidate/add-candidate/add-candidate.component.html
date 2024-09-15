@@ -1,0 +1,310 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/recruitment/candidate-list">arrow_back</mat-icon>Manage Candidate</h2>
+    <form [formGroup]="candidateFormGroup">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0 ">
+                    <h4>Candidate Detail</h4>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <div class="row">
+                            <div class="col-12 py-2">
+                                <label for=""> First Name <sup>*</sup> </label>
+                                <input type="text" formControlName="firstName" class="form-control"
+                                    placeholder="Enter First Name">
+                                <div
+                                    *ngIf="candidateFormGroup.controls['firstName'].touched && candidateFormGroup.controls['firstName'].dirty && candidateFormGroup.controls['firstName'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">First Name is mandatory</p>
+                                </div>
+                                <div
+                                    *ngIf="isSubmitted && candidateFormGroup.controls['firstName'].hasError('required')">
+                                    <p class="error-message">First Name is mandatory</p>
+                                </div>
+                            </div>
+                            <div class="col-12 py-2">
+                                <label for=""> Last Name <sup>*</sup> </label>
+                                <input type="text" formControlName="lastName" class="form-control"
+                                    placeholder="Enter Last Name">
+                                <div
+                                    *ngIf="candidateFormGroup.controls['lastName'].touched && candidateFormGroup.controls['lastName'].dirty && candidateFormGroup.controls['lastName'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Last Name is mandatory</p>
+                                </div>
+                                <div
+                                    *ngIf="isSubmitted && candidateFormGroup.controls['lastName'].hasError('required')">
+                                    <p class="error-message">Last Name is mandatory</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <div class="row">
+                            <div class="col-12 py-2">
+                                <section class="file-border">
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-center py-1"
+                                            style="position: relative;">
+                                            <img class="img-ava"
+                                                [src]="imageSrc?imageSrc:'/assets/logs/profile.png'"><sup
+                                                class="delete_img" (click)="deletePerview()" *ngIf="imageSrc"><mat-icon
+                                                    style="font-size: 20px;display: flex;align-items: center;justify-content: center;">delete</mat-icon></sup>
+
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-center py-1">
+                                            <span (click)="uploadFile(inputFile,'logo')" class="upload_text">
+                                                Choose Photo</span>
+                                            <input type="file" #inputFile class="d-none"
+                                                (change)="handleUploadFile($event)">
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                        <label for="ReferenceType">Gender</label>
+                        <div class="d-flex mt-2 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="gender"
+                                    id="flexRadioDefault1" value="Male">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;"
+                                    for="flexRadioDefault1">
+                                    Male
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="gender"
+                                    id="flexRadioDefault2" value="Female">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;"
+                                    for="flexRadioDefault2">
+                                    Female
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="gender"
+                                    id="flexRadioDefault3" value="Others">
+                                <label class="form-check-label"
+                                    style="font-weight: 500; font-size: 13px; position: relative; bottom: 3px;"
+                                    for="flexRadioDefault2">
+                                    Others
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Date of brith <sup>*</sup></label>
+                        <input type="date" formControlName="dob" class="form-control"
+                            placeholder="Enter Date of brith" (blur)="validateDOB()"
+                            max="{{ today | date:'yyyy-MM-dd' }}" />
+                        <div
+                            *ngIf="candidateFormGroup.controls['dob'].touched && candidateFormGroup.controls['dob'].dirty && candidateFormGroup.controls['dob'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Date of brith is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && candidateFormGroup.controls['dob'].hasError('required')">
+                            <p class="error-message">Date of brith is mandatory</p>
+                        </div>
+                        <div *ngIf="candidateFormGroup.get('dob').hasError('underAge')">
+                            <p class="error-message"> Age must be minimum of 18 years</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Email <sup>*</sup></label>
+                        <input type="email" formControlName="email" class="form-control" placeholder="Enter Email" />
+                        <div
+                            *ngIf="candidateFormGroup.controls['email'].touched && candidateFormGroup.controls['email'].dirty && candidateFormGroup.controls['email'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Email is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && candidateFormGroup.controls['email'].hasError('required')">
+                            <p class="error-message">Email is mandatory</p>
+                        </div>
+                        <div *ngIf="candidateFormGroup.get('email').hasError('pattern')">
+                            <p class="error-message">Please enter a valid email address.</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Phone Number <sup>*</sup> </label>
+                        <input type="number" min="0" formControlName="phoneNumber" class="form-control"
+                            placeholder="Enter Phone Number" maxlength="10"
+                            onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57" />
+                        <div
+                            *ngIf="candidateFormGroup.controls['phoneNumber'].touched && candidateFormGroup.controls['phoneNumber'].dirty && candidateFormGroup.controls['phoneNumber'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Mobile Number is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && candidateFormGroup.controls['phoneNumber'].hasError('required')">
+                            <p class="error-message">Mobile Number is mandatory</p>
+                        </div>
+                        <div *ngIf="candidateFormGroup.controls['phoneNumber'].hasError('minlength')">
+                            <p class="error-message">Mobile Number is not Valid</p>
+                        </div>
+                        <div *ngIf="candidateFormGroup.controls['phoneNumber'].hasError('maxlength')">
+                            <p class="error-message">Mobile Number is not Valid</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row border mx-0 mt-2">
+                    <h4>Personal and Social Profile</h4>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for=""> Hometown <sup>*</sup></label>
+                        <input type="text" formControlName="homeTown" class="form-control" placeholder="Enter Hometown">
+                        <div
+                            *ngIf="candidateFormGroup.controls['homeTown'].touched && candidateFormGroup.controls['homeTown'].dirty && candidateFormGroup.controls['homeTown'].hasError('required') && !isSubmitted">
+                            <p class="error-message"> Hometown is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && candidateFormGroup.controls['homeTown'].hasError('required')">
+                            <p class="error-message"> Hometown is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Current Location <sup>*</sup> </label>
+                        <input type="text" formControlName="currentLocation" class="form-control"
+                            placeholder="Enter Current Location" />
+                        <div
+                            *ngIf="candidateFormGroup.controls['currentLocation'].touched && candidateFormGroup.controls['currentLocation'].dirty && candidateFormGroup.controls['currentLocation'].hasError('required') && !isSubmitted">
+                            <p class="error-message"> Current Location is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && candidateFormGroup.controls['currentLocation'].hasError('required')">
+                            <p class="error-message"> Current Location is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">LinkedIn Profile </label>
+                        <input type="search" formControlName="linkedinProfile" class="form-control"
+                            placeholder="Enter LinkedIn Profile" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Facebook Profile </label>
+                        <input type="search" formControlName="facebookProfile" class="form-control"
+                            placeholder="Enter Facebook Profile" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Twitter Profile </label>
+                        <input type="search" formControlName="twitterProfile" class="form-control"
+                            placeholder="Enter Twitter Profile" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Instagram Profile </label>
+                        <input type="search" formControlName="instagramProfile" class="form-control"
+                            placeholder="Enter Instagram Profile" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Github Profile </label>
+                        <input type="search" formControlName="githubProfile" class="form-control"
+                            placeholder="Enter Github Profile" />
+                    </div>
+                </div>
+                <div class="row border mx-0 mt-2">
+                    <h4>Professional Profile</h4>
+                    <!-- <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Department <sup>*</sup></label>
+                        <select class="form-select " aria-label="Default select example" formControlName="department"
+                            (change)="handleDeperament($event)">
+                            <option [selected]="candidateFormGroup.value.department === ''" value="">
+                                Select
+                                Department</option>
+                            <option *ngFor="let list of departmentDetail" [value]="list._id">{{list.departmentName}}
+                            </option>
+                        </select>
+                        <div
+                            *ngIf="candidateFormGroup.controls['department'].touched && candidateFormGroup.controls['department'].dirty && candidateFormGroup.controls['department'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Department is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && candidateFormGroup.controls['department'].hasError('required')">
+                            <p class="error-message">Department is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Designation <sup>*</sup></label>
+                        <select class="form-select " aria-label="Default select example" formControlName="designation"
+                            (change)="handleDesignation($event)">
+                            <option [selected]="candidateFormGroup.value.designation === ''" value="">
+                                Select
+                                Designation</option>
+                            <option *ngFor="let list of filterDesignationList" [value]="list._id">
+                                {{list.designationName}}</option>
+                        </select>
+                        <div
+                            *ngIf="candidateFormGroup.controls['designation'].touched && candidateFormGroup.controls['designation'].dirty && candidateFormGroup.controls['designation'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Designation is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && candidateFormGroup.controls['designation'].hasError('required')">
+                            <p class="error-message">Designation is mandatory</p>
+                        </div>
+                    </div> -->
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for=""> Experience </label>
+                        <input type="text" formControlName="experience" class="form-control"
+                            placeholder="Enter Experience">
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Expertise </label>
+                        <input type="text" formControlName="expertise" class="form-control"
+                            placeholder="Enter Expertise" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Current Company </label>
+                        <input type="text" formControlName="currentCompany" class="form-control"
+                            placeholder="Enter Current Company" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Current Salary </label>
+                        <input type="number" formControlName="currentSalary" class="form-control"
+                            placeholder="Enter Current Salary" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Current Company Designation </label>
+                        <input type="text" formControlName="currentCompanyDesignation" class="form-control"
+                            placeholder="Enter Current Company Designation" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Reason For Leaving </label>
+                        <input type="text" formControlName="reasonForLeaving" class="form-control"
+                            placeholder="Enter Reason For Leaving" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Expected Salary </label>
+                        <input type="text" formControlName="expectedSalary" class="form-control"
+                            placeholder="Enter Expected Salary" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Notice Period </label>
+                        <input type="number" min="0" formControlName="noticePeriod" class="form-control"
+                            placeholder="Enter Notice Period" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Skills </label>
+                        <input type="text" formControlName="skills" class="form-control" placeholder="Enter Skills" [readOnly]="isReferenceShow"/>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Job <sup>*</sup></label>
+                        <select class="form-select" formControlName="jobId"
+                            [ngStyle]="{'pointer-events' : isReferenceShow ? 'none':'all', 'background-color' : isReferenceShow ? '#f3f3f3':'white'}">
+                            <option [selected]="candidateFormGroup.value.jobId === ''" value="" hidden>Select Job
+                            </option>
+                            <option *ngFor="let list of jobDetail" [value]="list._id">{{list.jobName}}</option>
+                        </select>
+                        <div
+                            *ngIf="candidateFormGroup.controls['jobId'].touched && candidateFormGroup.controls['jobId'].dirty && candidateFormGroup.controls['jobId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Job is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && candidateFormGroup.controls['jobId'].hasError('required')">
+                            <p class="error-message">Job is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="py-1">Resume </label><br>
+                        <span class="upload_text" (click)="uploadFile(inputFile1, 'resume')">
+                            {{candidateFormGroup.value.resumeFilepath ? candidateFormGroup.value.resumeFilepath :
+                            'Upload Resume'}}</span>
+                        <input type="file" #inputFile1 class="d-none" (change)="handleUploadFileResume($event)">
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="button" class="btn btn-primary" (click)="fileUpload()">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

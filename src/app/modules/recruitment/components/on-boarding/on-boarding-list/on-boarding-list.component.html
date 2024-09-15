@@ -1,0 +1,73 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid" [ngStyle]="{'padding-left':isShowPadding?'280px':'100px'}">
+    <div class="row">
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+            <div class="row mt-3">
+                <div class="col-12">
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto"><b>Search Filter</b></legend>
+
+                        <div class="row">
+                            <div class="filterText col-sm col-md col-lg col-xl">
+                                <input type="text" #searchDataInput id="search-data" placeholder="Candidate Id / Candidate Name / Email Id / Reference Id / Status"
+                                    class="form-control w-50" (focusout)="handleFilter($event)">
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="table-responsive py-2">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>SN</th>
+                                <th>Candidate Id</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Skills</th>
+                                <th>Reference Id</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                                <!-- <th>Onboarding</th>
+                                <th>Hold</th> -->
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="candidateDetail.length === 0">
+                            <tr>
+                                <td colspan="10" class="text-center">No Records</td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <ng-container *ngFor="let list of candidateDetail; let i=index">
+                                <tr>
+                                    <td>{{i+1}}</td>
+                                    <td>{{list.candidateId}}</td>
+                                    <td>{{list.firstName}} {{list.lastName}}</td>
+                                    <td style="text-transform: none !important;">{{list.email}}</td>
+                                    <td>{{list.phoneNumber}}</td>
+                                    <td>{{list.skills}}</td>
+                                    <td>{{list.referenceId ? list.referenceId : '-'}}</td>
+                                    <td>{{list.status}}</td>
+                                    <td>
+                                        <div class="d-flex d-grid gap-2">
+                                            <button type="button" class="btn btn-primary" [disabled]="list.status === 'Hold'" (click)="onBoarding(list, 'A')">Onboarding</button>
+                                            <button type="button" class="btn btn-danger" (click)="onBoarding(list, (list.status === 'Hold' ? 'Un' : 'H'))">{{list.status === 'Hold' ? 'Un-hold' : 'Hold'}}</button>
+
+                                        </div>
+                                    </td>
+                                   
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-xs-12 col-12 py-2 d-flex justify-content-center" *ngIf="totalItem > 10">
+                <pagination [totalItems]="totalItem" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)">
+                </pagination>
+            </div>
+        </div>
+    </div>
+</div>

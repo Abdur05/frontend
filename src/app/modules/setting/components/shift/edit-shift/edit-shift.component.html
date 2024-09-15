@@ -1,0 +1,82 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/shift-list">arrow_back</mat-icon> Shift Maintenance </h2>
+    <form [formGroup]="shiftDetailFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Shift Code <sup>*</sup></label>
+                        <input type="text" formControlName="shiftCode" class="form-control"
+                            placeholder="Enter Shift Code" readonly>
+                        <div
+                            *ngIf="shiftDetailFormGroup.controls['shiftCode'].touched && shiftDetailFormGroup.controls['shiftCode'].dirty && shiftDetailFormGroup.controls['shiftCode'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Shift Code is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && shiftDetailFormGroup.controls['shiftCode'].hasError('required')">
+                            <p class="error-message">Shift Code is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Shift Name <sup>*</sup></label>
+                        <input type="text" formControlName="shiftName" class="form-control"
+                            placeholder="Enter Shift Name">
+                        <div
+                            *ngIf="shiftDetailFormGroup.controls['shiftName'].touched && shiftDetailFormGroup.controls['shiftName'].dirty && shiftDetailFormGroup.controls['shiftName'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Shift Name is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && shiftDetailFormGroup.controls['reasonId'].hasError('required')">
+                            <p class="error-message">Shift Name is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for=""> Description </label>
+                        <input type="text" formControlName="description" class="form-control"
+                            placeholder="Enter Description" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for=""> Shift Start time </label>
+                        <input type="time" formControlName="shiftStartTime" class="form-control" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for=""> Shift End time </label>
+                        <input type="time" formControlName="shiftEndTime" class="form-control" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for=""> Break start time </label>
+                        <input type="time" formControlName="breakStartTime" class="form-control" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for=""> Break End time </label>
+                        <input type="time" formControlName="breakEndTime" class="form-control" />
+                    </div>
+                    <div class="row justify-content-center mttt">
+                        <div class="col-auto">
+                            <label class="d-inline-block" for="">1 Hr during weekday =</label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="number" min="1" formControlName="holidayHours"
+                                class="form-control d-inline-block" placeholder="Enter 1 Hr during weekday"
+                                onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 46) ? null : (event.charCode >= 48 && event.charCode <= 57)" />
+                        </div>
+                        <div class="col-auto">
+                            <label class="d-inline-block" for="">Hr during holiday</label>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center ">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                            <label for=""> Total Working Hours </label>
+                            <input type="text" formControlName="totalWorkingHour" readonly class="form-control"
+                                placeholder="Enter Total Working Hours" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

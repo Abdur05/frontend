@@ -1,0 +1,58 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/salary-component-list">arrow_back</mat-icon> Salary Component</h2>
+    <form [formGroup]="salaryComponentFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-end py-2">
+                        <button type="button" class="btn btn-primary" (click)="addDetail()">Add</button>
+                    </div>
+                </div>
+
+                <div class="row border mx-0">
+                    <table class="table table-hover">
+
+                        <thead>
+                            <tr>
+                                <th *ngIf="taxDeclarationDetail.controls.length>1">Action</th>
+                                <th>Component Type<sup>*</sup></th>
+                                <th>Component Name</th>
+                            </tr>
+                        </thead>
+                        <tbody formArrayName="componentList">
+                            <tr *ngFor="let list of salaryComponentFormGroup.get('componentList')['controls'];let i=index"
+                                [formGroupName]="i">
+                                <td *ngIf="taxDeclarationDetail.controls.length>1">
+                                    <mat-icon (click)="deleteRow(i)">delete</mat-icon>
+                                </td>
+                                <td>
+                                    <input type="text" formControlName="component_type" class="form-control"
+                                        placeholder="Enter Component Type">
+                                    <div
+                                        *ngIf="list.controls['component_type'].touched && list.controls['component_type'].dirty && list.controls['component_type'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Component Type is mandatory</p>
+                                    </div>
+                                    <div *ngIf="isSubmitted && list.controls['component_type'].hasError('required')">
+                                        <p class="error-message">Component Type is mandatory</p>
+                                    </div>
+
+                                </td>
+                                <td>
+                                    <input type="text" formControlName="component_name" class="form-control"
+                                        placeholder="Enter Component Name">
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

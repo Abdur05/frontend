@@ -1,0 +1,82 @@
+.zzzz {
+    text-align: center;
+    vertical-align: middle;
+    background-color: white !important;
+}
+
+/* table {
+    width: 100%;
+    border-collapse: collapse;
+} */
+
+/* Define common styling for th and td */
+th,
+td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+    background-color: white;
+}
+
+/* Define fixed columns */
+.fixed {
+    position: sticky;
+    left: -12px !important;
+    background-color: white !important;
+    z-index: 1;
+    width: 150px;
+}
+
+/* Define sticky columns */
+.sticky {
+    position: sticky;
+    top: 0;
+    background-color: #f2f2f2;
+    z-index: 2;
+    min-width: 150px;
+}
+
+/* Ensure that fixed and sticky cells have the same height */
+.fixed,
+.sticky {
+    height: 40px;
+    /* Adjust height as needed */
+}
+
+/* Ensure that fixed and sticky cells have the same font size */
+.fixed,
+.sticky,
+th,
+td {
+    font-size: 14px;
+    /* Adjust font size as needed */
+}
+
+/* Ensure that table layout respects fixed and sticky cells */
+.table-container {
+    overflow-x: auto;
+    /* Enable horizontal scrolling */
+    max-width: 100%;
+    /* Allow the table to take the full width of its container */
+}
+
+/* Adjust padding to prevent overlapping */
+.fixed th,
+.fixed td {
+    padding-left: 12px;
+    /* Adjust left padding */
+}
+
+.sticky th,
+.sticky td {
+    padding-left: 12px;
+    /* Adjust left padding */
+}
+
+.table-container thead th {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 2;
+}

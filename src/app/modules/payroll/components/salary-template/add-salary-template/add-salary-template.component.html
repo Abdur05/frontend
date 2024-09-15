@@ -1,0 +1,209 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid" [ngStyle]="{'padding-left':isShowPadding?'280px':'100px'}">
+    <form [formGroup]="salaryTemplateFormGroup" (ngSubmit)="submitData()">
+        <h2><mat-icon class="back" routerLink="/payroll/salary-template-list">arrow_back</mat-icon>Salary Template</h2>
+
+        <div class="row">
+            <div class="col-12 mx-0">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th colspan="4">Hatchlong Technologies Private Limited</th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th>Template Id</th>
+                            <th>
+                                <input type="text" class="form-control" formControlName="templateID" maxlength="2"
+                                    placeholder="Enter Template Id">
+                                <div
+                                    *ngIf="salaryTemplateFormGroup.controls['templateID'].touched && salaryTemplateFormGroup.controls['templateID'].dirty && salaryTemplateFormGroup.controls['templateID'].hasError('required') && !isSubmitted">
+                                    <p class="error-message">Template Id is mandatory</p>
+                                </div>
+                                <div
+                                    *ngIf="isSubmitted && salaryTemplateFormGroup.controls['templateID'].hasError('required')">
+                                    <p class="error-message">Template Id is mandatory</p>
+                                </div>
+                            </th>
+                            <th>Template Description</th>
+                            <th> <input type="text" class="form-control" formControlName="description"
+                                    placeholder="Enter Description"></th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th style="background: white !important;" colspan="4" class="text-center">Salary Template
+                            </th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th>Employee No.</th>
+                            <th>
+                                <input type="text" class="form-control" readonly placeholder="Enter Employee No">
+                            </th>
+
+                            <th>Name</th>
+                            <th>
+                                <input type="text" class="form-control" readonly placeholder="Enter Name">
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Bank</th>
+                            <th>
+                                <input type="text" class="form-control" readonly placeholder="Enter Bank">
+                            </th>
+
+                            <th>Bank A/c No</th>
+                            <th>
+                                <input type="text" class="form-control" readonly placeholder="Enter Bank A/c No">
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>DOJ</th>
+                            <th>
+                                <input type="text" class="form-control" readonly placeholder="Enter DOJ">
+                            </th>
+
+                            <th>LOP Days</th>
+                            <th>
+                                <input type="text" class="form-control" readonly placeholder="Enter LOP Days ">
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>STD Days</th>
+                            <th>
+                                <input type="text" class="form-control" readonly placeholder="Enter STD Days ">
+                            </th>
+
+                            <th>Worked Days</th>
+                            <th>
+                                <input type="text" class="form-control" readonly placeholder="Enter Worked Days ">
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Location</th>
+                            <th>
+                                <input type="text" class="form-control" readonly placeholder="Enter Location">
+                            </th>
+
+                            <th>Department</th>
+                            <th>
+                                <input type="text" class="form-control" readonly placeholder="Enter Department">
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Designation</th>
+                            <th colspan="3">
+                                <input type="text" class="form-control" readonly placeholder="Designation">
+                            </th>
+
+
+                        </tr>
+
+
+                    </thead>
+                </table>
+
+                <table class="table table-bordered">
+
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="text-end">
+                                <button type="button" class="btn btn-primary" (click)="addEarningDetail()">Add
+                                    Earnings</button>
+                            </th>
+                            <th colspan="2" class="text-end">
+                                <button type="button" class="btn btn-primary" (click)="addDeductionDetail()">Add
+                                    Deduction</button>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Earnings</th>
+                            <th class="text-end">
+                                Amount
+                            </th>
+                            <th>Dedications</th>
+                            <th class="text-end">
+                                Amount
+                            </th>
+                        </tr>
+
+                        <tr>
+                            <th colspan="2" formArrayName="earningList">
+                                <ng-container
+                                    *ngFor="let list of salaryTemplateFormGroup.get('earningList')['controls'];let i=index">
+                                    <div class="d-flex justify-content-between py-2" [formGroupName]="i">
+                                        <div class="" style="position: relative;">
+                                            <select class="form-select" formControlName="salaryComponent">
+                                                <option [selected]="salaryTemplateFormGroup.value.salaryComponent"
+                                                    value="" hidden>Select
+                                                    Salary Component</option>
+                                                <ng-container *ngFor="let list of salaryDetail">
+                                                    <option *ngIf="list.componentType === 'Earning'"
+                                                        [value]="list.nameinPayslip">
+                                                        {{list.nameinPayslip}}</option>
+                                                </ng-container>
+                                            </select>
+                                            <span style="position: absolute; right: -25px; top: 3px;"
+                                                *ngIf="earningDetail.controls.length>1">
+                                                <mat-icon (click)="deleteRow(i)">delete</mat-icon>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <input type="text" class="form-control" placeholder="Enter Amount" readonly>
+
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </th>
+
+
+                            <th colspan="2" formArrayName="deductionList">
+                                <ng-container
+                                    *ngFor="let deduction of salaryTemplateFormGroup.get('deductionList')['controls'];let j=index">
+                                    <div class="d-flex justify-content-between py-2" [formGroupName]="j">
+                                        <div class="" style="position: relative;">
+                                            <select class="form-select" formControlName="salaryComponent1">
+                                                <option [selected]="salaryTemplateFormGroup.value.salaryComponent1"
+                                                    value="" hidden>Select
+                                                    Salary Component</option>
+                                                <ng-container *ngFor="let list of salaryDetail">
+                                                    <option *ngIf="list.componentType === 'Deduction'"
+                                                        [value]="list.nameinPayslip">
+                                                        {{list.nameinPayslip}}</option>
+                                                </ng-container>
+
+
+
+                                            </select>
+                                            <span style="position: absolute; right: -25px; top: 3px;"
+                                                *ngIf="deductionDetail.controls.length>1">
+                                                <mat-icon (click)="deleteRow(j)">delete</mat-icon>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <input type="text" class="form-control" placeholder="Enter Amount" readonly>
+
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+
+                            </th>
+
+                        </tr>
+
+
+
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-12 d-flex justify-content-end py-2">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,8 @@
+::ng-deep .rating{
+    justify-content: start !important;
+}
+
+.section{
+    height: 280px;
+    color: white !important;
+}

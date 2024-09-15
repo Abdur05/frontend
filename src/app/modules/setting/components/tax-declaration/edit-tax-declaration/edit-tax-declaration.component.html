@@ -1,0 +1,83 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/tax-declaration-list">arrow_back</mat-icon> Tax Declaratopn</h2>
+    <form [formGroup]="taxDeclarationFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <div class="formGroup">
+                            <label for="">Regime</label>
+                            <select class="form-select" formControlName="regimeId">
+                                <option selected value="" hidden>Select Regime</option>
+                                <option *ngFor="let list of taxSlabDetail" [value]="list._id">{{list.tax_type}}</option>
+                            </select>
+                            <div
+                                *ngIf="taxDeclarationFormGroup.controls['regimeId'].touched && taxDeclarationFormGroup.controls['regimeId'].dirty && taxDeclarationFormGroup.controls['regimeId'].hasError('required') && !isSubmitted">
+                                <p class="error-message">Regime is mandatory</p>
+                            </div>
+                            <div
+                                *ngIf="isSubmitted && taxDeclarationFormGroup.controls['regimeId'].hasError('required')">
+                                <p class="error-message">Regime is mandatory</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row border mx-0">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sections<sup>*</sup></th>
+                                <th>Eligible investments for tax deductions</th>
+                                <th>Maximum Deduction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="text" formControlName="component_code" class="form-control"
+                                        placeholder="Section" readonly>
+                                    <div
+                                        *ngIf="taxDeclarationFormGroup.controls['component_code'].touched && taxDeclarationFormGroup.controls['component_code'].dirty && taxDeclarationFormGroup.controls['component_code'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Component Code is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && taxDeclarationFormGroup.controls['component_code'].hasError('required')">
+                                        <p class="error-message">Component Code is mandatory</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="text" formControlName="component_name" class="form-control"
+                                        placeholder="Eligible investments for tax deductions">
+                                    <div
+                                        *ngIf="taxDeclarationFormGroup.controls['component_name'].touched && taxDeclarationFormGroup.controls['component_name'].dirty && taxDeclarationFormGroup.controls['component_name'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Component Name is mandatory</p>
+                                    </div>
+                                    <div *ngIf="isSubmitted && taxDeclarationFormGroup.controls['component_name'].hasError('required')">
+                                        <p class="error-message">Component Name is mandatory</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="number" min=0 formControlName="maximum_limit" class="form-control"
+                                        placeholder="Maximum Deduction">
+                                    <div
+                                        *ngIf="taxDeclarationFormGroup.controls['maximum_limit'].touched && taxDeclarationFormGroup.controls['maximum_limit'].dirty && taxDeclarationFormGroup.controls['maximum_limit'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Maximum Deduction is mandatory</p>
+                                    </div>
+                                    <div *ngIf="isSubmitted && taxDeclarationFormGroup.controls['maximum_limit'].hasError('required')">
+                                        <p class="error-message">Maximum Deduction is mandatory</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

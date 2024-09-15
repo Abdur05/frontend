@@ -1,0 +1,18 @@
+<div class="container-fluid">
+    <div class="row py-2">
+        <div class="col-10 py-2 d-flex justify-content-center">
+            <h2><b>Event Details</b>
+            </h2>
+
+        </div>
+        <div class="col-2 d-flex justify-content-end">
+            <mat-icon mat-dialog-close>close</mat-icon>
+        </div>
+    </div>
+</div>
+<div mat-dialog-content>
+    <p><strong>Title:</strong> {{ data.event.title }}</p>
+    <p><strong>Description:</strong> {{ data.event.description }}</p>
+    <p><strong>Start Date and Time:</strong> {{ data.event.start | date: 'mediumDate' }} {{data.event.startTime}}</p>
+    <p><strong>End Date and Time:</strong> {{ data.event.end | date: 'mediumDate' }} {{data.event.endTime}}</p>
+</div>

@@ -1,0 +1,92 @@
+<div class="container-fluid ">
+    <div class="row">
+        <div class="col-12 d-flex justify-content-end  ">
+            <mat-icon (click)="close()">close</mat-icon>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center py-2 ">
+            <h3>Job</h3>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-12 py-2">
+            <div class="row border mx-0">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <label for="">Job Title</label><br>
+                    <span>{{jobDetails.jobName}}</span>
+
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+
+                    <label for="">Job Type </label><br>
+                    <span>{{jobDetails.jobTypeId.jobType}}</span>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                    <label for="">Description </label><br>
+                    <span>{{jobDetails.description ? jobDetails.description : '-' }}</span>
+                </div>
+
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                    <label for="">Experience </label><br>
+                    <span>{{jobDetails.experience ? jobDetails.experience : '-' }}</span>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                    <label for="">Minimum Qualification </label><br>
+                    <span>{{jobDetails.miniQualification ? jobDetails.miniQualification : '-' }}</span>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                    <label for="">Location </label><br>
+                    <span>{{jobDetails.location ? jobDetails.location : '-' }}</span>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                    <label for="">Expiry Date </label><br>
+                    <span>{{jobDetails.expirayDate ? jobDetails.expirayDate : '-' }}</span>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                    <label for="">No of Open Position</label><br>
+                    <span>{{jobDetails.no_of_open_positions ? jobDetails.no_of_open_positions : '-' }}</span>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                    <label for="">Salary Range</label><br>
+                    <span>{{jobDetails.salaryRange ? jobDetails.salaryRange : '-' }}</span>
+                </div>
+                <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                    <label for="ReferenceType">Job Status</label><br>
+                    <span>{{jobDetails.jobStatus ? jobDetails.jobStatus : '-' }}</span>
+                </div>
+                <div class="col-12 col-sm-6 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                    <label for="ReferenceType">Visibility Type</label><br>
+                    <span>{{jobDetails.visibilityType ? jobDetails.visibilityType : '-' }}</span>
+                </div>
+
+                <div class="row py-2">
+                    <div class="col-12">
+                        <table class="table table-hover" *ngIf="jobDetails.requiredSkills.length>0">
+                            <thead>
+                                <tr>
+                                    <th>Skills</th>
+                                    <th>TH - Skill Level/Proficiency Level </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let list of jobDetails.requiredSkills; let i = index;">
+                                    <td>
+                                        <span>{{list.skillName ? list.skillName : '-' }}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{list.ProficiencyLevel ? list.ProficiencyLevel : '-' }}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

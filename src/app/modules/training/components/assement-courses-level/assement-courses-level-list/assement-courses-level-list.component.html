@@ -1,0 +1,89 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <div class="row">
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+            <div class="row mt-3 ">
+                <div class="col-12">
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto"><b>Search Filter</b></legend>
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 py-1 ">
+                                <select class="form-select" (change)="handleFilterDetails($event)">
+                                    <option selected [value]=" ">Select Course</option>
+                                    <option *ngFor="let list of courseDetail" [value]="list._id">{{list.course_title}}
+                                    </option>
+                                </select>
+                            </div>
+                           
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="row py-2">
+                    <div class="col-12">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end ">
+                            <button class="btn btn-primary " *ngIf="rolesView?.add === true"
+                                (click)="nextPage('/training/add-assement')" type="button"
+                                style="color: white;background: #00acff;">Add Assesment</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>SN</th>
+                                <th>Course Name</th>
+                                <th>Title</th>
+                                <th>No Of Question</th>
+                                <th>Pass Percentage</th>
+                                <th>Total Marks</th>
+                                <th>Duration</th>
+                                <th>No Of Attempts Allowed</th>
+                                <th scope="col" *ngIf="rolesView?.modify === true || rolesView?.delete === true || rolesView?.view === true">Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="assetDetails.length === 0">
+                            <tr>
+                                <td colspan="10" class="text-center">No Records</td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr *ngFor="let list of assetDetails; let i=index">
+                                <td>{{i+1}}</td>
+                                <td>{{list.courseTitle}}</td>
+                                <td>{{list.title}}</td>
+                                <td>{{list.noOfQuestion}}</td>
+                                <td>{{list.passPercentage}}</td>
+                                <td>{{list.totalMarks}}</td>
+                                <td>{{list.duration}}</td>
+                                <td>{{list.noOfAttemptsAllowed}}</td>
+
+                                <td *ngIf="rolesView?.modify === true || rolesView?.delete === true || rolesView?.view === true">
+                                    <div class="d-flex">
+                                        <div *ngIf="rolesView?.modify === true">
+                                            <mat-icon [routerLink]="'/training/edit-assement/'+list._id">edit</mat-icon>
+                                        </div>
+                                        <div *ngIf="rolesView?.delete === true">
+                                            <mat-icon (click)="deleteRecords(list)">delete</mat-icon>
+                                        </div>
+                                        <div *ngIf="rolesView?.view === true">
+                                            <mat-icon (click)="view(list._id)">visibility</mat-icon>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-xs-12 col-12 py-2 d-flex justify-content-center" *ngIf="totalItem > 10">
+                    <pagination [totalItems]="totalItem" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)">
+                    </pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

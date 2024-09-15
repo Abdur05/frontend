@@ -1,0 +1,90 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <form [formGroup]="userFormGroup" (ngSubmit)="createUserManitenance()">
+        <div class="row">
+            <div class="col-12">
+                <h2><mat-icon class="back" routerLink="/setting/role-list">arrow_back</mat-icon>Role Maintenance
+                </h2>
+            </div>
+        </div>
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Role Name <sup>*</sup></label>
+                       <input type="text" class="form-control" formControlName="roleName">
+                        <div
+                            *ngIf="userFormGroup.controls['roleName'].touched && userFormGroup.controls['roleName'].dirty && userFormGroup.controls['roleName'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Role Name is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && userFormGroup.controls['roleName'].hasError('required')">
+                            <p class="error-message">Role Name is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Role Description <sup>*</sup></label>
+                        <input type="text" class="form-control" placeholder="Role Description"
+                            formControlName="roleName" >
+                        <div
+                            *ngIf="userFormGroup.controls['roleName'].touched && userFormGroup.controls['roleName'].dirty && userFormGroup.controls['roleName'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Role Description is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && userFormGroup.controls['roleName'].hasError('required')">
+                            <p class="error-message">Role Description is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Deperament<sup>*</sup> </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="departmentId"
+                            (change)="handleDeparment($event)">
+                            <option [selected]="userFormGroup.value.departmentId === ''" value="" hidden>
+                                Select
+                                Deperament</option>
+                            <option *ngFor="let list of deparmentList" [value]="list.departmentId">{{list.departmentId}}
+                                &nbsp; -
+                                {{list.departmentName}}</option>
+                        </select>
+                        <div
+                            *ngIf="userFormGroup.controls['departmentId'].touched && userFormGroup.controls['departmentId'].dirty && userFormGroup.controls['departmentId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Deperament is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && userFormGroup.controls['departmentId'].hasError('required')">
+                            <p class="error-message">Deperament is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Designation<sup>*</sup> </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="designationId"
+                            (change)="handleDesignation($event)">
+                            <option [selected]="userFormGroup.value.designationId === ''" value="" hidden>
+                                Select
+                                Designation</option>
+                            <option *ngFor="let list of filterDesignationList" [value]="list.designationId">
+                                {{list.designationId}}
+                                &nbsp; -
+                                {{list.designationName}}</option>
+                        </select>
+                        <div
+                            *ngIf="userFormGroup.controls['designationId'].touched && userFormGroup.controls['designationId'].dirty && userFormGroup.controls['designationId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Designation is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && userFormGroup.controls['designationId'].hasError('required')">
+                            <p class="error-message">Designation is mandatory</p>
+                        </div>
+                    </div>
+
+
+                </div>
+                
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>

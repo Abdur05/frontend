@@ -1,0 +1,44 @@
+<div class="container-fluid ">
+    <form [formGroup]="policyDataformGroup">
+        <div class="row">
+            <div class="col-10 py-2 d-flex justify-content-center">
+                <h2><b>Policy</b>
+                </h2>
+            </div>
+            <div class="col-2 d-flex justify-content-end">
+                <mat-icon mat-dialog-close>close</mat-icon>
+            </div>
+        </div>
+        <div class="row border mx-0">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                <label for="">Policy Name </label><br>
+                <span>{{policyDataformGroup.value.policyName ? policyDataformGroup.value.policyName : '-'}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2 ">
+                <label for="">Description </label><br>
+                <span>{{policyDataformGroup.value.description ? policyDataformGroup.value.description : '-'}}</span>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-12 py-2">
+                        <section class="file-border">
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-center py-1" style="position: relative;">
+                                    <!-- <img *ngIf="!isImageShow" class="img-ava"
+                                        [src]="imageSrc?imageSrc:'/assets/logs/profile.png'"> -->
+                                    <img *ngIf="isImageShow" class="img-ava"
+                                        src={{policyDataformGroup.value.upload_policy}}>
+                                    <span class="upload_text">
+                                        {{policyDataformGroup.value.upload_policy ?
+                                        policyDataformGroup.value.upload_policy :
+                                        'Upload Policy'}}</span>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>

@@ -1,0 +1,156 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/apply-leave-list">arrow_back</mat-icon>Apply Leave</h2>
+
+    <form [formGroup]="applyLeaveFormData">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Employee Id <sup>*</sup></label>
+                        <!-- <input class="form-control" formControlName="employeeId" placeholder="Enter Employee Id"
+                    (typeaheadOnSelect)="typeaheadOnSelect($event)" [typeahead]="employeeDetail"
+                    typeaheadOptionField="employeeId"> -->
+                        <input class="form-control" formControlName="employeeId" placeholder="Enter Employee Id"
+                            readonly>
+
+                        <!-- <div
+                    *ngIf="applyLeaveFormData.controls['employeeId'].touched && applyLeaveFormData.controls['employeeId'].dirty && applyLeaveFormData.controls['employeeId'].hasError('required') && !isSubmitted">
+                    <p class="error-message">Employee Id is mandatory</p>
+                </div>
+                <div *ngIf="isSubmitted && applyLeaveFormData.controls['employeeId'].hasError('required')">
+                    <p class="error-message">Employee Id is mandatory</p>
+                </div> -->
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+
+                        <label for="" class="">Leave Type <sup>*</sup> </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="leaveTypeId"
+                            (change)="handleLeaveType($event)">
+                            <option [selected]="applyLeaveFormData.value.leaveType === ''" value="" hidden>
+                                Select
+                                Leave Type</option>
+                            <option *ngFor="let list of leaveTypeDetail" [value]="list._id">{{list.description}}
+                            </option>
+                        </select>
+                        <div
+                            *ngIf="applyLeaveFormData.controls['leaveTypeId'].touched && applyLeaveFormData.controls['leaveTypeId'].dirty && applyLeaveFormData.controls['leaveTypeId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Leave Type is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && applyLeaveFormData.controls['leaveTypeId'].hasError('required')">
+                            <p class="error-message">Leave Type is mandatory</p>
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Team Email Id </label>
+                        <input type="email" formControlName="emailId" class="form-control" placeholder="Enter Email" />
+                        <div
+                            *ngIf="applyLeaveFormData.controls['emailId'].touched && applyLeaveFormData.controls['emailId'].dirty && applyLeaveFormData.controls['emailId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Team Mail Id is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && applyLeaveFormData.controls['emailId'].hasError('required')">
+                            <p class="error-message">Team Mail Id is mandatory</p>
+                        </div>
+                        <div *ngIf="applyLeaveFormData.get('emailId').hasError('pattern')">
+                            <p class="error-message">Please enter a valid email address.</p>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Reason For Leave </label>
+                        <input type="text" formControlName="reasonForLeave" class="form-control"
+                            placeholder="Enter Reason" />
+
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">From Date <sup>*</sup> </label>
+                        <input type="date" formControlName="datefrom" class="form-control"
+                            min="{{ today | date:'yyyy-MM-dd' }}" />
+                        <div
+                            *ngIf="applyLeaveFormData.controls['datefrom'].touched && applyLeaveFormData.controls['datefrom'].dirty && applyLeaveFormData.controls['datefrom'].hasError('required') && !isSubmitted">
+                            <p class="error-message">From Date is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && applyLeaveFormData.controls['datefrom'].hasError('required')">
+                            <p class="error-message">From Date is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">To Date <sup>*</sup> </label>
+                        <input type="date" formControlName="dateTo" class="form-control"
+                            min="{{ today | date:'yyyy-MM-dd' }}" />
+                        <div
+                            *ngIf="applyLeaveFormData.controls['dateTo'].touched && applyLeaveFormData.controls['dateTo'].dirty && applyLeaveFormData.controls['dateTo'].hasError('required') && !isSubmitted">
+                            <p class="error-message">To Date is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && applyLeaveFormData.controls['dateTo'].hasError('required')">
+                            <p class="error-message">To Date is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="button" class="btn btn-primary" (click)="count()">Apply</button>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-12">
+                            <table class="table table-hover" *ngIf="tableRows.length>0">
+                                <thead>
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody formGroupName="tableRows">
+                                    <tr *ngFor="let list of applyLeaveFormData.get('tableRows')['controls']; let i = index;"
+                                        [formGroupName]="i">
+                                        <td><input type="text" class="form-control" formControlName="dayName"></td>
+                                        <td><input type="text" class="form-control" formControlName="date"></td>
+                                        <td>
+                                            <select class="form-select " aria-label="Default select example"
+                                                formControlName="leaveType">
+                                                <option value="Full Day">Full Day</option>
+                                                <option value="Half Day">Half Day</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2"
+                        [hidden]="!isDocumentUploadSelected()">
+                        <label for="">Upload Supporting Document </label>
+                        <div class="d-flex d-grid gap-2">
+                            <mat-icon *ngIf="!applyLeaveFormData.value.uploadSupportingDocument"
+                                (click)="uploadFile(inputFile,'resume')"
+                                fontSet="material-symbols-outlined">upload</mat-icon>
+                            <span (click)="uploadFile(inputFile, 'resume')" class="upload_text"
+                                *ngIf="applyLeaveFormData.value.uploadSupportingDocument">
+                                {{applyLeaveFormData.value.uploadSupportingDocument ?
+                                applyLeaveFormData.value.uploadSupportingDocument :
+                                'Upload Vat Registration No'}}</span>
+                            <input type="file" #inputFile class="d-none" (change)="handleUploadFile($event)">
+                            <mat-icon
+                                (click)="openDialog(applyLeaveFormData.value.uploadSupportingDocument)">visibility</mat-icon>
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2" *ngIf="tableRows.length>0">
+                    <button type="button" class="btn btn-primary" (click)="fileUpload()">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+
+
+</div>

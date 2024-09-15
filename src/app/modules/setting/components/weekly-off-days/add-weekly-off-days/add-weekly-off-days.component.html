@@ -1,0 +1,52 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+
+<div class="container-fluid" [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <!-- <h2><mat-icon class="back">arrow_back</mat-icon>Weekly Off Days</h2> -->
+    <form [formGroup]="WeeklyOffFormData" (ngSubmit)="submitData()">
+        <div class="row ">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <table class="table table-hover  mx-auto">
+                    <thead>
+                        <tr *ngFor="let list of weekOffDetail">
+                            <th>Day</th>
+                            <td style="background-color: #bdc4ca29;">Weekly Off Day</td>
+                        </tr>
+                        <tr>
+                            <th style="background-color: white  !important;">Sunday</th>
+                            <td><input type="checkbox"  formControlName="sunday"></td>
+                        </tr>
+                        <tr>
+                            <th style="background-color: white  !important;">Monday</th>
+                            <td><input type="checkbox" name="" formControlName="monday"></td>
+                        </tr>
+                        <tr>
+                            <th style="background-color: white  !important;">Tuesday</th>
+                            <td><input type="checkbox" name="" formControlName="tuesday"></td>
+                        </tr>
+                        <tr>
+                            <th style="background-color: white  !important;">Wednesday</th>
+                            <td><input type="checkbox" name="" formControlName="wednesday"></td>
+                        </tr>
+                        <tr>
+                            <th style="background-color: white  !important;">Thursday</th>
+                            <td><input type="checkbox" name="" formControlName="thursday"></td>
+                        </tr>
+                        <tr>
+                            <th style="background-color: white  !important;">Friday</th>
+                            <td><input type="checkbox" name="" formControlName="friday"></td>
+                        </tr>
+                        <tr>
+                            <th style="background-color: white  !important;">Saturday</th>
+                            <td><input type="checkbox" name="" formControlName="saturday"></td>
+                        </tr>
+
+                    </thead>
+                </table>
+
+            </div>
+        </div>
+        <div class="col-12 d-flex justify-content-end py-2">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,164 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/appraisal/competency-list">arrow_back</mat-icon>Competency</h2>
+
+    <form [formGroup]="skillFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Competency Name <sup>*</sup></label>
+                        <input type="text" formControlName="competencyName" class="form-control" maxlength="6"
+                            placeholder="Competency Name" />
+                        <div
+                            *ngIf="skillFormGroup.controls['competencyName'].touched && skillFormGroup.controls['competencyName'].dirty && skillFormGroup.controls['competencyName'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Competency Name is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && skillFormGroup.controls['competencyName'].hasError('required')">
+                            <p class="error-message">Competency Name is mandatory</p>
+                        </div>
+                        <div *ngIf="skillFormGroup.controls['competencyName'].hasError('minlength')">
+                            <p class="error-message">Must have 6 character</p>
+                        </div>
+                        <div *ngIf="skillFormGroup.controls['competencyName'].hasError('maxlength')">
+                            <p class="error-message">Must have 6 character</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Description <sup>*</sup></label>
+                        <input type="text" formControlName="description" class="form-control"
+                            placeholder="Description" />
+                        <div
+                            *ngIf="skillFormGroup.controls['description'].touched && skillFormGroup.controls['description'].dirty && skillFormGroup.controls['description'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Description is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && skillFormGroup.controls['description'].hasError('required')">
+                            <p class="error-message">Description is mandatory</p>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row py-2">
+                        <div class="col-12 d-flex justify-content-end py-2">
+                            <button type="button" class="btn btn-primary" (click)="addTagKRA()"
+                                style="color: white;background-color: #00acff;">Add Tag Competency</button>
+                        </div>
+                        <div class="col-12">
+                            <table class="table table-hover" *ngIf="tagKRa.controls.length > 0">
+                                <thead>
+                                    <tr>
+                                        <th *ngIf="tagKRa.controls.length > 1">Actions</th>
+                                        <th>S.N.</th>
+                                        <th>Based On<sup>*</sup></th>
+                                        <th>Tag To<sup>*</sup></th>
+                                        <th>Weightage<sup>*</sup></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody formArrayName="tagKRA">
+                                    <tr *ngFor="let list of skillFormGroup.get('tagKRA')['controls']; let i = index;"
+                                        [formGroupName]="i">
+                                        <td *ngIf="tagKRa.controls.length > 1">
+                                            <mat-icon style="cursor:pointer" (click)="removeTagKRA(i)">delete</mat-icon>
+                                        </td>
+                                        <td>
+                                            {{i+1}}
+                                        </td>
+                                        <td>
+                                            <select class="form-select" aria-label="Default select example"
+                                                formControlName="basedOn">
+                                                <option [selected]="list.value.basedOn === ''" value="" hidden>
+                                                    Select
+                                                    Based On </option>
+                                                <option [selected]="list.value.basedOn === 'Department'"
+                                                    value="Department">
+                                                    Department</option>
+                                                <option [selected]="list.value.basedOn === 'Role'" value="Role">
+                                                    Role</option>
+                                                <option [selected]="list.value.basedOn === 'Designation'"
+                                                    value="Designation">
+                                                    Designation </option>
+
+                                            </select>
+                                            <div
+                                                *ngIf="list.controls['basedOn'].touched && list.controls['basedOn'].dirty && list.controls['basedOn'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">Based On is mandatory</p>
+                                            </div>
+                                            <div *ngIf="isSubmitted && list.controls['basedOn'].hasError('required')">
+                                                <p class="error-message">Based On is mandatory</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <select class="form-select" aria-label="Default select example"
+                                                formControlName="tagTo" *ngIf="list.value.basedOn === 'Designation'">
+                                                <option [selected]="list.value.tagTo === ''" value="" hidden>
+                                                    Select
+                                                    Designation </option>
+                                                <option *ngFor="let list of designationList"
+                                                    [value]="list.designationName">
+                                                    {{list.designationName}}-{{list.description}}</option>
+
+
+                                            </select>
+                                            <select class="form-select" aria-label="Default select example"
+                                                formControlName="tagTo" *ngIf="list.value.basedOn === 'Role'">
+                                                <option [selected]="list.value.tagTo === ''" value="" hidden>
+                                                    Select
+                                                    Role </option>
+                                                <option *ngFor="let list of roleList" [value]="list.roleId">
+                                                    {{list.roleId}}-{{list.roleName}}</option>
+
+
+                                            </select>
+                                            <select class="form-select" aria-label="Default select example"
+                                                formControlName="tagTo" *ngIf="list.value.basedOn === 'Department'">
+                                                <option [selected]="list.value.tagTo === ''" value="" hidden>
+                                                    Select
+                                                    Department </option>
+                                                <option *ngFor="let list of departmentsList"
+                                                    [value]="list.departmentName">
+                                                    {{list.departmentName}}-{{list.description}}</option>
+
+
+                                            </select>
+                                            <div
+                                                *ngIf="list.controls['tagTo'].touched && list.controls['tagTo'].dirty && list.controls['tagTo'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">Tag To is mandatory</p>
+                                            </div>
+                                            <div *ngIf="isSubmitted && list.controls['tagTo'].hasError('required')">
+                                                <p class="error-message">Tag To is mandatory</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="number" min="0" placeholder="Weightage"
+                                                formControlName="weightage" class="form-control">
+                                            <div
+                                                *ngIf="list.controls['weightage'].touched && list.controls['weightage'].dirty && list.controls['weightage'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">weightage is mandatory</p>
+                                            </div>
+                                            <div *ngIf="isSubmitted && list.controls['weightage'].hasError('required')">
+                                                <p class="error-message">Weightage is mandatory</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+</div>

@@ -1,0 +1,92 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/payroll/tax-declaration-employee-list">arrow_back</mat-icon> Tax Decleration
+    </h2>
+    <form [formGroup]="taxDeclarationFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Fiscal Year <sup>*</sup></label>
+                        <input type="text" formControlName="fiscal_year" class="form-control" readonly>
+                        <div
+                            *ngIf="taxDeclarationFormGroup.controls['fiscal_year'].touched && taxDeclarationFormGroup.controls['fiscal_year'].dirty && taxDeclarationFormGroup.controls['fiscal_year'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Fiscal Year is mandatory</p>
+                        </div>
+                        <div
+                            *ngIf="isSubmitted && taxDeclarationFormGroup.controls['fiscal_year'].hasError('required')">
+                            <p class="error-message">Fiscal Year is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-end py-2">
+                        <button type="button" class="btn btn-primary" (click)="addDetail()">Add</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th *ngIf="taxDeclarationDetail.controls.length>1">Action</th>
+                                    <th>Sections<sup>*</sup></th>
+                                    <th>Amount<sup>*</sup></th>
+                                </tr>
+                            </thead>
+                            <tbody formArrayName="components">
+                                <tr *ngFor="let list of taxDeclarationFormGroup.get('components')['controls'];let i=index"
+                                    [formGroupName]="i">
+                                    <td *ngIf="taxDeclarationDetail.controls.length>1">
+                                        <mat-icon (click)="deleteRow(i,list.value.component_code)">delete</mat-icon>
+                                    </td>
+                                    <td>
+                                        <select class="form-select" formControlName="component_code"
+                                            (change)="handleCode($event)">
+                                            <option [selected]="list.value.component_code === ''" value="" hidden>
+                                                Select
+                                                Section</option>
+                                            <option *ngFor="let val of taxDecDetail" [disabled]="val.disable"
+                                                [value]="val._id">{{val.component_code}}
+                                            </option>
+                                        </select>
+                                        <div
+                                            *ngIf="list.controls['component_code'].touched && list.controls['component_code'].dirty && list.controls['component_code'].hasError('required') && !isSubmitted">
+                                            <p class="error-message">Section is mandatory</p>
+                                        </div>
+                                        <div
+                                            *ngIf="isSubmitted && list.controls['component_code'].hasError('required')">
+                                            <p class="error-message">Section is mandatory</p>
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <input type="number" formControlName="declared_amount" class="form-control"
+                                            placeholder="Enter Declared Amount">
+                                        <div
+                                            *ngIf="list.controls['declared_amount'].touched && list.controls['declared_amount'].dirty && list.controls['declared_amount'].hasError('required') && !isSubmitted">
+                                            <p class="error-message">Declared Amount is mandatory</p>
+                                        </div>
+                                        <div
+                                            *ngIf="list.controls['declared_amount'].touched && list.controls['declared_amount'].dirty && list.controls['declared_amount'].hasError('min') && !isSubmitted">
+                                            <p class="error-message">Declared Amount must be greater than 0</p>
+                                        </div>
+                                        <div
+                                            *ngIf="isSubmitted && list.controls['declared_amount'].hasError('required')">
+                                            <p class="error-message">Declared Amount is mandatory</p>
+                                        </div>
+                                        <div
+                                            *ngIf="isSubmitted && list.controls['declared_amount'].hasError('min')">
+                                            <p class="error-message">Declared Amount must be greater than 0</p>
+                                        </div>
+                                    </td>                                    
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

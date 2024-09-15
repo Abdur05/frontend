@@ -1,0 +1,129 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <div class="row">
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+            <div class="row mt-3 ">
+                <div class="col-12">
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto"><b>Search Filter</b></legend>
+
+                        <div class="row">
+                            <div class="filterText col-sm col-md col-lg col-xl">
+                                <input type="text" #searchDataInput id="search-data"
+                                    placeholder="Question Id /Description" class="form-control"
+                                    (input)="handleFilter($event)">
+                            </div>
+                            <div class="col-sm col-md col-lg col-xl">
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <select class="form-select" (change)="handleFilterList($event)">
+                                        <option [selected]="selectedFilter === ''" value="">All</option>
+                                        <option [selected]="selectedFilter === 'O'" value="O">Active</option>
+                                        <option [selected]="selectedFilter === 'C'" value="C">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col d-flex justify-content-end gap-2 mt-4">
+                                <div class="py-1">
+                                    <button class="btn btn-primary" (click)="handleFilterDetails()"
+                                        type="button">Search</button>
+                                </div>
+                                <div class="py-1">
+                                    <button class="btn btn-primary"
+                                        (click)="searchDataInput.value = ''; filterText = ''"
+                                        type="button">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+
+
+                <div class="row py-2 ">
+                    <div class="col-12">
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end ">
+
+                            <button class="btn btn-primary " (click)="nextPage('/setting/add-question')" type="button"
+                                style="color: white;background: #00acff;" *ngIf="rolesView.add === true">Add Medical
+                                Question</button>
+
+                            <!-- <button class="btn btn-danger" type="button" style="color: white;" (click)="handleDeleteMuliple()">
+                        <mat-icon style="width: 15px; height: 15px;">delete</mat-icon>
+                        Delete Selected Medical Question</button> -->
+                            <!-- <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item>
+                            <span>Import Medical Question</span>
+                        </button>
+                        <button mat-menu-item>
+                            <span>Export Medical Question</span>
+                        </button>
+                        <button mat-menu-item>
+                            <span>Sample Medical Question Sheet</span>
+                        </button>
+                    </mat-menu> -->
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>SN</th>
+                                <th>Question Id</th>
+                                <th>Question Description</th>
+                                <th scope="col" *ngIf="rolesView.close === true">Action</th>
+                                <th *ngIf="rolesView.close === true">Inactive /Active</th>
+                                <!-- <th scope="col"><input type="checkbox" [checked]="selectAll"
+                                        (change)="selectdata($event)"> Select All</th> -->
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="questionDetail.length === 0">
+                            <tr>
+                                <td colspan="5" class="text-center">No Records</td>
+                            </tr>
+                        </tbody>
+
+                        <tbody>
+                            <tr *ngFor="let list of questionDetail; let i=index">
+                                <td>{{i+1}}</td>
+                                <td>{{list.questionId}}</td>
+                                <td>{{list.description}}</td>
+                                <td *ngIf="rolesView.modify === true">
+                                    <div class="d-flex">
+                                        <div>
+                                            <mat-icon [routerLink]="'/setting/edit-question/'+list._id">edit</mat-icon>
+                                        </div>
+                                        <!-- <div>
+                                            <mat-icon (click)="deleteRecords(list)">delete</mat-icon>
+                                        </div> -->
+                                    </div>
+                                </td>
+                                <td *ngIf="rolesView.close === true">
+                                    <label class="switch">
+                                        <input type="checkbox" [checked]="list.isActive === 'O'"
+                                            (change)="deleteRecords(list)">
+                                        <span class="slider"></span>
+                                    </label>
+                                </td>
+
+                                <!-- <td><input type="checkbox" class="checkbox" [checked]="list.check"
+                                        (change)="particularcheck($event,i)"></td> -->
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

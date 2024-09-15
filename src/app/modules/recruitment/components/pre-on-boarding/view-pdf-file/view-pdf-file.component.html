@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 py-2 d-flex justify-content-end">
+            <mat-icon (click)="close()">close</mat-icon>
+        </div>
+        <div class="col-12">
+            <ngx-extended-pdf-viewer
+                    [src]="pdfSrc" [height]="'auto'"
+                    [textLayer]="true" [showHandToolButton]="true">
+                </ngx-extended-pdf-viewer>
+        </div>
+    </div>
+</div>

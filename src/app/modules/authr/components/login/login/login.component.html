@@ -1,0 +1,66 @@
+<!-- <p>new-login works!</p> -->
+<div class="imgbg h-100" *ngIf="statusLoging !== 1">
+    <div class="container-fluid">
+        <div class="row">
+            <section class="wrapper">
+                <form [formGroup]="loginFormGroup" (ngSubmit)="loginHandle()">
+                    <!-- <div class=" col-12 py-1 text-center contain">
+                        <img src="assets/logo.jpeg" class="logo" alt="im">
+                    </div> -->
+
+                    <div class="form-group col-12 py-2 ">
+
+                        <label for="login_email">User Name <sup>*</sup></label>
+                        <input type="text" class="form-control" id="login_email" formControlName="userName"
+                            placeholder="Enter User Name" />
+                        <div
+                            *ngIf="loginFormGroup.controls['userName'].touched && loginFormGroup.controls['userName'].dirty && loginFormGroup.controls['userName'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Username is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && loginFormGroup.controls['userName'].hasError('required')">
+                            <p class="error-message">Username is mandatory</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-12 py-2 "  style="position: relative;">
+
+                        <label for="login_password">Password <sup>*</sup></label>
+                        <input [type]="text ? 'text':'password'" class="form-control" id="login_password"
+                            formControlName="password" placeholder="Password" />
+                        <div class="eye-icon" style="position: absolute;">
+                            <mat-icon fontSet="material-symbols-outlined" *ngIf="!text" style="display: flex;position: relative; top: 5px; cursor: pointer;"
+                            (click)="text=!text">visibility</mat-icon>
+                           
+                            <mat-icon fontSet="material-symbols-outlined" *ngIf="text"
+                                style="display: flex;position: relative; top: 5px; cursor: pointer; font-size: 20px"
+                                (click)="text=!text">visibility_off</mat-icon>
+                        </div>
+                        <div
+                            *ngIf="loginFormGroup.controls['password'].touched && loginFormGroup.controls['password'].dirty && loginFormGroup.controls['password'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Password is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && loginFormGroup.controls['password'].hasError('required')">
+                            <p class="error-message">Password is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 py-1 d-flex justify-content-end">
+                        <span style="color: #00acff !important; cursor: pointer;"
+                            routerLink="/authr/forgot-password">Forgot Password?</span>
+                    </div>
+                    <div class=" col-12 d-flex justify-content-center py-2">
+                        <button type="submit" class="btn btn-primary h-100 w-100"
+                            style="background-color: #00acff !important;">Log In</button>
+                    </div>
+                    <div class="form-group col-12  text-center py-2">
+                        <!-- <p>Don't have a account? <span class="text-primary" style="cursor: pointer;"
+                                routerLink="/authr/register">Sign up</span></p> -->
+                        <p style="font-size: 14px;">© 2024-25 Hatchlong I Privacy Police I Terms and Conditions</p>
+                    </div>
+
+                </form>
+
+            </section>
+        </div>
+    </div>
+</div>
+<app-change-password (isShowSide)="statusLoging = 0" *ngIf="statusLoging === 1"></app-change-password>

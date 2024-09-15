@@ -1,0 +1,53 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/sub-category-list">arrow_back</mat-icon>Sub Category </h2>
+    <form [formGroup]="subcategoryMasterFormGroup" (ngSubmit)="submitSubCategory()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sub Category Name <sup>*</sup></th>
+                                <th>Sub Category Description<sup>*</sup></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="text" formControlName="subCategoryName" class="form-control"
+                                        placeholder="Enter Sub Category Name">
+                                    <div
+                                        *ngIf="subcategoryMasterFormGroup.controls['subCategoryName'].touched && subcategoryMasterFormGroup.controls['subCategoryName'].dirty && subcategoryMasterFormGroup.controls['subCategoryName'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Sub Category Name is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && subcategoryMasterFormGroup.controls['subCategoryName'].hasError('required')">
+                                        <p class="error-message">Sub Category Name is mandatory</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <textarea formControlName="subcategoryDiscription" style="height: 10px;"
+                                        class="form-control" placeholder="Enter Sub Category Description"></textarea>
+                                    <div
+                                        *ngIf="subcategoryMasterFormGroup.controls['subcategoryDiscription'].touched && subcategoryMasterFormGroup.controls['subcategoryDiscription'].dirty && subcategoryMasterFormGroup.controls['subcategoryDiscription'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Sub Category Description is mandatory</p>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && subcategoryMasterFormGroup.controls['subcategoryDiscription'].hasError('required')">
+                                        <p class="error-message">Sub Category Description is mandatory</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

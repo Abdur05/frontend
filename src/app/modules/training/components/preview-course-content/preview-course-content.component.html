@@ -1,0 +1,137 @@
+<div class="container-fluid">
+    <app-loader *ngIf="isLoader"></app-loader>
+    <div class="row" *ngIf="assetDetails?.courseDetails">
+        <div class="col-12">
+            <div class="d-flex d-grid gap-5">
+                <div [ngStyle]="{'width' : isCollopose ? '0px' : '350px'}" style=" height:720px; overflow-y: auto; overflow-x: hidden;">
+                    <div class="row mx-1">
+                        <div class="col-12" style="background: #cece18;color: white;">
+                            <div class="section mt-5" style="height:150px">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 py-2">
+                                        <h2>{{assetDetails?.courseDetails?.course_title}}</h2>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 py-2">
+                                        <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
+                                        <!-- <div class="progress" style="height: 2px; width: 96% !important;">
+                                            <div class="progress-bar" role="progressbar" style="width: 25%;"
+                                                aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div> -->
+                                        <span class="mt-3">{{progress}}%
+                                            Completed</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12" style="background-color: whitesmoke;"
+                            *ngFor="let list of assetDetails?.courseDetails?.courseModuleList; let i = index">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p style="border-bottom: 1px solid;
+                                border-width: 2px;
+                                width: fit-content;">{{list.title}}</p>
+                                </div>
+                                <div class="col-12" *ngFor="let slide of list?.courseSlideList; let j = index">
+                                    <div class="row">
+                                        <div class="col-12 py-2" [ngStyle]="{'pointer-events' : slide.selectedSlide ? 'all' : 'none'}" style="position: relative; cursor: pointer;"
+                                            (click)="handleCourseDetails(slide, i, j, 'next')">
+                                            <mat-icon
+                                                fontSet="material-symbols-outlined">vertical_distribute</mat-icon><span
+                                                style="    position: absolute;
+                                                font-size: 14px;
+                                                white-space: nowrap;
+                                                width: 200px;
+                                                overflow: hidden;
+                                                text-overflow: ellipsis;" [ngStyle]="{'color' : slide.accessStatus ? 'green' : 'black'}">&nbsp;{{slide.title}}</span>
+                                            <input class="form-check-input" type="checkbox" id="flexRadioDefault1"
+                                                style="position: absolute; right: 5px;" [checked]="slide.selectedSlide">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 100%; position: relative;" *ngIf="previewSlide">
+                    <div class="row">
+                        <div class="col-6 py-1">
+                            <mat-icon title="Collapse Menu" (click)="collaposeMenu()">menu</mat-icon>
+                        </div>
+                        <div class="col-6 d-flex justify-content-end py-1">
+                            <button class="btn btn-danger" type="button" (click)="backCourse()">Exit</button>
+                        </div>
+                        <div class="col-12 py-2">
+                            <div class="row" *ngIf="previewSlide.content[0].type === 'Text'">
+                                <div class="col-12 py-2 mb-2 ">
+                                    <strong  style="border-bottom: 1px solid;
+                                    border-width: 2px;
+                                    width: fit-content; font-size: 20px;">{{previewSlide.title}}</strong>
+                                </div>
+                                <div class="col-12">
+                                    <hr class="p-0">
+                                </div>
+                                <div class="col-12  py-2">
+                                    <p [innerHTML]="previewSlide.content[0].value"></p>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="previewSlide.content[0].type === 'PDF / Image'">
+                                <div class="col-12 py-2 mb-2 ">
+                                    <strong  style="border-bottom: 1px solid;
+                                    border-width: 2px;
+                                    width: fit-content; font-size: 20px;">{{previewSlide.title}}</strong>
+                                </div>
+                                <div class="col-12">
+                                    <hr class="p-0">
+                                </div>
+                                <div class="col-12 py-2">
+                                    <iframe style="width: 100%; height: 524px;" [src]="safeUrl"></iframe>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="previewSlide.content[0].type === 'YouTube Url'">
+                                <div class="col-12 py-2 mb-2 ">
+                                    <strong  style="border-bottom: 1px solid;
+                                    border-width: 2px;
+                                    width: fit-content; font-size: 20px;">{{previewSlide.title}}</strong>
+                                </div>
+                                <div class="col-12">
+                                    <hr class="p-0">
+                                </div>
+                                <div class="col-12 py-2 d-flex justify-content-center">
+                                    <iframe style="width: 100%; height: 524px;" [src]="safeUrl"></iframe>
+
+                                    <!-- <a [href]="previewSlide.content[0].value" target="_blank">YouTube URL</a> -->
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="previewSlide.content[0].type === 'External Url'">
+                                <div class="col-12 py-2 mb-2 ">
+                                    <strong  style="border-bottom: 1px solid;
+                                    border-width: 2px;
+                                    width: fit-content; font-size: 20px;">{{previewSlide.title}}</strong>
+                                </div>
+                                <div class="col-12">
+                                    <hr class="p-0">
+                                </div>
+                                <div class="col-12 py-2 d-flex justify-content-center">
+                                    <iframe style="width: 100%; height: 524px;" [src]="safeUrl"></iframe>
+                                    <!-- <a  [href]="previewSlide.content[0].value" target="_blank">External URL</a> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="d-flex d-grid gap-2 justify-content-end" style="position: absolute; bottom: 0;">
+                            <div>
+                                <button type="button"  class="btn btn-secondary" (click)="handlePreviewContent()">Pervious</button>
+                            </div>
+                            <div>
+                                <button type="button"  class="btn btn-primary" (click)="handleNextContent()">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

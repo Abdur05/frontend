@@ -1,0 +1,80 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/mark-attendance-list">arrow_back</mat-icon>Mark Attendance</h2>
+    <div class="row mt-3 ">
+        <form [formGroup]="markAttendanceFormGroup">
+            <div class="row">
+                <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                    (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+                <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                    <div class="row mt-3">
+                        <div class="col-12 border">
+                            <div class="row">
+                                <div class="border p-3">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-3 ">
+                                            <input type="date" placeholder="Date" class="form-control mt-2"
+                                                formControlName="date" readonly>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <input type="text" placeholder="Add Notes for Check-in"
+                                                class="form-control mt-2" formControlName="notes">
+                                        </div>
+                                        <div class="col-md-3">
+                                            General Shift[09 AM- 06 PM]
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="d-grid gap-2 d-md-flex justify-content-md-end zzz">
+                                                <!-- <span class="material-symbols-outlined">
+                                        timer
+                                        </span> -->
+                                                <button
+                                                    [ngClass]="{'btn-success':  markAttendanceFormGroup.value.action === 'checkOut' , 'btn-danger':  markAttendanceFormGroup.value.action === 'checkIn'}"
+                                                    class="btn aaa" (click)="checkLocation()" #checkinButton
+                                                    [disabled]="buttonDisable">
+                                                    <mat-icon class="material-icons-outlined iconn">
+                                                        timer
+                                                    </mat-icon> {{markAttendanceFormGroup.value.action === 'checkIn' ?
+                                                    'Check
+                                                    Out' : 'Check In' }}<br />
+                                                    {{ dynamicTime }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Sequence</th>
+                                            <th>Check-in</th>
+                                            <th scope="col">Check-out</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody formArrayName="events">
+                                        <tr *ngFor="let sales of markAttendanceFormGroup.get('events')['controls']; let i = index;"
+                                            [formGroupName]="i">
+                                            <td>{{i+1}}</td>
+                                            <td><input type="text" readonly class="form-control"
+                                                    formControlName="check_in_View">
+                                            </td>
+                                            <td><input type="text" class="form-control" formControlName="check_out_View"
+                                                    readonly>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

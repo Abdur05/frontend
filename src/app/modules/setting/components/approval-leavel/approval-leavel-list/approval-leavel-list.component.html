@@ -1,0 +1,61 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <div class="row">
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+            <div class="row mt-3 ">
+                <div class="col-12">
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto"><b>Search Filter</b></legend>
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 py-1 ">
+                            <input type="text" #searchDataInput id="search-data"
+                                placeholder="Employee Id / Employee Name" class="form-control "
+                                (input)="handleFilter($event)">
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="table-responsive py-2">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>SN</th>
+                                <th>Employee Id</th>
+                                <th>Employee Name</th>
+                                <th>Leave Type</th>
+                                <th>Form</th>
+                                <th>To</th>
+                                <th>Reason for Leave</th>
+                                <th>Leave Status</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="myRequestDetail.length === 0">
+                            <tr>
+                                <td colspan="12" class="text-center">No Records</td>
+                            </tr>
+                        </tbody>
+
+                        <tbody>
+                            <tr *ngFor="let list of myRequestDetail; let i=index">
+                                <td>{{i+1}}</td>
+                                <td>{{list.employeeId}}</td>
+                                <td>{{list.employeeName?list.employeeName:'-'}}</td>
+                                <td>{{list.leaveType?list.leaveType:'-'}}</td>
+                                <td>{{list.datefrom?list.datefrom:'-'}}</td>
+                                <td>{{list.dateTo?list.dateTo:'-'}}</td>
+                                <td>{{list.reasonForLeave?list.reasonForLeave:'-'}}</td>
+                                <td>
+                                    <button *ngIf="list.status === 'I'" class="btn btn-primary" style="font-size: 12px;"
+                                        [routerLink]="'/setting/edit-approval-leave/' + list._id">
+                                        Click for Approval
+                                    </button>
+                                    <span *ngIf="list.status === 'A'" style="color: green;">Approved</span>
+                                    <span *ngIf="list.status === 'R'" style="color: red;">Rejected</span>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

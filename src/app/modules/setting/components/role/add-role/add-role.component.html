@@ -1,0 +1,368 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <form [formGroup]="userFormGroup" (ngSubmit)="createUserManitenance()">
+        <div class="row">
+            <div class="col-12">
+                <h2><mat-icon class="back" routerLink="/setting/roles-list">arrow_back</mat-icon>Role Access Maintenance
+                </h2>
+            </div>
+        </div>
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Deperament<sup>*</sup> </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="departmentId"
+                            (change)="handleDeparment($event)">
+                            <option [selected]="userFormGroup.value.departmentId === ''" value="" hidden>
+                                Select
+                                Deperament</option>
+                            <option *ngFor="let list of deparmentList" [value]="list._id">{{list.departmentId}}
+                                &nbsp; -
+                                {{list.departmentName}}</option>
+                        </select>
+                        <div
+                            *ngIf="userFormGroup.controls['departmentId'].touched && userFormGroup.controls['departmentId'].dirty && userFormGroup.controls['departmentId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Deperament is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && userFormGroup.controls['departmentId'].hasError('required')">
+                            <p class="error-message">Deperament is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Designation<sup>*</sup> </label>
+                        <select class="form-select " aria-label="Default select example" formControlName="designationId"
+                            (change)="handleDesignation($event)">
+                            <option [selected]="userFormGroup.value.designationId === ''" value="" hidden>
+                                Select
+                                Designation</option>
+                            <option *ngFor="let list of filterDesignationList" [value]="list._id">
+                                {{list.designationId}}
+                                &nbsp; -
+                                {{list.designationName}}</option>
+                        </select>
+                        <div
+                            *ngIf="userFormGroup.controls['designationId'].touched && userFormGroup.controls['designationId'].dirty && userFormGroup.controls['designationId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Designation is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && userFormGroup.controls['designationId'].hasError('required')">
+                            <p class="error-message">Designation is mandatory</p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Role <sup>*</sup></label>
+                        <select class="form-select " aria-label="Default select example" formControlName="roleId"
+                            (change)="selectRoleName($event)">
+                            <option [selected]="userFormGroup.value.roleId === ''" value="" hidden>Select Role
+                            </option>
+                            <option *ngFor="let list of filterRoleList" [value]="list._id">
+                                {{list.roleName}}</option>
+
+                        </select>
+                        <div
+                            *ngIf="userFormGroup.controls['roleId'].touched && userFormGroup.controls['roleId'].dirty && userFormGroup.controls['roleId'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Role Name is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && userFormGroup.controls['roleId'].hasError('required')">
+                            <p class="error-message">Role Name is mandatory</p>
+                        </div>
+                    </div>
+                    <!-- <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="" class="">Role Name <sup>*</sup></label>
+                        <input type="text" class="form-control" placeholder="Role Name"
+                            formControlName="roleName" readonly>
+                        <div
+                            *ngIf="userFormGroup.controls['roleName'].touched && userFormGroup.controls['roleName'].dirty && userFormGroup.controls['roleName'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Role Name is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && userFormGroup.controls['roleName'].hasError('required')">
+                            <p class="error-message">Role Name is mandatory</p>
+                        </div>
+                    </div> -->
+                   
+
+
+                </div>
+                <div class="row border mx-0 mt-2">
+                    <div class="col-12 ">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <h2 class="py-2">
+                                    Screen Role Access
+                                </h2>
+                            </div>
+                            <!-- <div
+                                class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 d-flex d-grid gap-2 justify-content-end py-2">
+                                <div class="">
+                                    <button type="button" class="btn btn-primary" (click)="addRoleAllAccessRow()"
+                                        style="color: white;background-color: #00acff;">Add All Screen Access
+                                        Role</button>
+                                </div>
+                                <div class="">
+                                    <button type="button" class="btn btn-primary" (click)="addRoleAccessRow()"
+                                        style="color: white;background-color: #00acff;">Add Screen Access Role</button>
+                                </div>
+                            </div> -->
+                        </div>
+
+                        <div class="col-12" formArrayName="rolesAccess">
+                            <div class="row"
+                                *ngFor="let subMenu of userFormGroup.get('rolesAccess')['controls']; let i = index"
+                                [formGroupName]="i">
+                                <div class="col-12">
+                                    <input type="checkbox" (change)="checkAllHandle($event, i)"
+                                        formControlName="visible">
+                                    <mat-icon style="position: relative; left: 5px; top:5px"
+                                        fontSet="material-symbols-outlined"
+                                        (click)="viewList(subMenu.value.menu, i)">{{subMenu.value.arrow === 'up' ?
+                                        'chevron_right' : 'keyboard_arrow_down'}}</mat-icon><span
+                                        style="position: relative; left: 10px;">{{subMenu.value.menu}}</span>
+                                </div>
+                                <div style="padding-left: 37px;" class="col-12" formArrayName="subMenu"
+                                    *ngIf="subMenu.value.arrow !== 'up'">
+                                    <div class="row"
+                                        *ngFor="let subMenuLists of userFormGroup.get('rolesAccess').at(i).get('subMenu')['controls']; let j = index"
+                                        [formGroupName]="j">
+                                        <div class="col-12">
+                                            <input type="checkbox" (change)="handleSubMenuCheck($event, i,j)"
+                                                formControlName="visible"> <mat-icon
+                                                style="position: relative; left: 5px; top:5px"
+                                                fontSet="material-symbols-outlined"
+                                                (click)="viewSubList(subMenuLists.value.subMenuName,i, j)">{{subMenuLists.value.arrow
+                                                === 'up' ?
+                                                'chevron_right' : 'keyboard_arrow_down'}}</mat-icon><span
+                                                style="position: relative; left: 10px;">{{subMenuLists.value.subMenuName}}</span>
+                                        </div>
+                                        <div style="padding-left: 37px;" class="col-12" formArrayName="subMenuList"
+                                            *ngIf="subMenuLists.value.arrow !== 'up'">
+                                            <div class="row"
+                                                *ngFor="let subMenuList of userFormGroup.get('rolesAccess').at(i).get('subMenu').at(j).get('subMenuList')['controls']; let k = index"
+                                                [formGroupName]="k">
+                                                <div class="col-12 py-1">
+                                                    <input type="checkbox"
+                                                        (change)="handleSubMenuListCheck($event, i,j, k)"
+                                                        formControlName="visible"><mat-icon
+                                                        style="position: relative; left: 5px; top:5px"
+                                                        fontSet="material-symbols-outlined"
+                                                        (click)="viewSubListMenu(subMenuList.value.screenName,i, j, k)">{{subMenuList.value.arrow
+                                                        === 'up' ?
+                                                        'chevron_right' : 'keyboard_arrow_down'}}</mat-icon> <span
+                                                        style="position: relative; left: 10px;">{{subMenuList.value.screenName}}</span>
+                                                </div>
+                                                <div style="padding-left: 37px;" class="col-12"
+                                                    formArrayName="actionAccess"
+                                                    *ngIf="subMenuList.value.arrow !== 'up'">
+                                                    <div class="row"
+                                                        *ngFor="let subMenuListAccess of userFormGroup.get('rolesAccess').at(i).get('subMenu').at(j).get('subMenuList').at(k).get('actionAccess')['controls']; let l = index"
+                                                        [formGroupName]="l">
+                                                        <div class="col-12 py-1">
+                                                            <input type="checkbox" formControlName="visible"> <span
+                                                                style="position: relative; left: 10px;">{{subMenuListAccess.value.type}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="padding-left: 37px;" class="col-12" formArrayName="actionAccess"
+                                            *ngIf="subMenuLists.value.arrow !== 'up'">
+                                            <div class="row"
+                                                *ngFor="let subMenuList of userFormGroup.get('rolesAccess').at(i).get('subMenu').at(j).get('actionAccess')['controls']; let l = index"
+                                                [formGroupName]="l">
+
+                                                <div class="col-12 py-1">
+                                                    <input type="checkbox" formControlName="visible"> <span
+                                                        style="position: relative; left: 10px;">{{subMenuList.value.type}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th *ngIf="roleAccessControl.controls.length > 1">Actions</th>
+                                        <th>Screen Id <sup>*</sup></th>
+                                        <th>Add <sup>*</sup></th>
+                                        <th>Modify <sup>*</sup></th>
+                                        <th>Active/Inactive <sup>*</sup></th>
+                                        <th>Print <sup>*</sup></th>
+                                        <th>Download <sup>*</sup></th>
+                                        <th>View <sup>*</sup></th>
+                                        <th>Delete <sup>*</sup></th>
+                                        <th>Reopen <sup>*</sup></th>
+                                        <th>Auth <sup>*</sup></th>
+                                        <th>Release <sup>*</sup></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody formArrayName="rolesAccess">
+                                    <tr *ngFor="let accessRole of userFormGroup.get('rolesAccess')['controls']; let i = index;"
+                                        [formGroupName]="i">
+                                        <td *ngIf="roleAccessControl.controls.length > 1">
+                                            <mat-icon style="cursor:pointer"
+                                                (click)="deleteRoleAccessRow(i, accessRole.value.screenId)">delete</mat-icon>
+                                        </td>
+                                        <td>
+                                            <select class="form-select " aria-label="Default select example"
+                                                formControlName="screenId" (change)="handle($event)">
+                                                <option [selected]="accessRole.value.screenId === ''" value="" hidden>
+                                                    Select
+                                                    Role Name</option>
+                                                <option [ngClass]="{'d-none':list.disable === true}"
+                                                    *ngFor="let list of subScreenList" [value]="list.subMenuName">
+                                                    {{list.subMenuName}}</option>
+
+                                            </select>
+                                            <div
+                                                *ngIf="accessRole.controls['screenId'].touched && accessRole.controls['screenId'].dirty && accessRole.controls['screenId'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">Screen Id is mandatory</p>
+                                            </div>
+                                            <div
+                                                *ngIf="isSubmitted && accessRole.controls['screenId'].hasError('required')">
+                                                <p class="error-message">Screen Id is mandatory</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" value="Y" (change)="handleCheck($event,'add', i)"
+                                                [checked]="accessRole.value.add === 'Y'">
+                                            <div
+                                                *ngIf="accessRole.controls['add'].touched && accessRole.controls['add'].dirty && accessRole.controls['add'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">Add is mandatory</p>
+                                            </div>
+                                            <div *ngIf="isSubmitted && accessRole.controls['add'].hasError('required')">
+                                                <p class="error-message">Add is mandatory</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" value="Y" (change)="handleCheck($event,'modify', i)"
+                                                [checked]="accessRole.value.modify === 'Y'">
+                                            <div
+                                                *ngIf="accessRole.controls['modify'].touched && accessRole.controls['modify'].dirty && accessRole.controls['modify'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">Modify is mandatory</p>
+                                            </div>
+                                            <div
+                                                *ngIf="isSubmitted && accessRole.controls['modify'].hasError('required')">
+                                                <p class="error-message">Modify is mandatory</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" value="Y" (change)="handleCheck($event,'close', i)"
+                                                [checked]="accessRole.value.close === 'Y'">
+                                            <div
+                                                *ngIf="accessRole.controls['close'].touched && accessRole.controls['close'].dirty && accessRole.controls['close'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">Close is mandatory</p>
+                                            </div>
+                                            <div
+                                                *ngIf="isSubmitted && accessRole.controls['close'].hasError('required')">
+                                                <p class="error-message">Close is mandatory</p>
+                                            </div>
+
+                                        </td>
+                                        <td>
+
+                                            <input type="checkbox" value="Y" (change)="handleCheck($event,'print', i)"
+                                                [checked]="accessRole.value.print === 'Y'">
+                                            <div
+                                                *ngIf="accessRole.controls['print'].touched && accessRole.controls['print'].dirty && accessRole.controls['print'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">Print is mandatory</p>
+                                            </div>
+                                            <div
+                                                *ngIf="isSubmitted && accessRole.controls['print'].hasError('required')">
+                                                <p class="error-message">Print is mandatory</p>
+                                            </div>
+
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" value="Y"
+                                                (change)="handleCheck($event,'download', i)"
+                                                [checked]="accessRole.value.download === 'Y'">
+                                            <div
+                                                *ngIf="accessRole.controls['download'].touched && accessRole.controls['download'].dirty && accessRole.controls['download'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">Download is mandatory</p>
+                                            </div>
+                                            <div
+                                                *ngIf="isSubmitted && accessRole.controls['download'].hasError('required')">
+                                                <p class="error-message">Download is mandatory</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" value="Y" (change)="handleCheck($event,'view', i)"
+                                                [checked]="accessRole.value.view === 'Y'">
+                                            <div
+                                                *ngIf="accessRole.controls['view'].touched && accessRole.controls['view'].dirty && accessRole.controls['view'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">View is mandatory</p>
+                                            </div>
+                                            <div
+                                                *ngIf="isSubmitted && accessRole.controls['view'].hasError('required')">
+                                                <p class="error-message">View is mandatory</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" value="Y" (change)="handleCheck($event,'delete', i)"
+                                                [checked]="accessRole.value.delete === 'Y'">
+                                            <div
+                                                *ngIf="accessRole.controls['delete'].touched && accessRole.controls['delete'].dirty && accessRole.controls['delete'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">Delete is mandatory</p>
+                                            </div>
+                                            <div
+                                                *ngIf="isSubmitted && accessRole.controls['delete'].hasError('required')">
+                                                <p class="error-message">Delete is mandatory</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" value="Y" (change)="handleCheck($event,'reopen', i)"
+                                                [checked]="accessRole.value.reopen === 'Y'">
+                                            <div
+                                                *ngIf="accessRole.controls['reopen'].touched && accessRole.controls['reopen'].dirty && accessRole.controls['reopen'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">Reopen is mandatory</p>
+                                            </div>
+                                            <div
+                                                *ngIf="isSubmitted && accessRole.controls['reopen'].hasError('required')">
+                                                <p class="error-message">Reopen is mandatory</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" value="Y" (change)="handleCheck($event,'auth', i)"
+                                                [checked]="accessRole.value.auth === 'Y'">
+                                            <div
+                                                *ngIf="accessRole.controls['auth'].touched && accessRole.controls['auth'].dirty && accessRole.controls['auth'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">Auth is mandatory</p>
+                                            </div>
+                                            <div
+                                                *ngIf="isSubmitted && accessRole.controls['auth'].hasError('required')">
+                                                <p class="error-message">Auth is mandatory</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" value="Y" (change)="handleCheck($event,'release', i)"
+                                                [checked]="accessRole.value.release === 'Y'">
+                                            <div
+                                                *ngIf="accessRole.controls['release'].touched && accessRole.controls['release'].dirty && accessRole.controls['release'].hasError('required') && !isSubmitted">
+                                                <p class="error-message">Release is mandatory</p>
+                                            </div>
+                                            <div
+                                                *ngIf="isSubmitted && accessRole.controls['release'].hasError('required')">
+                                                <p class="error-message">Release is mandatory</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>

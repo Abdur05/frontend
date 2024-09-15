@@ -1,0 +1,41 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/appreciation-list">arrow_back</mat-icon> Appreciation Note </h2>
+    <form [formGroup]="appreciationFormGroup" (ngSubmit)="submitCategory()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-xl py-2">
+                        <label for="">Template Name <sup>*</sup></label>
+                        <input type="text" class="form-control" formControlName="templateName"
+                            placeholder="Enter Template Name" />
+                        <div
+                            *ngIf="appreciationFormGroup.controls['templateName'].touched && appreciationFormGroup.controls['templateName'].dirty && appreciationFormGroup.controls['templateName'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Template Name is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && appreciationFormGroup.controls['templateName'].hasError('required')">
+                            <p class="error-message">Template Name is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-xl py-2">
+                        <label for="">Note <sup>*</sup></label>
+                        <textarea type="text" class="form-control" formControlName="note" style="height: 10px;"
+                            placeholder="Enter Note"></textarea>
+                        <div
+                            *ngIf="appreciationFormGroup.controls['note'].touched && appreciationFormGroup.controls['note'].dirty && appreciationFormGroup.controls['note'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Note is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && appreciationFormGroup.controls['note'].hasError('required')">
+                            <p class="error-message">Note is mandatory</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

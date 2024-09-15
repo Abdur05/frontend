@@ -1,0 +1,19 @@
+<app-loader *ngIf="isLoader"></app-loader>
+
+<form [formGroup]="getPayslipFormGroup" (ngSubmit)="submitPaySlip()">
+<h2 mat-dialog-title>PaySlip</h2>
+<mat-dialog-content class="mat-typography">
+    
+        <div class="formGroup">
+            <label for="">Employee Type</label>
+            <select class="form-select" formControlName="employeeType">
+                <option selected value="" hidden>Select Employee Type</option>
+                <option *ngFor="let list of employeeTypeDetail" [value]="list._id">{{list.employeeType}}</option>
+            </select>
+        </div>
+    
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button type="submit" class="btn btn-primary">Generate</button>
+</mat-dialog-actions>
+</form>

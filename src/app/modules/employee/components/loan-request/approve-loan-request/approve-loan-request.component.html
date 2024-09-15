@@ -1,0 +1,55 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/employee/loan-approval-list">arrow_back</mat-icon>Approve Loan </h2>
+    <form [formGroup]="loanRequestFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <div class="row">
+                            <div class="col-12 py-2">
+                                <label for=""> Employee Id </label>
+                                <input type="text" formControlName="employeeId" class="form-control"
+                                    placeholder="Enter Employee Id" min="0" readonly />
+                            </div>
+                            <div class="col-12 py-2">
+                                <label for=""> Employee Name </label>
+                                <input type="text" formControlName="employeeName" class="form-control"
+                                    placeholder="Enter Employee Name" min="0" readonly />
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for="">Reason </label>
+                        <textarea type="text" formControlName="reason" class="form-control" placeholder="Enter Reason"
+                            style="pointer-events: none;text-decoration: none;background-color: whitesmoke;" rows="5"
+                            readonly></textarea>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for=""> Number Of Installment </label>
+                        <input type="number" formControlName="installment" class="form-control"
+                            placeholder="Enter Number Of Installment" min="0" readonly />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for=""> Loan Amount </label>
+                        <input type="number" formControlName="loanAmount" class="form-control"
+                            placeholder="Enter Loan Amount" min="0" readonly />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2">
+                        <label for=""> Requested Disbursement Date </label>
+                        <input type="date" formControlName="requestedDisbursementDate" class="form-control"
+                            min="{{ today }}" readonly />
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2 gap-2">
+                    <button type="button" class="btn btn-primary" (click)="submitData('Approved')">Approve</button>
+                    <!-- <button type="button" class="btn btn-primary ">Reject</button> -->
+                    <button type="button" class="btn btn-danger " (click)="submitData('Rejected')">Reject</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

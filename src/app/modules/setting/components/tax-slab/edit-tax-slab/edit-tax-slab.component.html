@@ -1,0 +1,66 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <h2><mat-icon class="back" routerLink="/setting/tax-slab-list">arrow_back</mat-icon> Tax Slab</h2>
+    <form [formGroup]="taxSlabFormGroup" (ngSubmit)="submitData()">
+        <div class="row">
+            <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+                (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+            <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+
+                <div class="row border mx-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 py-2">
+                        <label for="">Regime <sup>*</sup></label>
+                        <input type="text" class="form-control" formControlName="tax_type" placeholder="Enter Regime">
+                        <div
+                            *ngIf="taxSlabFormGroup.controls['tax_type'].touched && taxSlabFormGroup.controls['tax_type'].dirty && taxSlabFormGroup.controls['tax_type'].hasError('required') && !isSubmitted">
+                            <p class="error-message">Regime is mandatory</p>
+                        </div>
+                        <div *ngIf="isSubmitted && taxSlabFormGroup.controls['tax_type'].hasError('required')">
+                            <p class="error-message">Regime is mandatory</p>
+                        </div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-end py-2">
+                        <button type="button" class="btn btn-primary" (click)="addDetail()">Add</button>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th *ngIf="employeeTypeDetail.controls.length>1">Action</th>
+                                <th>Annual Taxable Income</th>
+                                <th>Tax Rate in % <sup>*</sup></th>
+                            </tr>
+                        </thead>
+                        <tbody formArrayName="slabs">
+                            <tr *ngFor="let list of taxSlabFormGroup.get('slabs')['controls'];let i=index"
+                                [formGroupName]="i">
+                                <td *ngIf="employeeTypeDetail.controls.length>1">
+                                    <mat-icon (click)="deleteRow(i)">delete</mat-icon>
+
+                                </td>
+                                <td>
+                                    <input type="number" min="0" formControlName="amount" class="form-control"
+                                        placeholder="Enter Amount">
+                                </td>
+                                <td>
+                                    <input type="number" min="0" formControlName="percentage" class="form-control"
+                                        placeholder="Enter Percentage">
+                                    <div
+                                        *ngIf="list.controls['percentage'].touched && list.controls['percentage'].dirty && list.controls['percentage'].hasError('required') && !isSubmitted">
+                                        <p class="error-message">Percentage is mandatory</p>
+                                    </div>
+                                    <div *ngIf="isSubmitted && list.controls['percentage'].hasError('required')">
+                                        <p class="error-message">Percentage is mandatory</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

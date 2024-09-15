@@ -1,0 +1,132 @@
+<app-side-nav (isShowNav)="handleSideBar($event)"></app-side-nav>
+<div class="container-fluid " [ngStyle]="{'padding-left' : isShowPadding ? '280px' : '100px'}">
+    <div class="row">
+        <app-sub-side-menu [ngClass]="{'col-2' : isShowScreenMenu}" *ngIf="isShowScreenMenu"
+            (isShowScreen)="screenChange($event)"></app-sub-side-menu>
+        <div [ngClass]="{'col-10 ' : isShowScreenMenu, 'col-12' : !isShowScreenMenu}">
+            <div class="row mt-3 ">
+                <div class="col-12">
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto"><b>Search Filter</b></legend>
+
+                        <div class="row">
+                            <div class="filterText col-sm col-md col-lg col-xl">
+                                <input type="text" #searchDataInput id="search-data" placeholder="Skill/Description"
+                                    class="form-control w-50" (input)="handleFilter($event)">
+                            </div>
+                            <div class="col-sm col-md col-lg col-xl">
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <select class="form-select" (change)="handleFilterList($event)">
+                                        <option [selected]="selectedFilter === ''" value="">All</option>
+                                        <option [selected]="selectedFilter === 'O'" value="O">Active</option>
+                                        <option [selected]="selectedFilter === 'C'" value="C">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col d-flex justify-content-end gap-2 mt-4">
+                                <div class="py-1">
+                                    <button class="btn btn-primary" (click)="handleFilterDetails()"
+                                        type="button">Search</button>
+                                </div>
+                                <div class="py-1">
+                                    <button class="btn btn-primary"
+                                        (click)="searchDataInput.value = ''; filterText = ''"
+                                        type="button">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="row py-2 skillClass">
+                    <div class="col-12">
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end ">
+
+                            <button class="btn btn-primary " (click)="nextPage('/appraisal/add-skill')" type="button"
+                                style="color: white;background: #00acff;" *ngIf="rolesView?.add === true">Add
+                                Skill</button>
+
+                            <!-- <button class="btn btn-danger" type="button" style="color: white;" (click)="handleDeleteMuliple()">
+                        <mat-icon style="width: 15px; height: 15px;">delete</mat-icon>
+                        Delete Selected Skill</button> -->
+                            <!-- <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item>
+                            <span>Import Skill</span>
+                        </button>
+                        <button mat-menu-item>
+                            <span>Export Skill</span>
+                        </button>
+                        <button mat-menu-item>
+                            <span>Sample Skill Sheet</span>
+                        </button>
+                    </mat-menu> -->
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>SN</th>
+                                <th>Skill</th>
+                                <th>Description</th>
+                                <th>Designation</th>
+
+                                <th scope="col" *ngIf="rolesView?.modify === true || rolesView?.view === true">Action
+                                </th>
+                                <th *ngIf="rolesView?.view === true">Inactive / Active</th>
+                                <!-- <th scope="col"><input type="checkbox" [checked]="selectAll"
+                                        (change)="selectdata($event)"> Select All</th> -->
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="skillDetails.length === 0">
+                            <tr>
+                                <td colspan="7" class="text-center">No Records</td>
+                            </tr>
+                        </tbody>
+
+                        <tbody>
+                            <tr *ngFor="let list of skillDetails; let i=index">
+                                <td>{{i+1}}</td>
+                                <td>{{list.skillName}}</td>
+                                <td>{{list.description}}</td>
+                                <td>{{list.designation}}</td>
+                                <td>
+                                    <div class="d-flex">
+                                        <div *ngIf="rolesView?.modify === true">
+                                            <mat-icon [routerLink]="'/appraisal/edit-skill/'+list._id">edit</mat-icon>
+                                        </div>
+                                        <!-- <div>
+                                            <mat-icon (click)="deleteRecords(list)">delete</mat-icon>
+                                        </div> -->
+                                        <div *ngIf="rolesView?.view === true">
+                                            <mat-icon (click)="openDialog(list._id)">visibility</mat-icon>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td *ngIf="rolesView?.view === true">
+                                    <label class="switch">
+                                        <input type="checkbox" [checked]="list.isActive === 'O'"
+                                            (change)="deleteRecords(list)">
+                                        <span class="slider"></span>
+                                    </label>
+                                </td>
+                                <!-- <td><input type="checkbox" class="checkbox" [checked]="list.check"
+                                        (change)="particularcheck($event,i)"></td> -->
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
